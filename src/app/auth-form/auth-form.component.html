@@ -1,0 +1,26 @@
+<p>{{ this.store.user().email }}</p>
+
+<form [formGroup]="loginForm" (ngSubmit)="login()">
+  <div>
+    <label for="email">email: </label>
+    <input id="email" type="text" formControlName="email" />
+    @if(loginForm.controls.email.invalid && loginForm.controls.email.touched){
+    <div>First name is required</div>
+    }
+  </div>
+
+  <div>
+    <label for="password">password: </label>
+    <input id="password" type="text" formControlName="password" />
+    @if(loginForm.controls.password.invalid &&
+    loginForm.controls.password.touched){
+    <div>First name is required</div>
+    }
+  </div>
+
+  <button type="submit">Submit</button>
+</form>
+
+<!-- <button type="submit" (click)="getUser()">Get user</button> -->
+
+<!-- <button type="submit" (click)="logout()">Logout</button> -->
