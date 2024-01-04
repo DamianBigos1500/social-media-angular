@@ -1,0 +1,27 @@
+<nav class="navigation">
+  <ul>
+    <li>
+      <a routerLink="/" routerLinkActive="active" ariaCurrentWhenActive="page">
+        Home
+      </a>
+    </li>
+
+    <li>
+      <a
+        routerLink="/profile/1"
+        routerLinkActive="active"
+        ariaCurrentWhenActive="page"
+      >
+        Profile
+      </a>
+    </li>
+
+    <li>
+      <a routerLink="profile/2">{{ this.authService.user()?.email }}</a>
+    </li>
+
+    <li>
+      <button (click)="logout()">logout</button>
+    </li>
+  </ul>
+</nav>

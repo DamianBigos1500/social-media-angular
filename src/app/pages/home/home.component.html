@@ -1,0 +1,12 @@
+<p></p>
+<ul>
+  <div>
+    @for (post of data; track post.id) {
+    <a routerLink="post/1">
+      <li>
+        <h3>{{ post.id }} {{ post.title }}</h3>
+      </li>
+    </a>
+    }
+  </div>
+</ul>

@@ -12,9 +12,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { CommonModule,  isPlatformBrowser } from '@angular/common';
-import { AuthService } from '../services/auth.service';
-import { StoreService } from '../services/store.service';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'auth-form',
@@ -23,25 +22,18 @@ import { StoreService } from '../services/store.service';
   templateUrl: './auth-form.component.html',
   styleUrl: './auth-form.component.scss',
 })
-export class AuthFormComponent  {
+export class AuthFormComponent {
   loginForm = new FormGroup({
     email: new FormControl<string>('', [Validators.required, Validators.email]),
     password: new FormControl<string>('', [Validators.required]),
   });
 
-  constructor(
-    @Inject(PLATFORM_ID) private platformId: Object,
-    private authService: AuthService,
-    public store: StoreService
-
-  ) {}
-
+  constructor(public authService: AuthService) {}
 
   login(): void {
-    this.authService.login({ email: '', password: '' }).subscribe({
+    this.authService.login(Object.assign(this.loginForm.value)).subscribe({
       next: (response: any) => {
-        console.log(this.store.user);
-        // console.log(response.user?.email);
+        console.log(response);
       },
       error: (response) => console.log(response),
     });

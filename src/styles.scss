@@ -1,1 +1,46 @@
 /* You can add global styles to this file, and also import other style files */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --color-white: #ffffff
+  --color-black: #000000
+  --color-primary-dark: #2c3c93
+  --color-primary: #2196f3
+  --color-primary-light: #2196f3
+  --color-secondary-dark: #0F0F11
+  --color-secondary: #151B26
+  --color-secondary-light: #232A37
+  --color-tertiary: #232A37
+  --secondary-color: #151B26
+  --secondary-color: #151B26
+}
+
+
+[data-theme="light"] {
+  --header-background-color: #ffffff;
+  --header-border-color: #e5e8ea;
+  --header-menu-item-color: #231f20;
+  --header-theme-switch-background-color: #cccccc;
+  --header-theme-switch-before-background-color: #ffffff;
+  --header-theme-switch-checked-background-color: #2196f3;
+
+  --main-content-background-color: #ffffff;
+  --main-content-text-color: #231f20;
+}
+
+[data-theme="dark"] {
+  --header-background-color: #;
+  --header-border-color: #e5e8ea;
+  --header-menu-item-color: #ffffff;
+  --header-theme-switch-background-color: #cccccc;
+  --header-theme-switch-before-background-color: #ffffff;
+  --header-theme-switch-checked-background-color: #2196f3;
+
+  --main-content-background-color: #231f20;
+  --main-content-text-color: #ffffff;
+}

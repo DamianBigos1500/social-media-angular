@@ -1,9 +1,15 @@
 import { Routes } from '@angular/router';
 
-import { WelcomeComponent } from './welcome/welcome.component';
-import { ProfileComponent } from './profile/profile.component';
+import { HomeComponent } from './pages/home/home.component';
+import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
+import { GroupDetailsComponent } from './pages/group-details/group-details.component';
+import { PostDetailsComponent } from './pages/post-details/post-details.component';
+import { ProfileDetailsComponent } from './pages/profile-details/profile-details.component';
 
 export const routes: Routes = [
-  { path: 'welcome', component: WelcomeComponent },
-  { path: 'profile/:id', component: ProfileComponent },
+  { path: '', component: HomeComponent },
+  { path: 'profile/:id', component: ProfileDetailsComponent },
+  { path: 'group/:id', component: GroupDetailsComponent },
+  { path: 'post/:id', component: PostDetailsComponent },
+  { path: '**', component: PageNotFoundComponent },
 ];
