@@ -1,4 +1,4 @@
-/* You can add global styles to this file, and also import other style files */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
 
 * {
   margin: 0;
@@ -7,40 +7,83 @@
 }
 
 :root {
-  --color-white: #ffffff
-  --color-black: #000000
-  --color-primary-dark: #2c3c93
-  --color-primary: #2196f3
-  --color-primary-light: #2196f3
-  --color-secondary-dark: #0F0F11
-  --color-secondary: #151B26
-  --color-secondary-light: #232A37
-  --color-tertiary: #232A37
-  --secondary-color: #151B26
-  --secondary-color: #151B26
+  --color-white: hsl(252, 30%, 100%);
+  --color-light: hsl(252, 30%, 95%);
+  --color-gray: hsl(252, 15%, 65%);
+  --color-primary: hsl(252, 75%, 60%);
+  --color-secondary: hsl(252, 100%, 90%);
+  --color-success: hsl(120, 95%, 65%);
+  --color-danger: hsl(0, 95%, 65%);
+  --color-dark: hsl(252, 30%, 17%);
+  --color-black: hsl(252, 30%, 10%);
+
+  --border-radius: 2rem;
+  --card-border-radius: 1rem;
+  --btn-padding: 0.6rem 1rem;
+  --search-padding: 0.6rem 1rem;
+  --card-padding: 1rem;
+}
+
+// [data-theme="dark"] {
+//   --header-background-color: #;
+//   --header-border-color: #e5e8ea;
+//   --header-menu-item-color: #ffffff;
+//   --header-theme-switch-background-color: #cccccc;
+//   --header-theme-switch-before-background-color: #ffffff;
+//   --header-theme-switch-checked-background-color: #2196f3;
+
+//   --main-content-background-color: #231f20;
+//   --main-content-text-color: #ffffff;
+// }
+
+body {
+  font-family: "Poppins", "sans-serif";
+  color: var(--color-dark);
+  background: var(--color-light);
+}
+
+.container {
+  width: 80%;
+  margin: 0 auto;
+}
+
+img {
+  display: block;
+  width: 100%;
+}
+
+.profile-photo {
+  width: 2.7rem;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  overflow: hidden;
 }
 
 
-[data-theme="light"] {
-  --header-background-color: #ffffff;
-  --header-border-color: #e5e8ea;
-  --header-menu-item-color: #231f20;
-  --header-theme-switch-background-color: #cccccc;
-  --header-theme-switch-before-background-color: #ffffff;
-  --header-theme-switch-checked-background-color: #2196f3;
-
-  --main-content-background-color: #ffffff;
-  --main-content-text-color: #231f20;
+.btn {
+  display: inline-block;
+  padding: var(--btn-padding);
+  font-weight: 500;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: all 300ms ease;
+  font-size: 0.9rem;
 }
 
-[data-theme="dark"] {
-  --header-background-color: #;
-  --header-border-color: #e5e8ea;
-  --header-menu-item-color: #ffffff;
-  --header-theme-switch-background-color: #cccccc;
-  --header-theme-switch-before-background-color: #ffffff;
-  --header-theme-switch-checked-background-color: #2196f3;
 
-  --main-content-background-color: #231f20;
-  --main-content-text-color: #ffffff;
+.btn:hover {
+  opacity: 0.8;
+}
+
+.btn-primary {
+  background: var(--color-primary);
+  color: white;
+}
+
+.text-bold {
+  font-weight: 500;
+}
+
+.text-muted {
+  color: var(--color-gray);
 }
