@@ -22,11 +22,8 @@ import { ThemeComponent } from './core/components/theme/theme.component';
     RouterOutlet,
     RouterLink,
     RouterLinkActive,
-    AuthFormComponent,
     ReactiveFormsModule,
     HttpClientModule,
-    ThemeComponent,
-    NavigationComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
