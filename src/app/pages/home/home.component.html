@@ -1,6 +1,197 @@
-<p></p>
-<ul>
-  <div>
+<div class="container">
+  <app-sidebar></app-sidebar>
+
+  <div class="middle">
+    <div class="stories">
+      <div class="story">
+        <div class="profile-photo">
+          <img
+            src="/assets/images/278131694_959477194761572_7052423625085698959_n.jpg"
+            alt=""
+          />
+        </div>
+        <p class="name">Your Story</p>
+      </div>
+
+      <div class="story">
+        <div class="profile-photo">
+          <img
+            src="/assets/images/278131694_959477194761572_7052423625085698959_n.jpg"
+            alt=""
+          />
+        </div>
+        <p class="name">Your Story</p>
+      </div>
+
+      <div class="story">
+        <div class="profile-photo">
+          <img
+            src="/assets/images/278131694_959477194761572_7052423625085698959_n.jpg"
+            alt=""
+          />
+        </div>
+        <p class="name">Your Story</p>
+      </div>
+
+      <div class="story">
+        <div class="profile-photo">
+          <img
+            src="/assets/images/278131694_959477194761572_7052423625085698959_n.jpg"
+            alt=""
+          />
+        </div>
+        <p class="name">Your Story</p>
+      </div>
+
+      <div class="story">
+        <div class="profile-photo">
+          <img
+            src="/assets/images/278131694_959477194761572_7052423625085698959_n.jpg"
+            alt=""
+          />
+        </div>
+        <p class="name">Your Story</p>
+      </div>
+    </div>
+
+    <form class="create-post">
+      <div class="profile-photo">
+        <img
+          src="/assets/images/278131694_959477194761572_7052423625085698959_n.jpg"
+          alt=""
+        />
+      </div>
+      <input type="text" placeholder="What's on your mind, Damian?" />
+      <button type="submit" value="Post" class="btn btn-primary">Post</button>
+    </form>
+
+    <div class="feeds">
+      <div class="feed">
+        <div class="head">
+          <div class="user">
+            <div class="profile-photo">
+              <img
+                src="/assets/images/278131694_959477194761572_7052423625085698959_n.jpg"
+                alt=""
+              />
+            </div>
+            <div class="ingo">
+              <h3>Damian Bigos</h3>
+              <small>Dubai, 15 MINUTES AGO</small>
+            </div>
+          </div>
+          <span class="edit">
+            <i class="uil uil-ellipsis-h"></i>
+          </span>
+        </div>
+
+        <div class="photo">
+          <img
+            src="/assets/images/279123994_524159142568242_2553083085503793696_n.jpg"
+          />
+        </div>
+
+        <div class="action-buttons">
+          <div class="interaction-buttons">
+            <span><i class="uil uil-heart"></i></span>
+            <span><i class="uil uil-comment-dots"></i></span>
+            <span><i class="uil uil-share-alt"></i></span>
+          </div>
+          <div class="bookmarks">
+            <span><i class="uil uil-bookmark-full"></i></span>
+          </div>
+        </div>
+
+        <div class="liked-by">
+          <span>
+            <img
+              src="/assets/images/279123994_524159142568242_2553083085503793696_n.jpg"
+            />
+          </span>
+          <span>
+            <img
+              src="/assets/images/279123994_524159142568242_2553083085503793696_n.jpg"
+            />
+          </span>
+          <span>
+            <img
+              src="/assets/images/279123994_524159142568242_2553083085503793696_n.jpg"
+            />
+          </span>
+          <p>Liked by <b>Ernest Achiever</b> and <b>2,232 others</b></p>
+        </div>
+
+        <div class="caption">
+          <p>
+            <b>Damian Bigos</b> Lorem ipsum asdasd asd12 1poda sjdojjas.
+            <span>#lifestyle</span>
+          </p>
+        </div>
+        <div class="comments text-muted">View all 277 comments</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="right">
+    <div class="messages">
+      <div class="heading">
+        <h4>Messages</h4>
+        <i class="uil uil-edit"></i>
+      </div>
+
+      <div class="search-bar">
+        <i class="uil uil-search"></i>
+        <input
+          type="search"
+          placeholder="Search messages"
+          id="message-search"
+        />
+      </div>
+
+      <div class="category">
+        <h6 class="active">Primary</h6>
+        <h6>General</h6>
+        <h6 class="message-request">Requests(7)</h6>
+      </div>
+
+      <div class="message">
+        <div class="profile-photo">
+          <img
+            src="/assets/images/279123994_524159142568242_2553083085503793696_n.jpg"
+          />
+          <div class="active"></div>
+        </div>
+        <div class="message-body">
+          <h5>Eddem Quist</h5>
+          <p class="text-muted">Just woke up bruh</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="friend-requests">
+      <h4>Requests</h4>
+      <div class="request">
+        <div class="info">
+          <div class="profile-photo">
+            <img
+              src="/assets/images/279123994_524159142568242_2553083085503793696_n.jpg"
+            />
+          </div>
+          <div>
+            <h5>Damian Bigos</h5>
+            <p class="text-muted">8 mutal friends</p>
+          </div>
+        </div>
+
+        <div class="action">
+          <button class="btn btn-primary">Accept</button>
+          <button class="btn">Decline</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- <div>
     @for (post of data; track post.id) {
     <a routerLink="post/1">
       <li>
@@ -8,5 +199,4 @@
       </li>
     </a>
     }
-  </div>
-</ul>
+  </div> -->

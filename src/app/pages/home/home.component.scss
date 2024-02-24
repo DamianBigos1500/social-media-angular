@@ -1,0 +1,255 @@
+
+
+.container {
+  display: grid;
+  grid-template-columns: 18vw auto 20vw;
+  column-gap: 2rem;
+ 
+}
+
+// ------------- MIDDLE -----------------
+
+.middle {
+  .stories {
+    display: flex;
+    justify-content: space-between;
+    height: 12rem;
+    gap: 0.5rem;
+
+    & .story {
+      padding: var(--card-padding);
+      border-radius: var(--card-border-radius);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      color: white;
+      font-size: 0.75rem;
+      width: 100%;
+      position: relative;
+      overflow: hidden;
+
+      & .name {
+        z-index: 2;
+      }
+
+      &:before {
+        content: "";
+        display: block;
+        width: 100%;
+        height: 5rem;
+        background: linear-gradient(transparent, rgba(0, 0, 0, 0.75));
+        position: absolute;
+        bottom: 0;
+      }
+
+      .profile-photo {
+        width: 2rem;
+        height: 2rem;
+        align-self: start;
+        border: 3px solid var(--color-primary);
+      }
+    }
+
+    & .story {
+      background: url("/assets/images/278131694_959477194761572_7052423625085698959_n.jpg")
+        no-repeat center center/cover;
+    }
+  }
+
+  .create-post {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 1rem;
+    background: var(--color-white);
+    padding: 0.4rem var(--card-padding);
+    border-radius: var(--border-radius);
+
+    & input[type="text"] {
+      justify-self: start;
+      width: 100%;
+      padding-left: 1rem;
+      background: transparent;
+      color: var(--color-dark);
+      margin-right: 1rem;
+    }
+  }
+}
+
+// ------------------ FEEDS ------------------
+
+.middle {
+  & .feeds .feed {
+    background: var(--color-white);
+    border-radius: var(--card-border-radius);
+    padding: var(--card-padding);
+    margin: 1rem 0;
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+
+  & .feed {
+    & .head {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    & .photo {
+      border-radius: var(--card-border-radius);
+      overflow: hidden;
+      margin: 0.7rem 0;
+    }
+
+    & .action-buttons {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 1.4rem;
+      margin: 0.6rem;
+    }
+  }
+
+  & .liked-by {
+    display: flex;
+
+    & span {
+      width: 1.4rem;
+      height: 1.4rem;
+      display: block;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 2px solid var(--color-white);
+      margin-left: -0.6rem;
+    }
+
+    & span:first-child {
+      margin: 0;
+    }
+
+    & p {
+      margin-left: 0.5rem;
+    }
+  }
+}
+
+// ------------------ RIGHT ----------------
+
+main .container .right {
+  height: max-content;
+  position: sticky;
+  top: var(--sticky-top-right);
+  bottom: 0;
+
+  & .messages {
+    background: var(--color-white);
+    border-radius: var(--card-border-radius);
+    padding: var(--card-padding);
+
+    & .heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+
+    & i {
+      font-size: 1.4rem;
+    }
+
+    & .search-bar {
+      display: flex;
+      margin-bottom: 1rem;
+    }
+
+    & .category {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+
+      & h6 {
+        width: 100%;
+        text-align: center;
+        border-bottom: 4px solid var(--color-light);
+        padding-bottom: 0.5rem;
+      }
+
+      .active {
+        border-color: var(--color-dark);
+      }
+    }
+  }
+
+  & .message .message-requests {
+    color: var(--color-primary);
+  }
+
+  & .message .profile-photo {
+    position: relative;
+    overflow: visible;
+
+    & img {
+      border-radius: 50%;
+      aspect-ratio: 1/1;
+      object-fit: cover;
+    }
+  }
+
+  & .messages .message {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    align-items: center;
+
+    &:last-child {
+      margin: 0;
+    }
+
+    & p {
+      font-size: 0.8rem;
+    }
+
+    & .profile-photo .active {
+      width: 0.8rem;
+      height: 0.8rem;
+      border-radius: 50%;
+      border: 3px solid var(--color-white);
+      background: var(--color-success);
+      position: absolute;
+      bottom: 0;
+      right: 0;
+    }
+  }
+}
+
+// ------------------------ FRIEND REQUESTS ------------------------
+
+.right {
+  & .friend-requests {
+    margin-top: 1rem;
+
+    & h4 {
+      color: var(--color-gray);
+      margin-bottom: 1rem;
+    }
+  }
+
+  & .request {
+    background: var(--color-white);
+    padding: var(--card-padding);
+    border-radius: var(--card-border-radius);
+    margin-bottom: 0.7rem;
+
+    & .info {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    & .action {
+      display: flex;
+      gap: 1rem;
+    }
+  }
+}

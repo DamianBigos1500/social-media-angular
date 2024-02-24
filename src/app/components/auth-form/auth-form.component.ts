@@ -31,12 +31,12 @@ export class AuthFormComponent {
   constructor(public authService: AuthService) {}
 
   login(): void {
-    this.authService.login(Object.assign(this.loginForm.value)).subscribe({
-      next: (response: any) => {
-        console.log(response);
-      },
-      error: (response) => console.log(response),
-    });
+    // this.authService.login(Object.assign(this.loginForm.value)).subscribe({
+    //   next: (response: any) => {
+    //     console.log(response);
+    //   },
+    //   error: (response) => console.log(response),
+    // });
   }
 
   // logout() {

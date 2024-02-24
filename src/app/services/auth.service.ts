@@ -1,10 +1,16 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, catchError, of, tap } from 'rxjs';
+import { BehaviorSubject, Observable, catchError, of, tap } from 'rxjs';
 import { LoginModel } from '../models/LoginModel';
+import { TokenService } from './token.service';
 
-type AuthUser = any | null | undefined;
+
+export type AuthUser = any | null | undefined;
 interface AuthState {
+  user: AuthUser;
+}
+
+interface GetUserResponse {
   user: AuthUser;
 }
 
@@ -16,16 +22,18 @@ const initialState: AuthState = {
   providedIn: 'root',
 })
 export class AuthService {
+
+  user$: BehaviorSubject<AuthUser> = new BehaviorSubject<AuthUser>(null);
+  isLoggedIn$ = new BehaviorSubject<AuthUser>(null);
+
+  private tokenService = inject(TokenService);
   private http = inject(HttpClient);
-  private apiUrl = 'http://127.0.0.1:8000';
+  private apiUrl = 'http://localhost:8000/api/';
 
-  state = signal<AuthState>(initialState);
-  user = computed(() => this.state().user);
-
-  setUserSignal(userData: any | null) {
-    console.log(userData);
-    this.state.update((data) => ({ user: userData }));
+  getUser$(): Observable<boolean> {
+    return this.user$.asObservable();
   }
+
 
   handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
@@ -40,47 +48,51 @@ export class AuthService {
     };
   }
 
-  getCookie(name: string) {
-    if (!document.cookie) {
-      return null;
-    }
-
-    const xsrfCookies = document.cookie
-      .split(';')
-      .map((c) => c.trim())
-      .filter((c) => c.startsWith(name + '='));
-
-    if (xsrfCookies.length === 0) {
-      return null;
-    }
-    return decodeURIComponent(xsrfCookies[0].split('=')[1]);
-  }
-
   getUser() {
     return this.http
-      .get(`${this.apiUrl}/auth/user/`, {
+      .get<GetUserResponse>(`${this.apiUrl}user/`, {
         withCredentials: true,
+     
       })
+      .pipe(
+        tap((response: GetUserResponse) => {
+          if (response.user) {
+            this.user$.next(response.user);
+          }
+        })
+      )
       .pipe(catchError(this.handleError<any>('getUser', [])));
   }
 
-  login(loginModel: LoginModel) {
+  login({ email, password }: LoginModel) {
+    const formData = new FormData();
+    formData.append('username', email);
+    formData.append('password', password);
+
     return this.http
-      .post(`http://127.0.0.1:8000/auth/login/`, loginModel, {
+      .post(`http://127.0.0.1:8000/api/token/`, formData, {
         withCredentials: true,
       })
+      .pipe(
+        tap((response: any) => {
+          if (response.access_token) {
+            this.tokenService.setToken(response.access_token);
+          }
+        })
+      )
       .pipe(catchError(this.handleError<any>('getUser', [])));
   }
 
   logout() {
-    return this.http
-      .post(`${this.apiUrl}/auth/logout/`, null, {
-        withCredentials: true,
-        headers: {
-          'content-type': 'application/json',
-          'X-CSRFToken': String(this.getCookie('csrftoken')),
-        },
-      })
-      .pipe(catchError(this.handleError<any>('getUser', [])));
+    this.user$.next(null);
+    // return this.http
+    //   .post(`${this.apiUrl}/auth/logout/`, null, {
+    //     withCredentials: true,
+    //     headers: {
+    //       'content-type': 'application/json',
+    //       'X-CSRFToken': String(this.getCookie('csrftoken')),
+    //     },
+    //   })
+    //   .pipe(catchError(this.handleError<any>('getUser', [])));
   }
 }
