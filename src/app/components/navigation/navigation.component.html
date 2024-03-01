@@ -1,6 +1,8 @@
 <nav>
   <div class="container">
-    <h2>ConnectEdge</h2>
+    <h2>
+      <a routerLink="/"> ConnectEdge </a>
+    </h2>
 
     <div class="search-bar">
       <i class="uil uil-search"></i>
@@ -11,13 +13,11 @@
     </div>
 
     @if (user) {
-    <div>{{ user?.email }}</div>
+    <div>{{ user.email }}</div>
     <div class="create">
       <label class="btn btn-primary" for="create-post">Create</label>
       <div class="profile-photo">
-        <img
-          src="{{IMAGE_SRC + (user.profile_image)}}"
-        />
+        <img src="{{ IMAGE_SRC + user.profile_image }}" />
       </div>
     </div>
     } @else {

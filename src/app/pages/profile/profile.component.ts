@@ -1,23 +1,38 @@
+import { IMAGE_SRC } from './../../data/constants';
 import { PostService, IPost } from './../../services/post.service';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { SidebarComponent } from '../../components/sidebar/sidebar.component';
+import { IUser, UserService } from '../../services/user.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [RouterLink, FormsModule, ReactiveFormsModule],
+  imports: [RouterLink, FormsModule, ReactiveFormsModule, SidebarComponent],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss',
 })
 export class ProfileComponent implements OnInit {
+  IMAGE_SRC: string = IMAGE_SRC;
+  public id: string | null = null;
+  public authUser: IUser | null = null;
+
+  public recomended_users: IUser[] | [] = [];
+
+  public userData: IUser | null = null;
   public posts: IPost[] | [] = [];
+  public friendStatus: any;
+
   private files = [];
 
   constructor(
     private formBuilder: FormBuilder,
     private postService: PostService,
-    private cd: ChangeDetectorRef
+    private userService: UserService,
+    private authService: AuthService,
+    private route: ActivatedRoute
   ) {}
 
   newPostForm = this.formBuilder.group<{ content: string; files: any }>({
@@ -25,25 +40,28 @@ export class ProfileComponent implements OnInit {
     files: [],
   });
 
-  onFileChange(event: any) {
-    let reader = new FileReader();
+  file: any = null;
+  profileUrl: string | ArrayBuffer | null | undefined = null;
 
-    if (event.target.files && event.target.files.length) {
-      const [file] = event.target.files;
-      this.files = event.target.files;
+  handleProfileImage(event: any) {
+    this.file = event?.target.files[0];
 
-      console.log(file);
-      reader.readAsDataURL(file);
+    const reader = new FileReader();
+    reader.readAsDataURL(event.target.files[0]);
+    reader.onload = (event) => {
+      this.profileUrl = event.target?.result;
+    };
+  }
 
-      this.newPostForm.patchValue({
-        files: file,
-      });
-      // reader.onload = () => {
+  uploadNewImage() {
+    const formData = new FormData();
+    formData.append('file', this.file);
 
-      //   // need to run CD since file load runs outside of zone
-      //   this.cd.markForCheck();
-      // };
-    }
+    this.userService.updateProfileImage(formData).subscribe(() => {
+      this.userService
+        .showUser(this.id as string)
+        .subscribe((userData: IUser) => (this.userData = userData));
+    });
   }
 
   onSubmit() {
@@ -60,9 +78,41 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.postService.getPosts().subscribe((data: IPost[]) => {
-      this.posts = data;
-      console.log(data);
+    this.route.paramMap.subscribe((params) => {
+      this.id = params.get('id');
+      this.userService
+        .showUser(this.id as string)
+        .subscribe((userData: IUser) => (this.userData = userData));
+
+      this.userService
+        .getFriendStatus(this.id as string)
+        .subscribe((friendStatus) => (this.friendStatus = friendStatus));
+
+      this.authService
+        .getUser$()
+        .subscribe((user: any) => (this.authUser = user));
+      this.postService
+        .getPosts()
+        .subscribe((data: IPost[]) => (this.posts = data));
+      this.userService
+        .getUsers()
+        .subscribe((users) => (this.recomended_users = users));
     });
+  }
+
+  sendFriendRequest(friendId: string) {
+    this.userService
+      .sendFriendRequest(friendId)
+      .subscribe((friendStatus) => (this.friendStatus = friendStatus));
+  }
+
+  deleteFriendRequest(friendId: string) {
+    this.userService
+      .deleteFriendRequest(friendId)
+      .subscribe((friendStatus) => (this.friendStatus = friendStatus));
+  }
+
+  isMyProfile() {
+    return this.authUser?.id == this.id;
   }
 }

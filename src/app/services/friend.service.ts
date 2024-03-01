@@ -1,6 +1,6 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, finalize } from 'rxjs';
+import { Observable } from 'rxjs';
 import { LoginModel } from '../models/LoginModel';
 
 export interface IUser {
@@ -9,7 +9,7 @@ export interface IUser {
   first_name: string;
   last_name: string;
   profile_image: string;
-  profile: IProfile;
+  profile: IProfile
 }
 
 export interface IProfile {
@@ -29,7 +29,7 @@ export interface IUserData {
 @Injectable({
   providedIn: 'root',
 })
-export class UserService {
+export class FriendService {
   private http = inject(HttpClient);
   private apiUrl = 'http://127.0.0.1:8000/api/';
 
@@ -39,26 +39,5 @@ export class UserService {
 
   showUser(userId: string): Observable<IUserData> {
     return this.http.get<IUserData>(`${this.apiUrl}users/${userId}`);
-  }
-
-  getFriendStatus(friendId: string): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}friends/${friendId}`);
-  }
-
-  sendFriendRequest(friendId: string): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}friends/add`, {
-      friend_id: `${friendId}`,
-    });
-  }
-
-  updateProfileImage(formData: FormData): Observable<any> {
-    return this.http.post<any>(
-      `${this.apiUrl}users/update-profile-image/`,
-      formData
-    );
-  }
-
-  deleteFriendRequest(friendId: string): Observable<any> {
-    return this.http.delete<any>(`${this.apiUrl}friends/${friendId}/`);
   }
 }

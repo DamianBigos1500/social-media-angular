@@ -1,126 +1,77 @@
 <div class="container">
-  <div class="sidebar">
-    <a href="#" class="sidebar-item active">
-      <span>
-        <i class="uil uil-home"></i>
-      </span>
-      <h3>Home</h3>
-    </a>
-    <a href="#" class="sidebar-item">
-      <span>
-        <i class="uil uil-compass"></i>
-      </span>
-      <h3>Explore</h3>
-    </a>
-    <a href="#" class="sidebar-item">
-      <span>
-        <i class="uil uil-bell"> </i>
-        <small class="notification-count">9+</small>
-      </span>
-      <h3>Notifications</h3>
-      <div class="notification-popup">
-        <div>
-          <div class="profile-photo">
-            <img
-              src="/assets/images/278131694_959477194761572_7052423625085698959_n.jpg"
-              alt=""
-            />
-          </div>
-          <div class="notification-body">
-            <b>Damian Bigos</b> accepted your friend request
-            <small class="text-muted">2 DAYS AGO</small>
-          </div>
-        </div>
-
-        <div>
-          <div class="profile-photo">
-            <img
-              src="/assets/images/278131694_959477194761572_7052423625085698959_n.jpg"
-              alt=""
-            />
-          </div>
-          <div class="notification-body">
-            <b>Damian Bigos</b> accepted your friend request
-            <small class="text-muted">2 DAYS AGO</small>
-          </div>
-        </div>
-      </div>
-    </a>
-    <a href="#" class="sidebar-item" id="messages-notifications">
-      <span>
-        <i class="uil uil-envelope-alt">
-          <small class="notification-count">6</small>
-        </i>
-      </span>
-      <h3>Messages</h3>
-    </a>
-    <a href="#" class="sidebar-item">
-      <span>
-        <i class="uil uil-bookmark"></i>
-      </span>
-      <h3>Bookmarks</h3>
-    </a>
-    <a href="#" class="sidebar-item">
-      <span>
-        <i class="uil uil-chart-line"></i>
-      </span>
-      <h3>Analytics</h3>
-    </a>
-    <a href="#" class="sidebar-item">
-      <span>
-        <i class="uil uil-palette"></i>
-      </span>
-      <h3>Analytics</h3>
-    </a>
-    <a href="#" class="sidebar-item">
-      <span>
-        <i class="uil uil-settings"></i>
-      </span>
-      <h3>Settings</h3>
-    </a>
-  </div>
+  <app-sidebar></app-sidebar>
 
   <div class="profile">
     <div class="image-cover">
-      <img
-        src="https://www.wallpaperflare.com/static/366/315/585/landscape-gray-mountain-wallpaper.jpg"
-      />
+      <img src="{{ IMAGE_SRC }}{{ userData?.profile?.cover_image }}" />
     </div>
 
     <div class="social-content">
       <div class="posts">
         <div class="newpost">
-          <div class="content create-post">
-            <form [formGroup]="newPostForm" (ngSubmit)="onSubmit()">
-              <textarea
-                formControlName="content"
-                placeholder="What's in your mind?"
-              ></textarea>
-
-              <div class="actions">
-                <div class="icons">
-                  <input
-                    type="file"
-                    formControlName="files"
-                    multiple="true"
-                    class="file-upload"
-                    onchange="console.log(event.target.files)"
-                  />
-                </div>
-                <button type="submit" class="btn btn-primary send-post">
-                  Send
-                </button>
+          <div class="content user-data">
+            <div class="user-data-left">
+              <div class="user-image">
+                <img
+                  [src]="
+                    profileUrl !== null
+                      ? profileUrl
+                      : IMAGE_SRC + userData?.profile_image
+                  "
+                />
+                @if (isMyProfile()) {
+                <input
+                  class="upload-profile-input"
+                  id="upload-profile-image"
+                  type="file"
+                  (change)="handleProfileImage($event)"
+                />
+                <label for="upload-profile-image" class="upload-profile-label">
+                  <i class="uil uil-camera-plus"></i>
+                </label>
+                }
               </div>
-            </form>
-          </div>
-          <div class="content trends">
-            <h4 class="title">Groups for you</h4>
-            <div></div>
-            <span class="groups-link" type="button">show more</span>
+              <div class="user-fullname">
+                {{ userData?.first_name }} {{ userData?.last_name }}
+              </div>
+            </div>
+
+            <div class="user-data-right">
+              @if (file) {
+              <button class="btn btn-submit" (click)="uploadNewImage()">
+                Send new Photo
+              </button>
+              <button class="btn btn-danger">Cancel</button>
+              } @if (!isMyProfile()) {
+              <a
+                [routerLink]="['/conversation', userData?.id]"
+                class="btn btn-primary"
+                >send message</a
+              >
+              @if (!this.friendStatus) {
+              <button
+                class="btn btn-outline"
+                (click)="sendFriendRequest(userData!.id)"
+              >
+                add friend
+              </button>
+              }@else if (this.friendStatus?.status == 0) {
+              <button
+                class="btn btn-outline"
+                (click)="deleteFriendRequest(userData!.id)"
+              >
+                delete friend request
+              </button>
+              }@else if (this.friendStatus?.status == 1) {
+              <div>Friend accepted</div>
+              } @else {
+              <div></div>
+              } }
+            </div>
           </div>
         </div>
 
-        <div class="allposts">
+        <div class="posts-bottom">
           <div class="content profile-info"></div>
 
           <div class="posts-container">
@@ -135,7 +86,11 @@
                     />
                   </div>
                   <div class="info">
-                    <h3>Damian Bigos</h3>
+                    <h3>
+                      {{
+                        post.creator.first_name + " " + post.creator.first_name
+                      }}
+                    </h3>
                     <small>Dubai, 15 MINUTES AGO</small>
                   </div>
                 </div>
@@ -145,21 +100,15 @@
               </div>
 
               <div class="post-body">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean
-                nisi diam, sodales id quam a, aliquet posuere ipsum.
-                Pellentesque habitant morbi tristique senectus et netus et
-                malesuada fames ac turpis egestas. Nulla tristique scelerisque
-                egestas. Etiam placerat velit id vulputate hendrerit. Cras in
-                arcu in felis ultrices consequat. Nullam ultricies lectus sit
-                amet massa malesuada malesuada. Aenean mollis ex urna, nec
-                rhoncus purus blandit a.
+                {{ post.content }}
               </div>
 
+              @if(post.attachments.length > 0) { @for (attachment of
+              post.attachments; track attachment.path) {
               <div class="photos">
-                <img
-                  src="/assets/images/279123994_524159142568242_2553083085503793696_n.jpg"
-                />
+                <img src="{{ IMAGE_SRC + attachment.path }}" />
               </div>
+              } }
 
               <div class="action-buttons">
                 <div class="interaction-buttons">
@@ -214,7 +163,26 @@
           <input placeholder="Search chats" />
           <span>r</span>
         </div>
-        <div class="content">4</div>
+
+        <div class="content recomended-friends">
+          @for (rec_user of recomended_users; track rec_user.id) {
+          <a
+            [routerLink]="['/profile', rec_user.id]"
+            class="recomended-friend-card"
+          >
+            <div class="profile-photo">
+              <img src="{{ IMAGE_SRC }}{{ rec_user.profile_image }}" />
+            </div>
+            <div>
+              <div>{{ rec_user.first_name }} {{ rec_user.last_name }}</div>
+
+              <div>
+                {{ rec_user.email }}
+              </div>
+            </div>
+          </a>
+          }
+        </div>
       </div>
     </div>
   </div>

@@ -1,113 +1,142 @@
-
-
 .container {
-  display: grid;
-  grid-template-columns: 18vw auto 20vw;
-  column-gap: 2rem;
- 
+  width: 100%;
+  margin: 0 auto;
+  height: 100%;
+  display: flex;
+  overflow: hidden;
 }
 
-// ------------- MIDDLE -----------------
+// PROFILE
 
-.middle {
-  .stories {
-    display: flex;
-    justify-content: space-between;
-    height: 12rem;
-    gap: 0.5rem;
+.profile {
+  width: 100%;
+  height: 100%;
+  overflow-y: scroll;
+  margin-left: 8rem;
+}
 
-    & .story {
-      padding: var(--card-padding);
-      border-radius: var(--card-border-radius);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      align-items: center;
-      color: white;
-      font-size: 0.75rem;
-      width: 100%;
-      position: relative;
-      overflow: hidden;
+.image-cover {
+  height: 17rem;
+  overflow: hidden;
 
-      & .name {
-        z-index: 2;
-      }
-
-      &:before {
-        content: "";
-        display: block;
-        width: 100%;
-        height: 5rem;
-        background: linear-gradient(transparent, rgba(0, 0, 0, 0.75));
-        position: absolute;
-        bottom: 0;
-      }
-
-      .profile-photo {
-        width: 2rem;
-        height: 2rem;
-        align-self: start;
-        border: 3px solid var(--color-primary);
-      }
-    }
-
-    & .story {
-      background: url("/assets/images/278131694_959477194761572_7052423625085698959_n.jpg")
-        no-repeat center center/cover;
-    }
-  }
-
-  .create-post {
+  & img {
+    height: 100%;
     width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 1rem;
-    background: var(--color-white);
-    padding: 0.4rem var(--card-padding);
-    border-radius: var(--border-radius);
+    object-fit: cover;
+  }
+}
 
-    & input[type="text"] {
-      justify-self: start;
+.social-content {
+  display: grid;
+  grid-template-columns: auto 20vw;
+  gap: 1rem;
+  margin-top: -5rem;
+  padding: 0 1rem;
+}
+
+.posts {
+}
+
+.newpost {
+  display: flex;
+  gap: 1rem;
+}
+
+.create-post {
+  form {
+    textarea {
+      padding: 0.6rem;
       width: 100%;
-      padding-left: 1rem;
-      background: transparent;
-      color: var(--color-dark);
-      margin-right: 1rem;
+      resize: none;
+      background: var(--color-light);
+      border-radius: var(--card-border-radius);
+      height: 6rem;
+    }
+    .actions {
+      margin-top: 0.6rem;
+
+      .icons .send-post {
+        font-size: var(--text-size-small);
+      }
     }
   }
 }
 
-// ------------------ FEEDS ------------------
+.trends {
+  .groups-link {
+    color: var(--color-primary);
+    font-size: var(--font-small);
+    font-weight: bold;
+  }
+}
 
-.middle {
-  & .feeds .feed {
-    background: var(--color-white);
-    border-radius: var(--card-border-radius);
-    padding: var(--card-padding);
-    margin: 1rem 0;
-    font-size: 0.85rem;
-    line-height: 1.5;
+.posts-bottom {
+  margin-top: 1rem;
+  display: grid;
+  gap: 1rem;
+  width: 100%;
+  grid-template-columns: 4fr 6fr ;
+}
+
+.posts-container {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 4rem;
+}
+
+.profile-info {
+  width: 60% ;
+  height: 20rem;
+
+  .head {
+    .profile-image {
+    }
+
+    .profile-info {
+    }
   }
 
-  & .feed {
-    & .head {
-      display: flex;
-      justify-content: space-between;
-    }
+  .profile-stats {
+  }
+}
 
-    & .photo {
-      border-radius: var(--card-border-radius);
-      overflow: hidden;
-      margin: 0.7rem 0;
-    }
+.post {
+  .head {
+    display: flex;
+    justify-content: space-between;
 
-    & .action-buttons {
+    .user {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 1.4rem;
-      margin: 0.6rem;
+      gap: 0.6rem;
+
+      .info small {
+        color: var(--color-gray);
+      }
+    }
+  }
+
+  .post-body {
+    margin-top: 0.6rem;
+  }
+
+  & .photos {
+    margin-top: 0.6rem;
+    border-radius: var(--card-border-radius);
+    overflow: hidden;
+  }
+
+  & .action-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+    font-size: 1.4rem;
+    margin: 0.2rem 0.2rem;
+
+    & .interaction-buttons {
+      display: flex;
+      gap: 1rem;
     }
   }
 
@@ -134,122 +163,83 @@
   }
 }
 
-// ------------------ RIGHT ----------------
+.content {
+  width: 100%;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  padding: 0.6rem;
+  border-radius: var(--card-border-radius);
+  background: var(--color-white);
+}
 
-main .container .right {
-  height: max-content;
-  position: sticky;
-  top: var(--sticky-top-right);
-  bottom: 0;
+.friends {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
 
-  & .messages {
-    background: var(--color-white);
-    border-radius: var(--card-border-radius);
-    padding: var(--card-padding);
+.search-friends {
+  height: 3.5rem;
+  border-radius: var(--border-radius);
+  background: var(--color-white);
+  border: var(--color-primary) 2px solid;
+  overflow: hidden;
+  position: relative;
 
-    & .heading {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 1rem;
-    }
-
-    & i {
-      font-size: 1.4rem;
-    }
-
-    & .search-bar {
-      display: flex;
-      margin-bottom: 1rem;
-    }
-
-    & .category {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 1rem;
-
-      & h6 {
-        width: 100%;
-        text-align: center;
-        border-bottom: 4px solid var(--color-light);
-        padding-bottom: 0.5rem;
-      }
-
-      .active {
-        border-color: var(--color-dark);
-      }
-    }
-  }
-
-  & .message .message-requests {
-    color: var(--color-primary);
-  }
-
-  & .message .profile-photo {
-    position: relative;
-    overflow: visible;
-
-    & img {
-      border-radius: 50%;
-      aspect-ratio: 1/1;
-      object-fit: cover;
-    }
-  }
-
-  & .messages .message {
+  & .icon {
+    position: absolute;
+    height: 100%;
     display: flex;
-    gap: 1rem;
-    margin-bottom: 1rem;
     align-items: center;
+    padding: 0.4rem;
 
-    &:last-child {
-      margin: 0;
+    i {
+      font-size: 1.6rem;
     }
+  }
 
-    & p {
-      font-size: 0.8rem;
-    }
+  & input {
+    height: 100%;
+    width: 100%;
+    padding: 0 1rem 0 2.6rem;
 
-    & .profile-photo .active {
-      width: 0.8rem;
-      height: 0.8rem;
-      border-radius: 50%;
-      border: 3px solid var(--color-white);
-      background: var(--color-success);
-      position: absolute;
-      bottom: 0;
-      right: 0;
+    &::placeholder {
+      color: var(--color-gray);
     }
   }
 }
 
-// ------------------------ FRIEND REQUESTS ------------------------
+.recomended-friends {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  font-size: var(--font-middle);
+}
 
-.right {
-  & .friend-requests {
-    margin-top: 1rem;
+.recomended-friend-card {
+  display: flex;
+  gap: 0.6rem;
+}
 
-    & h4 {
-      color: var(--color-gray);
-      margin-bottom: 1rem;
-    }
+@media only screen and (max-width: 1200px) {
+  .profile {
+    margin-left: 5rem;
+  }
+}
+
+@media only screen and (max-width: 1100px) {
+  .posts-bottom {
+    flex-direction: column;
   }
 
-  & .request {
-    background: var(--color-white);
-    padding: var(--card-padding);
-    border-radius: var(--card-border-radius);
-    margin-bottom: 0.7rem;
+  .profile-info {
+    width: 100% ;
+  }
 
-    & .info {
-      display: flex;
-      gap: 1rem;
-      margin-bottom: 1rem;
-    }
+  .social-content {
+    grid-template-columns: auto 30vw;
+  }
 
-    & .action {
-      display: flex;
-      gap: 1rem;
-    }
+  .posts-bottom {
+    grid-template-columns: 1fr ;
   }
 }

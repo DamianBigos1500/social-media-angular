@@ -1,5 +1,5 @@
 <div class="modal-container">
-  <form class="form" [formGroup]="form">
+  <form class="form" [formGroup]="form" (ngSubmit)="onSubmit()">
     <fieldset>
       <legend>Login</legend>
       <div class="form-group">

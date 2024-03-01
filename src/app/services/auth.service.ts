@@ -4,64 +4,40 @@ import { BehaviorSubject, Observable, catchError, of, tap } from 'rxjs';
 import { LoginModel } from '../models/LoginModel';
 import { TokenService } from './token.service';
 
-
-export type AuthUser = any | null | undefined;
-interface AuthState {
-  user: AuthUser;
+export interface IAuthUser {
+  id: string;
+  email: string;
+  first_name: string;
+  last_name: string;
+  profile_image: string;
 }
 
-interface GetUserResponse {
-  user: AuthUser;
-}
-
-const initialState: AuthState = {
-  user: null,
-};
+export interface IProfile {}
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-
-  user$: BehaviorSubject<AuthUser> = new BehaviorSubject<AuthUser>(null);
-  isLoggedIn$ = new BehaviorSubject<AuthUser>(null);
+  user$: BehaviorSubject<IAuthUser | null> =
+    new BehaviorSubject<IAuthUser | null>(null);
+  isLoggedIn$ = new BehaviorSubject<boolean>(false);
 
   private tokenService = inject(TokenService);
   private http = inject(HttpClient);
   private apiUrl = 'http://localhost:8000/api/';
 
-  getUser$(): Observable<boolean> {
+  getUser$(): Observable<IAuthUser | null> {
     return this.user$.asObservable();
   }
 
-
-  handleError<T>(operation = 'operation', result?: T) {
-    return (error: any): Observable<T> => {
-      // TODO: send the error to remote logging infrastructure
-      console.error(error); // log to console instead
-
-      // TODO: better job of transforming error for user consumption
-      console.log(`${operation} failed: ${error.message}`);
-
-      // Let the app keep running by returning an empty result.
-      return of(result as T);
-    };
-  }
-
-  getUser() {
-    return this.http
-      .get<GetUserResponse>(`${this.apiUrl}user/`, {
-        withCredentials: true,
-     
+  getUser(): Observable<IAuthUser> {
+    return this.http.get(`${this.apiUrl}user/`).pipe(
+      tap((response: any) => {
+        if (response) {
+          this.user$.next(response);
+        }
       })
-      .pipe(
-        tap((response: GetUserResponse) => {
-          if (response.user) {
-            this.user$.next(response.user);
-          }
-        })
-      )
-      .pipe(catchError(this.handleError<any>('getUser', [])));
+    );
   }
 
   login({ email, password }: LoginModel) {
@@ -76,23 +52,18 @@ export class AuthService {
       .pipe(
         tap((response: any) => {
           if (response.access_token) {
+            document.cookie = `name=oeschger; SameSite=None; Secure`;
             this.tokenService.setToken(response.access_token);
           }
         })
-      )
-      .pipe(catchError(this.handleError<any>('getUser', [])));
+      );
   }
 
   logout() {
     this.user$.next(null);
-    // return this.http
-    //   .post(`${this.apiUrl}/auth/logout/`, null, {
-    //     withCredentials: true,
-    //     headers: {
-    //       'content-type': 'application/json',
-    //       'X-CSRFToken': String(this.getCookie('csrftoken')),
-    //     },
-    //   })
-    //   .pipe(catchError(this.handleError<any>('getUser', [])));
+  }
+
+  setProfileImage(newProfileImage: string) {
+    
   }
 }

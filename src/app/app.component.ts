@@ -38,22 +38,6 @@ export class AppComponent {
   ) {}
 
   ngOnInit(): void {
-    if (isPlatformBrowser(this.platformId)) {
-      this.getUser();
-    }
-  }
-
-  getUser() {
-    // this.authService.getUser().subscribe({
-    //   next: (response: any) => {
-    //     this.authService.setUserSignal(response.user);
-    //     this.loading.update(() => false);
-    //   },
-    //   error: (response) => {
-    //     this.authService.setUserSignal(null);
-    //     this.loading.update(() => false);
-    //     console.log(response);
-    //   },
-    // });
+    this.authService.getUser().subscribe();
   }
 }

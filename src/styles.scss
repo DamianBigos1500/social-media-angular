@@ -29,7 +29,8 @@
   --search-padding: 0.6rem 1rem;
   --card-padding: 1rem;
 
-  --font-small: 0.75rem
+  --font-small: 0.75rem;
+  --font-middle: 0.85rem;
 
   --sticky-top-left: 5.4rem;
   --sticky-top-right: -18rem;
@@ -112,10 +113,29 @@ img {
   color: white;
 }
 
+
 .btn-outline {
   border: 2px solid var(--color-primary);
   background: transparent;
   color: var(--color-primary);
+}
+
+.btn-outline {
+  border: 2px solid var(--color-primary);
+  background: transparent;
+  color: var(--color-primary);
+}
+
+.btn-danger {
+  background: transparent;
+  color: rgb(189, 0, 0);
+  border: 2px solid rgb(189, 0, 0);
+}
+
+.btn-submit {
+  background: transparent;
+  color: rgb(48, 152, 0);
+  border: 2px solid rgb(48, 152, 0);
 }
 
 .btn-white {

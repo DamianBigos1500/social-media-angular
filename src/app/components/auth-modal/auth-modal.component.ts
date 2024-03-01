@@ -33,4 +33,8 @@ export class AuthModalComponent {
         this.authService.getUser().subscribe();
       });
   }
+
+  onSubmit() {
+    console.log(this.form)
+  }
 }
