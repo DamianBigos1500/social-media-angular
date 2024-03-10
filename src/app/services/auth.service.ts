@@ -1,8 +1,9 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, catchError, of, tap } from 'rxjs';
+import { BehaviorSubject, Observable, catchError, map, of, tap } from 'rxjs';
 import { LoginModel } from '../models/LoginModel';
 import { TokenService } from './token.service';
+import { Router } from '@angular/router';
 
 export interface IAuthUser {
   id: string;
@@ -22,9 +23,22 @@ export class AuthService {
     new BehaviorSubject<IAuthUser | null>(null);
   isLoggedIn$ = new BehaviorSubject<boolean>(false);
 
+  private router = inject(Router);
   private tokenService = inject(TokenService);
   private http = inject(HttpClient);
   private apiUrl = 'http://localhost:8000/api/';
+
+  canActivate(): Observable<boolean> {
+    return this.user$.pipe(
+      map((currentUser: any) => {
+        if (!currentUser) {
+          this.router.navigateByUrl('/auth');
+          return false;
+        }
+        return true;
+      })
+    );
+  }
 
   getUser$(): Observable<IAuthUser | null> {
     return this.user$.asObservable();
@@ -52,7 +66,6 @@ export class AuthService {
       .pipe(
         tap((response: any) => {
           if (response.access_token) {
-            document.cookie = `name=oeschger; SameSite=None; Secure`;
             this.tokenService.setToken(response.access_token);
           }
         })
@@ -61,9 +74,5 @@ export class AuthService {
 
   logout() {
     this.user$.next(null);
-  }
-
-  setProfileImage(newProfileImage: string) {
-    
   }
 }

@@ -1,0 +1,150 @@
+.post {
+  margin: 0 !important;
+  width: 100%;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  border-radius: var(--card-border-radius);
+  background: var(--color-white);
+
+  // HEADER
+  .post-header {
+    padding: 0.6rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .post-creator {
+      display: flex;
+      gap: 0.6rem;
+    }
+
+    .post-creator-photo {
+      width: 3.4rem;
+      height: 3.4rem;
+      overflow: hidden;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .post-creator-info {
+      display: flex;
+      flex-direction: column;
+
+      .creator-fullname {
+        font-weight: 500;
+      }
+
+      .post-created-at {
+        font-size: var(--font-small);
+        color: var(--color-gray);
+      }
+    }
+  }
+
+  // ATTACHEMNTS
+  .post-content {
+    margin: 0 0.6rem;
+  }
+
+  & .photos {
+    margin-top: 0.6rem;
+    overflow: hidden;
+
+    img:first-child {
+      max-height: 36rem;
+      object-fit: contain;
+    }
+  }
+
+  & .action-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+    font-size: 1.4rem;
+    margin: 0.2rem 0.2rem;
+
+    & .interaction-buttons {
+      display: flex;
+      gap: 1rem;
+    }
+  }
+
+  & .liked-by {
+    display: flex;
+
+    & span {
+      width: 1.4rem;
+      height: 1.4rem;
+      display: block;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 2px solid var(--color-white);
+      margin-left: -0.6rem;
+    }
+
+    & span:first-child {
+      margin: 0;
+    }
+
+    & p {
+      margin-left: 0.5rem;
+    }
+  }
+  // COMMENTS
+  .post-comments {
+    padding: 0.6rem;
+
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    .post-comment {
+      display: flex;
+      gap: 0.6rem;
+    }
+
+    .my-post-comment {
+      display: flex;
+      margin-left: auto;
+      flex-direction: row-reverse;
+      gap: 0.6rem;
+    }
+
+    .comment-user-photo {
+      width: 2.6rem;
+      height: 2.6rem;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+
+    .comment-content{
+      background: var(--color-light);
+      padding: 0.3rem;
+      border-radius: 0.3rem;
+
+      .comment-user-fullname {
+        font-size: var(--font-medium);
+        font-weight: 500;
+      }
+  
+      .comment-content-body {
+        font-size: var(--font-medium);
+      }
+    }
+
+   
+  }
+
+  .all-comments {
+    font-size: var(--font-small);
+    padding: 0 0.6rem 0.6rem 0.6rem;
+
+    transition: all 1s ease-out;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .read-comments {
+  }
+}

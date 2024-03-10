@@ -4,9 +4,7 @@ import {
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
-  Validators,
 } from '@angular/forms';
-import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -17,24 +15,18 @@ import { AuthService } from '../../services/auth.service';
   styleUrl: './auth-modal.component.scss',
 })
 export class AuthModalComponent {
-  form: FormGroup;
+  constructor(
+    private formBuilder: FormBuilder // private authService: AuthService
+  ) {}
 
-  constructor(private fb: FormBuilder, private authService: AuthService) {
-    this.form = this.fb.group({
-      email: ['', Validators.required],
-      password: ['', Validators.required],
-    });
-  }
-
-  login() {
-    this.authService
-      .login({ email: 'w@w.com', password: '12345678' })
-      .subscribe(() => {
-        this.authService.getUser().subscribe();
-      });
-  }
+  loginForm: FormGroup = this.formBuilder.group({
+    email: [''],
+    password: [''],
+  });
 
   onSubmit() {
-    console.log(this.form)
+    // this.authService.login(this.loginForm.value).subscribe(() => {
+    //   this.authService.getUser().subscribe();
+    // });
   }
 }

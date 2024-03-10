@@ -11,7 +11,7 @@
       @if (!conversation.is_group) {
       <div>{{ getConversationTitle(conversation) }}</div>
       }
-      <div>{{ conversation.last_message?.content }}</div>
+      <div>{{ conversation.last_message.content }}</div>
     </a>
     }
   </div>
@@ -25,10 +25,11 @@
     </h3>
 
     <div class="conversation-messages">
+
       @for (message of selectedConversation.messages; track message.id) {
       <div
         class="message"
-        [ngClass]="{ 'user-message': message.participant.user.id == user.id }"
+        [ngClass]="{ 'my-message': message.participant.user_id == user.id }"
       >
         {{ message.content }}
       </div>

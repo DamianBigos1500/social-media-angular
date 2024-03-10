@@ -1,13 +1,25 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, Subject, catchError, of, tap } from 'rxjs';
+import { Observable } from 'rxjs';
 import { LoginModel } from '../models/LoginModel';
+import { IUser } from './user.service';
 
+export interface IAttachment {
+  id: string;
+  path: string;
+}
+export interface IComment {
+  id: string;
+  content: string;
+  user: IUser;
+}
 export interface IPost {
   id: string;
   content: string;
-  attachments: any;
-  creator: any;
+  creator: IUser;
+  attachments: IAttachment[];
+  comments: IComment[];
+  created_at: Date;
 }
 
 @Injectable({

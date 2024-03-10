@@ -30,6 +30,7 @@ export class NavigationComponent {
     this.authService.getUser$().subscribe((user) => {
       this.user = user;
     });
+
   }
 
   openModal(modalTemplate: TemplateRef<any>) {

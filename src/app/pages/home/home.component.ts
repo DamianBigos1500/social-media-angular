@@ -1,16 +1,23 @@
 import { IMAGE_SRC } from './../../data/constants';
 import { PostService, IPost } from './../../services/post.service';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { SidebarComponent } from '../../components/sidebar/sidebar.component';
 import { IUser, UserService } from '../../services/user.service';
 import { AuthService } from '../../services/auth.service';
+import { PostCardComponent } from '../../components/post-card/post-card.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [RouterLink, FormsModule, ReactiveFormsModule, SidebarComponent],
+  imports: [
+    RouterLink,
+    FormsModule,
+    ReactiveFormsModule,
+    SidebarComponent,
+    PostCardComponent,
+  ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
@@ -21,34 +28,48 @@ export class HomeComponent implements OnInit {
   public recomended_users: IUser[] | [] = [];
   public userData: IUser | null = null;
   public authUser: IUser | null = null;
-  private files = [];
+  private selectedFiles: any = null;
+  public previewFiles: string[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
     private postService: PostService,
     private userService: UserService,
-    private authService: AuthService,
+    private authService: AuthService
   ) {}
 
-  newPostForm = this.formBuilder.group<{ content: string; files: any }>({
+  ngOnInit(): void {
+    this.authService.canActivate();
+
+    this.loadPosts();
+    this.userService
+      .getUsers()
+      .subscribe((users) => (this.recomended_users = users));
+  }
+
+  newPostForm = this.formBuilder.group<{ content: string }>({
     content: '',
-    files: [],
   });
 
-  onFileChange(event: any) {
-    let reader = new FileReader();
+  loadPosts() {
+    this.postService
+      .getPosts()
+      .subscribe((data: IPost[]) => (this.posts = data));
+  }
 
-    if (event.target.files && event.target.files.length) {
-      const [file] = event.target.files;
-      this.files = event.target.files;
+  handlePostImage(event: any) {
+    this.selectedFiles = event?.target.files;
 
-      console.log(file);
-      reader.readAsDataURL(file);
+    const filesUrl: string[] = [];
+    for (let i = 0; i < this.selectedFiles.length; i++) {
+      const reader = new FileReader();
 
-      this.newPostForm.patchValue({
-        files: file,
-      });
+      reader.readAsDataURL(this.selectedFiles[i]);
+      reader.onload = (e: any) => {
+        filesUrl.push(e.target.result);
+      };
     }
+    this.previewFiles = filesUrl;
   }
 
   onSubmit() {
@@ -57,24 +78,13 @@ export class HomeComponent implements OnInit {
       formData.append(key, value);
     });
 
-    console.log(this.newPostForm.get('files')?.value);
+    if (this.selectedFiles.length > 0) {
+      for (let i = 0; i < this.selectedFiles.length; i++) {
+        formData.append('files', this.selectedFiles[i]);
+      }
+    }
 
-    this.postService
-      .createPost(formData)
-      .subscribe((data) => console.log(data));
-  }
-
-  ngOnInit(): void {
-     this.authService
-      .getUser$()
-      .subscribe((user: any) => (this.authUser = user));
-
-    this.postService
-      .getPosts()
-      .subscribe((data: IPost[]) => (this.posts = data));
-    this.userService
-      .getUsers()
-      .subscribe((users) => (this.recomended_users = users));
+    this.postService.createPost(formData).subscribe((data) => this.loadPosts());
   }
 
   isMyProfile() {

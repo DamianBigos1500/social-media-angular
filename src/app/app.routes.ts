@@ -5,8 +5,13 @@ import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.com
 import { ProfileComponent } from './pages/profile/profile.component';
 import { RootLayoutComponent } from './layouts/root-layout/root-layout.component';
 import { ConversationComponent } from './pages/conversation/conversation.component';
+import { AuthComponent } from './pages/auth/auth.component';
 
 export const routes: Routes = [
+  {
+    path: 'auth',
+    component: AuthComponent,
+  },
   {
     path: '',
     component: RootLayoutComponent,

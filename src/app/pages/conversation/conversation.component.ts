@@ -1,5 +1,5 @@
 import { AuthService } from './../../services/auth.service';
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   ConversationService,
   IConversation,
@@ -8,12 +8,11 @@ import {
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import {
   FormBuilder,
-  FormControl,
   FormsModule,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { mergeMap, switchMap, tap } from 'rxjs';
+import { mergeMap, tap } from 'rxjs';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -23,7 +22,8 @@ import { CommonModule } from '@angular/common';
   templateUrl: './conversation.component.html',
   styleUrl: './conversation.component.scss',
 })
-export class ConversationComponent {
+export class ConversationComponent implements OnInit, OnDestroy {
+  private ws: any;
   public user: any;
   public conversations: IConversation[] | [] = [];
   public conversationId: string | null = null;
@@ -47,9 +47,21 @@ export class ConversationComponent {
     message: ['', Validators.required],
   });
 
-  ngOnInit() {
+  ngOnInit(): void {
+    this.ws = new WebSocket(`ws://localhost:8000/ws/${1}`);
+    this.ws.onmessage = (event: any) => {
+      this.finalizeSendMessage();
+    };
+    
     this.getAllConversations();
-    this.authService.getUser$().subscribe((user) => (this.user = user));
+    this.authService.getUser$().subscribe((user) => {
+      this.user = user;
+    });
+  }
+
+  ngOnDestroy(): void {
+    // this.ws.destroy();
+    // console.log('destr')
   }
 
   getAllConversations() {
@@ -64,6 +76,7 @@ export class ConversationComponent {
     this.conversationService.showConversation(conversationId).subscribe({
       next: (selectedConversation) => {
         this.selectedConversation = selectedConversation;
+        console.log(selectedConversation, this.user)
       },
     });
   }
@@ -73,6 +86,7 @@ export class ConversationComponent {
       console.log('Cannot send message because validation failed');
       return;
     }
+    this.ws.send('input');
 
     const sendMessage$ = this.selectedConversation
       ? this.conversationService.sendMessage(
@@ -91,10 +105,10 @@ export class ConversationComponent {
             })
           );
 
-    sendMessage$.pipe(tap(() => this.finalizeSendMessage())).subscribe();
+    sendMessage$.pipe(tap()).subscribe();
   }
 
-  private finalizeSendMessage() {
+  finalizeSendMessage() {
     this.getAllConversations();
     this.showConversation(this.conversationId as string);
   }
@@ -113,4 +127,5 @@ export class ConversationComponent {
       );
     }
   }
+
 }

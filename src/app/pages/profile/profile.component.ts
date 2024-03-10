@@ -78,6 +78,8 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log(this.authUser?.id == this.id);
+
     this.route.paramMap.subscribe((params) => {
       this.id = params.get('id');
       this.userService
@@ -87,17 +89,17 @@ export class ProfileComponent implements OnInit {
       this.userService
         .getFriendStatus(this.id as string)
         .subscribe((friendStatus) => (this.friendStatus = friendStatus));
-
-      this.authService
-        .getUser$()
-        .subscribe((user: any) => (this.authUser = user));
-      this.postService
-        .getPosts()
-        .subscribe((data: IPost[]) => (this.posts = data));
-      this.userService
-        .getUsers()
-        .subscribe((users) => (this.recomended_users = users));
     });
+
+    this.authService
+      .getUser$()
+      .subscribe((user: any) => (this.authUser = user));
+    this.postService
+      .getPosts()
+      .subscribe((data: IPost[]) => (this.posts = data));
+    this.userService
+      .getUsers()
+      .subscribe((users) => (this.recomended_users = users));
   }
 
   sendFriendRequest(friendId: string) {
@@ -112,7 +114,8 @@ export class ProfileComponent implements OnInit {
       .subscribe((friendStatus) => (this.friendStatus = friendStatus));
   }
 
-  isMyProfile() {
+  get isMyProfile() {
+    console.log(this.authUser?.id == this.id);
     return this.authUser?.id == this.id;
   }
 }

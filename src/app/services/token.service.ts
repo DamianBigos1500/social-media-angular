@@ -9,10 +9,17 @@ export class TokenService {
   token: IToken = null;
 
   getToken(): IToken {
-    return this.token || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ3QHcuY29tIiwiZXhwIjoxNzEyNDY2MDI1fQ.hGb44gNO2oCncEEPCdbnEFvIVbNqxeBLbhLXMp2sk_E';
+    // const token = localStorage.getItem('token');
+    // console.log(token)
+
+    return (
+      this.token ||
+      '.eyJzdWIiOiJ3QHcuY29tIiwiZXhwIjoxNzEzNTA0MTcwfQ.yv3ZfbcGieJvnXznn_6d3vlVScnjvZw2GajLwn82-pg'
+    );
   }
 
   setToken(token: IToken) {
+    localStorage.setItem('token', JSON.stringify(token));
     this.token = token;
   }
 }

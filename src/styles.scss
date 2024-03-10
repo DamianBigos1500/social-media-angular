@@ -15,9 +15,9 @@
 :root {
   --color-white: hsl(252, 30%, 100%);
   --color-light: hsl(252, 30%, 95%);
-  --color-gray: hsl(252, 15%, 65%);
+  --color-gray: hsl(227, 15%, 65%);
   --color-primary: hsl(202, 75%, 60%);
-  --color-secondary: hsl(252, 100%, 90%);
+  --color-secondary: hsl(207, 100%, 90%);
   --color-success: hsl(120, 95%, 65%);
   --color-danger: hsl(0, 95%, 65%);
   --color-dark: hsl(252, 30%, 17%);
@@ -30,10 +30,12 @@
   --card-padding: 1rem;
 
   --font-small: 0.75rem;
-  --font-middle: 0.85rem;
+  --font-medium: 0.85rem;
 
   --sticky-top-left: 5.4rem;
   --sticky-top-right: -18rem;
+
+  --navbar-height: 4rem;
 }
 
 // [data-theme="dark"] {
@@ -55,7 +57,7 @@ body {
   height: 100vh;
 }
 
-a{
+a {
   color: inherit;
 }
 
@@ -113,7 +115,6 @@ img {
   color: white;
 }
 
-
 .btn-outline {
   border: 2px solid var(--color-primary);
   background: transparent;
@@ -151,7 +152,6 @@ img {
   color: var(--color-gray);
 }
 
-
 // form css
 
 .form {
@@ -160,12 +160,8 @@ img {
     flex-direction: column;
 
     label {
-
     }
     input {
-      
     }
-
   }
-
 }

@@ -38,7 +38,8 @@
 }
 
 .newpost {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 1rem;
 }
 
@@ -60,6 +61,23 @@
       }
     }
   }
+
+  .post-images-preview {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    height: 10rem;
+    overflow-x: scroll;
+    max-width: max-content;
+    width: 100%;
+
+  }
+
+  .post-image-preview {
+    height: 10rem;
+    width: auto;
+    border-radius: var(--card-border-radius);
+  }
 }
 
 .trends {
@@ -75,18 +93,18 @@
   display: grid;
   gap: 1rem;
   width: 100%;
-  grid-template-columns: 4fr 6fr ;
+  grid-template-columns: 4fr 6fr;
 }
 
 .posts-container {
   display: flex;
   width: 100%;
   flex-direction: column;
-  gap: 4rem;
+  gap: 1rem;
 }
 
 .profile-info {
-  width: 60% ;
+  width: 60%;
   height: 20rem;
 
   .head {
@@ -124,6 +142,10 @@
     margin-top: 0.6rem;
     border-radius: var(--card-border-radius);
     overflow: hidden;
+
+    img:first-child {
+      object-fit: cover;
+    }
   }
 
   & .action-buttons {
@@ -212,7 +234,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
-  font-size: var(--font-middle);
+  font-size: var(--font-medium);
 }
 
 .recomended-friend-card {
@@ -232,7 +254,7 @@
   }
 
   .profile-info {
-    width: 100% ;
+    width: 100%;
   }
 
   .social-content {
@@ -240,6 +262,6 @@
   }
 
   .posts-bottom {
-    grid-template-columns: 1fr ;
+    grid-template-columns: 1fr;
   }
 }

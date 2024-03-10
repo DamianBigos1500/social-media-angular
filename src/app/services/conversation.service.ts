@@ -19,6 +19,7 @@ export interface IMessagePartUser {
 }
 
 export interface IMessageParticipant {
+  user_id: string;
   id: string;
   user: IMessagePartUser;
 }
