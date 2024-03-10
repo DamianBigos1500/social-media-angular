@@ -7,6 +7,7 @@ import { SidebarComponent } from '../../components/sidebar/sidebar.component';
 import { IUser, UserService } from '../../services/user.service';
 import { AuthService } from '../../services/auth.service';
 import { PostCardComponent } from '../../components/post-card/post-card.component';
+import { KeyValuePipe } from '@angular/common';
 
 @Component({
   selector: 'app-home',
@@ -17,6 +18,7 @@ import { PostCardComponent } from '../../components/post-card/post-card.componen
     ReactiveFormsModule,
     SidebarComponent,
     PostCardComponent,
+    KeyValuePipe,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
@@ -28,7 +30,7 @@ export class HomeComponent implements OnInit {
   public recomended_users: IUser[] | [] = [];
   public userData: IUser | null = null;
   public authUser: IUser | null = null;
-  private selectedFiles: any = null;
+  private selectedFiles: any = [];
   public previewFiles: string[] = [];
 
   constructor(
@@ -58,7 +60,7 @@ export class HomeComponent implements OnInit {
   }
 
   handlePostImage(event: any) {
-    this.selectedFiles = event?.target.files;
+    this.selectedFiles = Array.from(event?.target.files);
 
     const filesUrl: string[] = [];
     for (let i = 0; i < this.selectedFiles.length; i++) {
@@ -72,12 +74,25 @@ export class HomeComponent implements OnInit {
     this.previewFiles = filesUrl;
   }
 
+  filterSelectedImage(previewFile: string) {
+    // get idx
+    const idx = this.previewFiles.findIndex(
+      (previewFile) => previewFile == previewFile
+    );
+
+    // remove
+    this.previewFiles.splice(idx, 1);
+    this.selectedFiles.splice(idx, 1);
+  }
+
   onSubmit() {
     const formData = new FormData();
+    // add new post form
     Object.entries(this.newPostForm.value).forEach(([key, value]: any[]) => {
       formData.append(key, value);
     });
 
+    // add images
     if (this.selectedFiles.length > 0) {
       for (let i = 0; i < this.selectedFiles.length; i++) {
         formData.append('files', this.selectedFiles[i]);
@@ -85,6 +100,11 @@ export class HomeComponent implements OnInit {
     }
 
     this.postService.createPost(formData).subscribe((data) => this.loadPosts());
+
+    // reset forms
+    this.selectedFiles = [] 
+    this.previewFiles = []
+    this.newPostForm.reset()
   }
 
   isMyProfile() {

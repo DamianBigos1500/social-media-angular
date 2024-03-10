@@ -6,11 +6,18 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { SidebarComponent } from '../../components/sidebar/sidebar.component';
 import { IUser, UserService } from '../../services/user.service';
 import { AuthService } from '../../services/auth.service';
+import { PostCardComponent } from '../../components/post-card/post-card.component';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [RouterLink, FormsModule, ReactiveFormsModule, SidebarComponent],
+  imports: [
+    RouterLink,
+    FormsModule,
+    ReactiveFormsModule,
+    SidebarComponent,
+    PostCardComponent,
+  ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss',
 })

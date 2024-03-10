@@ -14,7 +14,7 @@ export class TokenService {
 
     return (
       this.token ||
-      '.eyJzdWIiOiJ3QHcuY29tIiwiZXhwIjoxNzEzNTA0MTcwfQ.yv3ZfbcGieJvnXznn_6d3vlVScnjvZw2GajLwn82-pg'
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ3QHcuY29tIiwiZXhwIjoxNzEzNjg3NTA4fQ.W69l9M0nI-h33HB4Gqpul_DGUX88g6OiB0kGrMV94fM'
     );
   }
 

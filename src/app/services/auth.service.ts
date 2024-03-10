@@ -26,6 +26,7 @@ export class AuthService {
   private router = inject(Router);
   private tokenService = inject(TokenService);
   private http = inject(HttpClient);
+  
   private apiUrl = 'http://localhost:8000/api/';
 
   canActivate(): Observable<boolean> {

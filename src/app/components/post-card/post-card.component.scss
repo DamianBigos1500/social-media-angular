@@ -49,11 +49,13 @@
     overflow: hidden;
 
     img:first-child {
+      background: rgba(0, 0, 0, 0.6);
       max-height: 36rem;
       object-fit: contain;
     }
   }
 
+  // actions
   & .action-buttons {
     display: flex;
     justify-content: space-between;
@@ -61,10 +63,21 @@
     gap: 2rem;
     font-size: 1.4rem;
     margin: 0.2rem 0.2rem;
+    border-bottom: var(--color-light) 1px solid;
 
-    & .interaction-buttons {
+    .interaction-buttons {
       display: flex;
       gap: 1rem;
+
+      span {
+        cursor: pointer;
+      }
+    }
+
+    .bookmarks {
+      span {
+        cursor: pointer;
+      }
     }
   }
 
@@ -116,7 +129,7 @@
       border-radius: 50%;
     }
 
-    .comment-content{
+    .comment-content {
       background: var(--color-light);
       padding: 0.3rem;
       border-radius: 0.3rem;
@@ -125,13 +138,11 @@
         font-size: var(--font-medium);
         font-weight: 500;
       }
-  
+
       .comment-content-body {
         font-size: var(--font-medium);
       }
     }
-
-   
   }
 
   .all-comments {

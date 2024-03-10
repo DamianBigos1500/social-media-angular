@@ -22,6 +22,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './conversation.component.html',
   styleUrl: './conversation.component.scss',
 })
+
 export class ConversationComponent implements OnInit, OnDestroy {
   private ws: any;
   public user: any;

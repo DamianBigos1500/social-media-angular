@@ -25,9 +25,13 @@
   @if(post.attachments.length > 0) {
   <div class="post-attachments">
     <!-- @for (attachment of post.attachments; track attachment.path) { -->
-    <div class="photos">
+    <a
+      [routerLink]="['/post']"
+      [queryParams]="{ pid: post.id, img: post.attachments[0].id }"
+      class="photos"
+    >
       <img src="{{ IMAGE_SRC + post.attachments[0].path }}" />
-    </div>
+    </a>
     <!-- } -->
   </div>
   }
@@ -65,7 +69,7 @@
   @if (post.comments.length > 0){
   <div class="post-comments">
     @for (comment of post.comments; track comment.id) {
-    <div class="post-comment my-post-comment">
+    <div class="post-comment">
       <img
         class="comment-user-photo"
         src="{{ IMAGE_SRC + post.creator.profile_image }}"

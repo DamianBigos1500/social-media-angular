@@ -22,19 +22,27 @@
                 <div class="icons">
                   <input
                     type="file"
-                    formControlName="files"
+                    name="files"
                     multiple="true"
                     class="file-upload"
                     (change)="handlePostImage($event)"
                   />
                 </div>
+
                 @if (previewFiles.length >0) {
                 <div class="post-images-preview">
                   @for(previewFile of previewFiles; track previewFile){
                   <img class="post-image-preview" src="{{ previewFile }}" />
+                  <div
+                    class="images-preview-delete"
+                    (click)="filterSelectedImage(previewFile)"
+                  >
+                    X
+                  </div>
                   }
                 </div>
                 }
+
                 <button type="submit" class="btn btn-primary send-post">
                   Send
                 </button>

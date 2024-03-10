@@ -6,11 +6,16 @@ import { ProfileComponent } from './pages/profile/profile.component';
 import { RootLayoutComponent } from './layouts/root-layout/root-layout.component';
 import { ConversationComponent } from './pages/conversation/conversation.component';
 import { AuthComponent } from './pages/auth/auth.component';
+import { DetailPostComponent } from './components/detail-post-component/detail-post-component';
 
 export const routes: Routes = [
   {
     path: 'auth',
     component: AuthComponent,
+  },
+  {
+    path: 'post',
+    component: DetailPostComponent,
   },
   {
     path: '',

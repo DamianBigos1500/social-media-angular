@@ -1,0 +1,45 @@
+@if(!post) {
+<p>Loading</p>
+} @else {
+<div class="post-details">
+  <div class="post-details-selected-image">
+    <div class="btn-details close-details" (click)="closeDetails()">X</div>
+    <div class="btn-details close-sidebar" (click)="closeSidebar()">cl sb</div>
+    @if(post.attachments.length > 0){
+    <div class="btn-details change-image left-arrow" (click)="leftImage()">
+      Left
+    </div>
+    <div class="btn-details change-image right-arrow" (click)="rightImage()">
+      Right
+    </div>
+    }
+    <div class="image-container">
+      <img src="{{IMAGE_SRC + selectedImage?.path}}" />
+    </div>
+  </div>
+
+  <div
+    class="post-details-sidebar"
+    [ngClass]="{ 'sidebar-closed': isSidebarOpen }"
+  >
+    <div class="post-header">
+      <div class="post-creator">
+        <img
+          class="post-creator-photo"
+          src="{{ IMAGE_SRC + post.creator.profile_image }}"
+          alt=""
+        />
+        <div class="post-creator-info">
+          <h3 class="creator-fullname">
+            {{ post.creator.first_name + " " + post.creator.first_name }}
+          </h3>
+          <small class="post-created-at">{{ post.created_at | dateAgo }}</small>
+        </div>
+      </div>
+      <span class="edit">
+        <i class="uil uil-ellipsis-h"></i>
+      </span>
+    </div>
+  </div>
+</div>
+}
