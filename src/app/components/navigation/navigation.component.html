@@ -1,6 +1,9 @@
 <nav>
   <div class="container">
-    <h2>ConnectEdge</h2>
+    <h2>
+      <a routerLink="/"> ConnectEdge </a>
+    </h2>
+
     <div class="search-bar">
       <i class="uil uil-search"></i>
       <input
@@ -9,37 +12,24 @@
       />
     </div>
 
+    @if (user) {
+    <div>{{ user.email }}</div>
     <div class="create">
       <label class="btn btn-primary" for="create-post">Create</label>
       <div class="profile-photo">
-        <img src="/assets/images/278131694_959477194761572_7052423625085698959_n.jpg" />
+        <img src="{{ IMAGE_SRC + user.profile_image }}" />
       </div>
     </div>
+    } @else {
+    <button class="btn btn-outline" (click)="openModal(modalTemplate)">
+      Login
+    </button>
+    }
+
+    <ng-template #modalTemplate>
+      <button (click)="closeModal()">x</button>
+      <app-auth-modal></app-auth-modal>
+    </ng-template>
+    <!-- {{authService?.getUser}} -->
   </div>
-
-  <!-- <ul class="navigation">
-    <li>
-      <a routerLink="/" routerLinkActive="active" ariaCurrentWhenActive="page">
-        Home
-      </a>
-    </li>
-
-    <li>
-      <a
-        routerLink="/profile/1"
-        routerLinkActive="active"
-        ariaCurrentWhenActive="page"
-      >
-        Profile
-      </a>
-    </li>
-
-    <li>
-      <a routerLink="profile/7">{{ this.authService.user()?.email }}</a>
-    </li>
-
-    <li>
-      <button (click)="logout()">logout</button>
-    </li>
-  </ul> -->
 </nav>

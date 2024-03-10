@@ -2,20 +2,29 @@ import { Routes } from '@angular/router';
 
 import { HomeComponent } from './pages/home/home.component';
 import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
-import { GroupDetailsComponent } from './pages/group-details/group-details.component';
-import { PostDetailsComponent } from './pages/post-details/post-details.component';
-import { ProfileDetailsComponent } from './pages/profile-details/profile-details.component';
+import { ProfileComponent } from './pages/profile/profile.component';
 import { RootLayoutComponent } from './layouts/root-layout/root-layout.component';
+import { ConversationComponent } from './pages/conversation/conversation.component';
+import { AuthComponent } from './pages/auth/auth.component';
+import { DetailPostComponent } from './components/detail-post-component/detail-post-component';
 
 export const routes: Routes = [
+  {
+    path: 'auth',
+    component: AuthComponent,
+  },
+  {
+    path: 'post',
+    component: DetailPostComponent,
+  },
   {
     path: '',
     component: RootLayoutComponent,
     children: [
       { path: '', component: HomeComponent },
-      { path: 'profile/:id', component: ProfileDetailsComponent },
-      { path: 'group/:id', component: GroupDetailsComponent },
-      { path: 'post/:id', component: PostDetailsComponent },
+      { path: 'profile/:id', component: ProfileComponent },
+      { path: 'conversations', component: ConversationComponent },
+      { path: 'conversation/:id', component: ConversationComponent },
       { path: '**', component: PageNotFoundComponent },
     ],
   },

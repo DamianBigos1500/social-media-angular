@@ -38,53 +38,68 @@
 }
 
 .newpost {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
   gap: 1rem;
 }
 
-.create-post {
-  form {
-    textarea {
-      padding: 0.6rem;
-      width: 100%;
-      resize: none;
-      background: var(--color-light);
-      border-radius: var(--card-border-radius);
-      height: 6rem;
-    }
-    .actions {
-      margin-top: 0.6rem;
+.user-data {
+  height: 14rem;
+  color: var(--color-dark);
+  display: flex;
+  justify-content: space-between;
 
-      .icons .send-post {
-        font-size: var(--text-size-small);
+  .user-data-left {
+    margin-left: 1rem;
+
+    .user-image {
+      width: 12rem;
+      aspect-ratio: 1/1;
+      border-radius: 50%;
+      overflow: hidden;
+      transform: translateY(-2rem);
+      border: solid 2px var(--color-gray);
+    }
+
+    .upload-profile-input {
+      display: none;
+    }
+
+    .upload-profile-label {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      background: linear-gradient(
+        180deg,
+        rgba(80, 80, 80, 0) 13%,
+        rgba(47, 47, 47, 1) 100%
+      );
+      display: flex;
+      align-items: end;
+      padding:1rem ;
+      justify-content: center;
+      cursor: pointer;
+
+      i {
+        font-size: 3rem;
+        color: white;
       }
     }
+
+    .user-fullname {
+      margin-left: 0.5rem;
+      font-size: 2rem;
+      margin-top: -2rem;
+      font-weight: bold;
+    }
   }
 
-  .post-images-preview {
+  .user-data-right {
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.6rem;
-    height: 10rem;
-    overflow-x: scroll;
-    max-width: max-content;
-    width: 100%;
-
-  }
-
-  .post-image-preview {
-    height: 10rem;
-    width: auto;
-    border-radius: var(--card-border-radius);
-  }
-}
-
-.trends {
-  .groups-link {
-    color: var(--color-primary);
-    font-size: var(--font-small);
-    font-weight: bold;
+    gap: 1rem;
+    align-items: center;
+    margin-top: auto;
   }
 }
 
@@ -142,10 +157,6 @@
     margin-top: 0.6rem;
     border-radius: var(--card-border-radius);
     overflow: hidden;
-
-    img:first-child {
-      object-fit: cover;
-    }
   }
 
   & .action-buttons {

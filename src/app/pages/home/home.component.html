@@ -1,12 +1,103 @@
-<p></p>
-<ul>
-  <div>
-    @for (post of data; track post.id) {
-    <a routerLink="post/1">
-      <li>
-        <h3>{{ post.id }} {{ post.title }}</h3>
-      </li>
-    </a>
-    }
+<div class="container">
+  <app-sidebar></app-sidebar>
+
+  <div class="profile">
+    <div class="image-cover">
+      <img
+        src="https://www.wallpaperflare.com/static/366/315/585/landscape-gray-mountain-wallpaper.jpg"
+      />
+    </div>
+
+    <div class="social-content">
+      <div class="posts">
+        <div class="newpost">
+          <div class="content create-post">
+            <form [formGroup]="newPostForm" (ngSubmit)="onSubmit()">
+              <textarea
+                formControlName="content"
+                placeholder="What's in your mind?"
+              ></textarea>
+
+              <div class="actions">
+                <div class="icons">
+                  <input
+                    type="file"
+                    name="files"
+                    multiple="true"
+                    class="file-upload"
+                    (change)="handlePostImage($event)"
+                  />
+                </div>
+
+                @if (previewFiles.length >0) {
+                <div class="post-images-preview">
+                  @for(previewFile of previewFiles; track previewFile){
+                  <img class="post-image-preview" src="{{ previewFile }}" />
+                  <div
+                    class="images-preview-delete"
+                    (click)="filterSelectedImage(previewFile)"
+                  >
+                    X
+                  </div>
+                  }
+                </div>
+                }
+
+                <button type="submit" class="btn btn-primary send-post">
+                  Send
+                </button>
+              </div>
+            </form>
+          </div>
+          <div class="content trends">
+            <h4 class="title">Groups for you</h4>
+            <div></div>
+            <span class="groups-link" type="button">show more</span>
+          </div>
+        </div>
+
+        <div class="posts-bottom">
+          <div class="content profile-info"></div>
+
+          <div class="posts-container">
+            @for (post of posts; track post.id; let idx = $index, e = $even) {
+            <app-post-card [post]="post" />
+            }@empty {
+            <li>There are no items.</li>
+            }
+          </div>
+        </div>
+      </div>
+
+      <div class="friends">
+        <div class="search-friends">
+          <span class="icon">
+            <i class="uil uil-search"></i>
+          </span>
+          <input placeholder="Search chats" />
+          <span>r</span>
+        </div>
+
+        <div class="content recomended-friends">
+          @for (rec_user of recomended_users; track rec_user.id) {
+          <a
+            [routerLink]="['/profile', rec_user.id]"
+            class="recomended-friend-card"
+          >
+            <div class="profile-photo">
+              <img src="{{ IMAGE_SRC }}{{ rec_user.profile_image }}" />
+            </div>
+
+            <div>
+              <div>{{ rec_user.first_name }} {{ rec_user.last_name }}</div>
+              <div>
+                {{ rec_user.email }}
+              </div>
+            </div>
+          </a>
+          }
+        </div>
+      </div>
+    </div>
   </div>
-</ul>
+</div>

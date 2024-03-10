@@ -1,0 +1,54 @@
+<div class="conversations-container">
+  <div class="conversations-list">
+    @for (conversation of conversations; track conversation.id) {
+    <a
+      routerLink="{{
+        '/conversation/' +
+          (conversation.is_group ? conversation.id : conversation.profile_id)
+      }}"
+      class="conversation-tile"
+    >
+      @if (!conversation.is_group) {
+      <div>{{ getConversationTitle(conversation) }}</div>
+      }
+      <div>{{ conversation.last_message.content }}</div>
+    </a>
+    }
+  </div>
+
+  <div class="active-conversation">
+    @if(!conversationId) {
+    <div class="">Click any conversation to load data</div>
+    } @if (selectedConversation) {
+    <h3 class="conversation-title">
+      {{ getConversationTitle(selectedConversation) }}
+    </h3>
+
+    <div class="conversation-messages">
+
+      @for (message of selectedConversation.messages; track message.id) {
+      <div
+        class="message"
+        [ngClass]="{ 'my-message': message.participant.user_id == user.id }"
+      >
+        {{ message.content }}
+      </div>
+      }
+    </div>
+
+    }
+    <form
+      [formGroup]="newMessageForm"
+      (ngSubmit)="submitMessageForm()"
+      class="conversation-form"
+    >
+      <input
+        class="message"
+        formControlName="message"
+        id="message"
+        placeholder="Type your message..."
+      />
+      <button type="submit">send</button>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,98 @@
+<div class="post">
+  <div class="post-header">
+    <div class="post-creator">
+      <img
+        class="post-creator-photo"
+        src="{{ IMAGE_SRC + post.creator.profile_image }}"
+        alt=""
+      />
+      <div class="post-creator-info">
+        <h3 class="creator-fullname">
+          {{ post.creator.first_name + " " + post.creator.first_name }}
+        </h3>
+        <small class="post-created-at">{{ post.created_at | dateAgo }}</small>
+      </div>
+    </div>
+    <span class="edit">
+      <i class="uil uil-ellipsis-h"></i>
+    </span>
+  </div>
+
+  <div class="post-content">
+    {{ post.content }}
+  </div>
+
+  @if(post.attachments.length > 0) {
+  <div class="post-attachments">
+    <!-- @for (attachment of post.attachments; track attachment.path) { -->
+    <a
+      [routerLink]="['/post']"
+      [queryParams]="{ pid: post.id, img: post.attachments[0].id }"
+      class="photos"
+    >
+      <img src="{{ IMAGE_SRC + post.attachments[0].path }}" />
+    </a>
+    <!-- } -->
+  </div>
+  }
+
+  <div class="action-buttons">
+    <div class="interaction-buttons">
+      <span><i class="uil uil-heart"></i></span>
+      <span><i class="uil uil-comment-dots"></i></span>
+      <span><i class="uil uil-share-alt"></i></span>
+    </div>
+    <div class="bookmarks">
+      <span><i class="uil uil-bookmark-full"></i></span>
+    </div>
+  </div>
+
+  <div class="liked-by">
+    <span>
+      <!-- <img
+        src="/assets/images/279123994_524159142568242_2553083085503793696_n.jpg"
+      /> -->
+    </span>
+    <span>
+      <!-- <img
+        src="/assets/images/279123994_524159142568242_2553083085503793696_n.jpg"
+      /> -->
+    </span>
+    <span>
+      <!-- <img
+        src="/assets/images/279123994_524159142568242_2553083085503793696_n.jpg"
+      /> -->
+    </span>
+    <p>Liked by <b>Ernest Achiever</b> and <b>2,232 others</b></p>
+  </div>
+
+  @if (post.comments.length > 0){
+  <div class="post-comments">
+    @for (comment of post.comments; track comment.id) {
+    <div class="post-comment">
+      <img
+        class="comment-user-photo"
+        src="{{ IMAGE_SRC + post.creator.profile_image }}"
+        alt=""
+      />
+
+      <div class="comment-content">
+        <div class="comment-user-fullname">
+          {{ comment.user.first_name }} {{ comment.user.first_name }}
+        </div>
+        <p class="comment-content-body">
+          {{ comment.content }}
+        </p>
+      </div>
+    </div>
+    }
+  </div>
+  @if(post.comments.length > 2){
+  <div class="all-comments text-muted">
+    View all {{ post.comments.length }} comments
+  </div>
+  } } @else {
+
+  <div class="all-comments text-muted">No comments yet</div>
+  }
+</div>

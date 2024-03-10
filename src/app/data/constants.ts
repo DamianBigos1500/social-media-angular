@@ -1,0 +1,1 @@
+export const IMAGE_SRC = "http://localhost:8000/"
