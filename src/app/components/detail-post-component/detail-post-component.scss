@@ -10,7 +10,7 @@
   position: relative;
 
   .btn-details {
-    border-radius: 0.6rem;
+    border-radius: var(--medium-border-radius);
     background: var(--color-light);
     padding: 0.6rem 1rem;
     cursor: pointer;
@@ -84,6 +84,7 @@
     border-radius: 50%;
     object-fit: cover;
   }
+
   .post-creator-info {
     display: flex;
     flex-direction: column;
@@ -97,4 +98,5 @@
       color: var(--color-gray);
     }
   }
+
 }

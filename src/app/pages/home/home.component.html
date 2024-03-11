@@ -11,7 +11,7 @@
     <div class="social-content">
       <div class="posts">
         <div class="newpost">
-          <div class="content create-post">
+          <div class="card-white create-post">
             <form [formGroup]="newPostForm" (ngSubmit)="onSubmit()">
               <textarea
                 formControlName="content"
@@ -49,7 +49,7 @@
               </div>
             </form>
           </div>
-          <div class="content trends">
+          <div class="card-white trends">
             <h4 class="title">Groups for you</h4>
             <div></div>
             <span class="groups-link" type="button">show more</span>
@@ -57,7 +57,7 @@
         </div>
 
         <div class="posts-bottom">
-          <div class="content profile-info"></div>
+          <div class="card-white profile-info"></div>
 
           <div class="posts-container">
             @for (post of posts; track post.id; let idx = $index, e = $even) {
@@ -78,7 +78,7 @@
           <span>r</span>
         </div>
 
-        <div class="content recomended-friends">
+        <div class="card-white recomended-friends">
           @for (rec_user of recomended_users; track rec_user.id) {
           <a
             [routerLink]="['/profile', rec_user.id]"

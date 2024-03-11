@@ -1,0 +1,18 @@
+<div class="dropdown">
+  <button class="dropdown-toggle" (click)="toggleDropdown()">
+    <ng-content select="[dropdown-toggle]"></ng-content>
+  </button>
+
+  @if (isOpen) {
+  <div class="dropdown-menu">
+    <!-- Content projection for header slot -->
+    <ng-content select="[header]"></ng-content>
+    
+    <!-- Dropdown content -->
+    <ng-content select="[content]"></ng-content>
+
+    <!-- Content projection for footer slot -->
+    <ng-content select="[footer]"></ng-content>
+  </div>
+  }
+</div>

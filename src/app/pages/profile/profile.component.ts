@@ -1,12 +1,13 @@
 import { IMAGE_SRC } from './../../data/constants';
 import { PostService, IPost } from './../../services/post.service';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { SidebarComponent } from '../../components/sidebar/sidebar.component';
 import { IUser, UserService } from '../../services/user.service';
-import { AuthService } from '../../services/auth.service';
+import { AuthService, IAuthUser } from '../../services/auth.service';
 import { PostCardComponent } from '../../components/post-card/post-card.component';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-profile',
@@ -23,32 +24,58 @@ import { PostCardComponent } from '../../components/post-card/post-card.componen
 })
 export class ProfileComponent implements OnInit {
   IMAGE_SRC: string = IMAGE_SRC;
-  public id: string | null = null;
-  public authUser: IUser | null = null;
 
-  public recomended_users: IUser[] | [] = [];
+  public id?: string;
+  public userData?: IUser;
+  public friends?: IUser[];
+  public friendStatus: any = null;
+  public authUser?: IAuthUser | null;
+  public posts?: IPost[];
 
-  public userData: IUser | null = null;
-  public posts: IPost[] | [] = [];
-  public friendStatus: any;
-
-  private files = [];
+  public isMyProfile?: boolean;
+  public isLoading: boolean = true;
 
   constructor(
-    private formBuilder: FormBuilder,
     private postService: PostService,
     private userService: UserService,
     private authService: AuthService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
-  newPostForm = this.formBuilder.group<{ content: string; files: any }>({
-    content: '',
-    files: [],
-  });
+  ngOnInit(): void {
+    this.authService.getUser().subscribe((user: IAuthUser | null) => {
+      this.authUser = user;
+      if (!user) {
+        this.router.navigate(['/auth']);
+      }
+      // get route id and fetch rest of data
+      this.route.paramMap.subscribe((params) => {
+        this.id = String(params.get('id'));
+
+        forkJoin({
+          user: this.userService.showUser(this.id as string),
+          friendStatus: this.userService.getFriendStatus(this.id as string),
+          friends: this.userService.getUsers(),
+          posts: this.postService.getPosts(),
+        }).subscribe((data) => {
+          // set data
+          this.userData = data.user;
+          this.friendStatus = data.friendStatus;
+          this.friends = data.friends;
+          this.posts = data.posts;
+
+          // check is this my profile or not
+          this.isMyProfile = this.authUser?.id == this.id;
+
+          this.isLoading = false;
+        });
+      });
+    });
+  }
 
   file: any = null;
-  profileUrl: string | ArrayBuffer | null | undefined = null;
+  profileUrl?: string | ArrayBuffer | null = null;
 
   handleProfileImage(event: any) {
     this.file = event?.target.files[0];
@@ -71,44 +98,6 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  onSubmit() {
-    const formData = new FormData();
-    Object.entries(this.newPostForm.value).forEach(([key, value]: any[]) => {
-      formData.append(key, value);
-    });
-
-    console.log(this.newPostForm.get('files')?.value);
-
-    this.postService
-      .createPost(formData)
-      .subscribe((data) => console.log(data));
-  }
-
-  ngOnInit(): void {
-    console.log(this.authUser?.id == this.id);
-
-    this.route.paramMap.subscribe((params) => {
-      this.id = params.get('id');
-      this.userService
-        .showUser(this.id as string)
-        .subscribe((userData: IUser) => (this.userData = userData));
-
-      this.userService
-        .getFriendStatus(this.id as string)
-        .subscribe((friendStatus) => (this.friendStatus = friendStatus));
-    });
-
-    this.authService
-      .getUser$()
-      .subscribe((user: any) => (this.authUser = user));
-    this.postService
-      .getPosts()
-      .subscribe((data: IPost[]) => (this.posts = data));
-    this.userService
-      .getUsers()
-      .subscribe((users) => (this.recomended_users = users));
-  }
-
   sendFriendRequest(friendId: string) {
     this.userService
       .sendFriendRequest(friendId)
@@ -119,10 +108,5 @@ export class ProfileComponent implements OnInit {
     this.userService
       .deleteFriendRequest(friendId)
       .subscribe((friendStatus) => (this.friendStatus = friendStatus));
-  }
-
-  get isMyProfile() {
-    console.log(this.authUser?.id == this.id);
-    return this.authUser?.id == this.id;
   }
 }

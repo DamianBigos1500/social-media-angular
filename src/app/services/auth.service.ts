@@ -1,6 +1,6 @@
-import { Injectable, computed, inject, signal } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, catchError, map, of, tap } from 'rxjs';
+import { BehaviorSubject, Observable, map, tap } from 'rxjs';
 import { LoginModel } from '../models/LoginModel';
 import { TokenService } from './token.service';
 import { Router } from '@angular/router';
@@ -26,7 +26,7 @@ export class AuthService {
   private router = inject(Router);
   private tokenService = inject(TokenService);
   private http = inject(HttpClient);
-  
+
   private apiUrl = 'http://localhost:8000/api/';
 
   canActivate(): Observable<boolean> {

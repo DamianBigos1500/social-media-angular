@@ -32,11 +32,11 @@ export class AppComponent {
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
     public authService: AuthService
-  ) {}
-
-  ngOnInit(): void {
-    if (isPlatformBrowser(this.platformId)) {
-      this.authService.getUser().subscribe();
-    }
+  ) {
+    this.authService.getUser().subscribe();
+    // if (isPlatformBrowser(this.platformId)) {
+    // }
   }
+
+  ngOnInit(): void {}
 }

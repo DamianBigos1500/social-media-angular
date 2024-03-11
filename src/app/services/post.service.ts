@@ -36,7 +36,16 @@ export class PostService {
   createPost(formData: FormData) {
     return this.http.post(`${this.apiUrl}posts/`, formData);
   }
+
   showPostById(pid: string): Observable<IPost> {
     return this.http.get<IPost>(`${this.apiUrl}posts/${pid}`);
+  }
+
+  getProfilePosts(pid: string): Observable<IPost[]> {
+    return this.http.get<IPost[]>(`${this.apiUrl}posts/profile/${pid}`);
+  }
+
+  getBookmarkedPosts(): Observable<IPost[]> {
+    return this.http.post<IPost[]>(`${this.apiUrl}posts/bookmarks/`, null);
   }
 }

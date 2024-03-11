@@ -13,23 +13,33 @@
     </div>
 
     @if (user) {
-    <div>{{ user.email }}</div>
     <div class="create">
-      <label class="btn btn-primary" for="create-post">Create</label>
-      <div class="profile-photo">
-        <img src="{{ IMAGE_SRC + user.profile_image }}" />
-      </div>
-    </div>
-    } @else {
-    <button class="btn btn-outline" (click)="openModal(modalTemplate)">
-      Login
-    </button>
-    }
+      <div>{{ user.email }}</div>
+      <app-dropdown>
+        <div class="options-button" dropdown-toggle>
+          <div class="profile-photo">
+            <img src="{{ IMAGE_SRC + user.profile_image }}" />
+          </div>
+        </div>
 
-    <ng-template #modalTemplate>
+        <div class="nav-dropdown-menu" content>
+          <a class="nav-dropdown-menu-item">
+            <span> Show Profile </span>
+          </a>
+          <button class="nav-dropdown-menu-item" (click)="logout()">
+            <span> Log out </span>
+          </button>
+        </div>
+      </app-dropdown>
+    </div>
+
+    } 
+
+    <!-- <ng-template #modalTemplate>
       <button (click)="closeModal()">x</button>
       <app-auth-modal></app-auth-modal>
-    </ng-template>
+    </ng-template> -->
+
     <!-- {{authService?.getUser}} -->
   </div>
 </nav>

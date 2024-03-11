@@ -5,11 +5,12 @@ import { IMAGE_SRC } from '../../data/constants';
 import { DateAgoPipe } from '../../pipes/DateAgo/date-ago.pipe';
 import { map } from 'rxjs';
 import { CommonModule, Location } from '@angular/common';
+import { DropdownComponent } from '../UI/dropdown/dropdown.component';
 
 @Component({
   selector: 'app-detail-post-component',
   standalone: true,
-  imports: [DateAgoPipe, CommonModule],
+  imports: [DateAgoPipe, CommonModule, DropdownComponent],
   templateUrl: './detail-post-component.html',
   styleUrl: './detail-post-component.scss',
 })
