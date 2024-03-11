@@ -36,9 +36,18 @@
           <small class="post-created-at">{{ post.created_at | dateAgo }}</small>
         </div>
       </div>
-      <span class="edit">
-        <i class="uil uil-ellipsis-h"></i>
-      </span>
+
+      <app-dropdown>
+        <div class="options-button" dropdown-toggle>
+          <i class="uil uil-ellipsis-h"></i>
+        </div>
+
+        <div content>
+          <div>Option 1</div>
+          <div>Option 2</div>
+          <div>Option 3</div>
+        </div>
+      </app-dropdown>
     </div>
   </div>
 </div>

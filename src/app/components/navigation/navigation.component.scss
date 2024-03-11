@@ -20,4 +20,27 @@ nav .create {
   gap: 2rem;
 }
 
+.nav-dropdown-menu {
+  width: 16rem;
+  display: flex;
+  flex-direction: column;
+  padding: var(--medium-padding);
 
+  .nav-dropdown-menu-item {
+    border-radius: var(--medium-border-radius);
+    width: 100%;
+    padding: 0.5rem;
+    background: transparent;
+    text-align: start;
+    cursor: pointer;
+    
+    span {
+      font-size: 1rem;
+      font-weight: normal;
+    }
+
+    &:hover {
+      background: var(--color-light);
+    }
+  }
+}

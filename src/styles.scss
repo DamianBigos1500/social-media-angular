@@ -25,9 +25,14 @@
 
   --border-radius: 2rem;
   --card-border-radius: 1rem;
+  --medium-border-radius: 0.6rem;
+  --small-border-radius: 0.3rem;
+
   --btn-padding: 0.6rem 1rem;
   --search-padding: 0.6rem 1rem;
   --card-padding: 1rem;
+  --medium-padding: 0.6rem;
+  --small-padding: 0.3rem;
 
   --font-small: 0.75rem;
   --font-medium: 0.85rem;
@@ -36,6 +41,8 @@
   --sticky-top-right: -18rem;
 
   --navbar-height: 4rem;
+
+  --shadow-medium: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
 
 // [data-theme="dark"] {
@@ -163,5 +170,34 @@ img {
     }
     input {
     }
+  }
+}
+
+// card white
+.card-white {
+  width: 100%;
+  box-shadow: var(--shadow-medium);
+  padding: 0.6rem;
+  border-radius: var(--card-border-radius);
+  background: var(--color-white);
+}
+
+// three dots
+.options-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1 / 1;
+  cursor: pointer;
+  border-radius: 50%;
+
+  transition: all 0.2s ease-in-out;
+  
+  &:hover {
+    box-shadow: var(--shadow-medium);
+  }
+
+  i {
+    font-size: 1.2rem;
   }
 }

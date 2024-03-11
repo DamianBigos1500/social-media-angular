@@ -13,9 +13,10 @@
         <small class="post-created-at">{{ post.created_at | dateAgo }}</small>
       </div>
     </div>
-    <span class="edit">
+
+    <button class="options-button">
       <i class="uil uil-ellipsis-h"></i>
-    </span>
+    </button>
   </div>
 
   <div class="post-content">
@@ -83,6 +84,12 @@
         <p class="comment-content-body">
           {{ comment.content }}
         </p>
+      </div>
+
+      <div class="comment-options">
+        <button class="options-button">
+          <i class="uil uil-ellipsis-h"></i>
+        </button>
       </div>
     </div>
     }

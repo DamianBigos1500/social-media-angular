@@ -1,0 +1,17 @@
+.dropdown {
+  position: relative;
+  background: transparent;
+}
+
+.dropdown-toggle {
+  background: transparent;
+}
+
+.dropdown-menu {
+  position: absolute;
+  background-color: var(--color-white);
+  border-radius: var(--medium-border-radius);
+  right: 0px;
+  margin: 0.2rem;
+  box-shadow: var(--shadow-medium);
+}
