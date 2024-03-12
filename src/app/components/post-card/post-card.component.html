@@ -14,9 +14,20 @@
       </div>
     </div>
 
-    <button class="options-button">
-      <i class="uil uil-ellipsis-h"></i>
-    </button>
+    <app-dropdown>
+      <div class="options-button" dropdown-toggle>
+        <i class="uil uil-ellipsis-h"></i>
+      </div>
+
+      <div class="dropdown-menu" content>
+        <button (click)="deletePost()" class="dropdown-menu-item">
+          <span> Delete </span>
+        </button>
+        <button class="dropdown-menu-item">
+          <span> Report </span>
+        </button>
+      </div>
+    </app-dropdown>
   </div>
 
   <div class="post-content">
@@ -87,19 +98,47 @@
       </div>
 
       <div class="comment-options">
-        <button class="options-button">
-          <i class="uil uil-ellipsis-h"></i>
-        </button>
+        <app-dropdown>
+          <div class="options-button" dropdown-toggle>
+            <i class="uil uil-ellipsis-h"></i>
+          </div>
+
+          <div class="dropdown-menu" content>
+            <button (click)="deleteComment(comment.id)" class="dropdown-menu-item">
+              <span> Delete </span>
+            </button>
+            <button class="dropdown-menu-item">
+              <span> Report </span>
+            </button>
+          </div>
+        </app-dropdown>
       </div>
     </div>
     }
   </div>
-  @if(post.comments.length > 2){
-  <div class="all-comments text-muted">
-    View all {{ post.comments.length }} comments
-  </div>
-  } } @else {
+  @if (!isCommentsToggle && post.comments_length > 2) {
 
+  <button (click)="loadMoreComments()" class="all-comments text-muted">
+    View all {{ post.comments_length }} comments
+  </button>
+  } @else if(isCommentsToggle){
+  <button (click)="toggleComments()" class="all-comments text-muted">
+    Show less comments
+  </button>
+  } } @else {
   <div class="all-comments text-muted">No comments yet</div>
   }
+  <form
+    [formGroup]="commentForm"
+    (ngSubmit)="submitCommentForm()"
+    class="conversation-form"
+  >
+    <input
+      class="message"
+      formControlName="comment"
+      id="comment"
+      placeholder="Type your comment..."
+    />
+    <button type="submit">Submit</button>
+  </form>
 </div>

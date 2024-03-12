@@ -5,7 +5,6 @@ import {
   FormsModule,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-auth-modal',
@@ -16,7 +15,7 @@ import { AuthService } from '../../services/auth.service';
 })
 export class AuthModalComponent {
   constructor(
-    private formBuilder: FormBuilder // private authService: AuthService
+    private formBuilder: FormBuilder 
   ) {}
 
   loginForm: FormGroup = this.formBuilder.group({

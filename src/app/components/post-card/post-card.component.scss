@@ -123,6 +123,7 @@
     }
 
     .comment-user-photo {
+      flex-shrink: 0;
       width: 2.6rem;
       height: 2.6rem;
       object-fit: cover;
@@ -149,9 +150,8 @@
     }
   }
 
- 
-
   .all-comments {
+    background: transparent;
     font-size: var(--font-small);
     padding: 0 0.6rem 0.6rem 0.6rem;
 

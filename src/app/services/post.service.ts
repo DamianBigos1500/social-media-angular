@@ -20,6 +20,7 @@ export interface IPost {
   attachments: IAttachment[];
   comments: IComment[];
   created_at: Date;
+  comments_length: number;
 }
 
 @Injectable({
@@ -45,6 +46,30 @@ export class PostService {
     return this.http.get<IPost[]>(`${this.apiUrl}posts/profile/${pid}`);
   }
 
+  deletePost(pid: string): Observable<IPost> {
+    return this.http.delete<IPost>(`${this.apiUrl}posts/${pid}`);
+  }
+
+  // COMMENTS
+  getPostComments(pid: string) {
+    return this.http.get<IComment[]>(`${this.apiUrl}posts/comments/${pid}/`);
+  }
+
+  createPostComment(
+    pid: string,
+    data: { post_id: number; content: string }
+  ): Observable<IComment> {
+    return this.http.post<IComment>(
+      `${this.apiUrl}posts/comment/${pid}/`,
+      data
+    );
+  }
+
+  deletePostComment(cid: string) {
+    return this.http.delete(`${this.apiUrl}posts/comment/${cid}/`);
+  }
+
+  // BOOKMARKS
   getBookmarkedPosts(): Observable<IPost[]> {
     return this.http.post<IPost[]>(`${this.apiUrl}posts/bookmarks/`, null);
   }

@@ -102,12 +102,18 @@ export class HomeComponent implements OnInit {
     this.postService.createPost(formData).subscribe((data) => this.loadPosts());
 
     // reset forms
-    this.selectedFiles = [] 
-    this.previewFiles = []
-    this.newPostForm.reset()
+    this.selectedFiles = [];
+    this.previewFiles = [];
+    this.newPostForm.reset();
   }
 
   isMyProfile() {
     return false;
+  }
+
+  filterPost($event: any) {
+    this.posts = this.posts.filter((post) => {
+      return post.id != $event;
+    });
   }
 }

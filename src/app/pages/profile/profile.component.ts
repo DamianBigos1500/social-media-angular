@@ -92,9 +92,14 @@ export class ProfileComponent implements OnInit {
     formData.append('file', this.file);
 
     this.userService.updateProfileImage(formData).subscribe(() => {
+      this.authService.getUser().subscribe();
       this.userService
         .showUser(this.id as string)
-        .subscribe((userData: IUser) => (this.userData = userData));
+        .subscribe((userData: IUser) => {
+          this.userData = userData;
+          this.profileUrl = null;
+          this.file = null;
+        });
     });
   }
 

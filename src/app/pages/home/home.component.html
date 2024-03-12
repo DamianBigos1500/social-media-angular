@@ -61,7 +61,7 @@
 
           <div class="posts-container">
             @for (post of posts; track post.id; let idx = $index, e = $even) {
-            <app-post-card [post]="post" />
+            <app-post-card [post]="post" (filterPost)="filterPost($event)" />
             }@empty {
             <li>There are no items.</li>
             }
