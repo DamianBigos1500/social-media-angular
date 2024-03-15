@@ -29,7 +29,6 @@ export class PostCardComponent {
   public isCommentsToggle = false;
 
   @Input() post!: IPost;
-  @Output() filterPost = new EventEmitter<string>();
 
   constructor(
     private postService: PostService,
@@ -41,9 +40,7 @@ export class PostCardComponent {
   });
 
   deletePost() {
-    this.postService.deletePost(this.post.id).subscribe(() => {
-      this.filterPost.emit(this.post.id);
-    });
+    this.postService.deletePost(this.post.id).subscribe();
   }
 
   loadMoreComments() {

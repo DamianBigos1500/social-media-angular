@@ -18,7 +18,7 @@ export class DetailPostComponent implements OnInit {
   IMAGE_SRC: string = IMAGE_SRC;
   post: IPost | null = null;
   selectedImage: IAttachment | null | undefined = null;
-  isSidebarOpen: boolean = false;
+  isSidebarOpen: boolean = true;
 
   constructor(
     private route: ActivatedRoute,

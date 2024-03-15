@@ -162,6 +162,27 @@
     }
   }
 
-  .read-comments {
+  // SEND COMMENT FORM
+  .comment-form {
+    display: flex;
+    padding: 0.4rem;
+    gap: var(--medium-padding);
+    
+    .comment-input {
+    background: var(--color-light);
+    border-radius: var(--medium-padding);
+      width: 100%;
+      padding: var(--medium-padding);
+    }
+
+    .comment-submit {
+      width: 5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--medium-padding);
+      border-radius: var(--medium-padding);
+      cursor: pointer;
+    }
   }
 }

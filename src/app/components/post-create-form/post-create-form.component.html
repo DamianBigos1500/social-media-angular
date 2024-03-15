@@ -1,0 +1,42 @@
+<form
+  class="post-create-form"
+  [formGroup]="newPostForm"
+  (ngSubmit)="onSubmit()"
+>
+  <textarea
+    class="post-create-textarea"
+    formControlName="content"
+    placeholder="What's in your mind?"
+  ></textarea>
+
+  <div class="post-create-form-group">
+    <div class="icons">
+      <label class="icon" for="post-file">
+        <i class="uil uil-image"></i>
+      </label>
+
+      <input
+        type="file"
+        id="post-file"
+        name="post-file"
+        multiple="true"
+        class="file-upload"
+        (change)="handlePostImage($event)"
+      />
+    </div>
+    <button type="submit" class="btn btn-primary send-post">Send</button>
+  </div>
+  @if (previewFiles.length >0) {
+  <div class="post-images-preview">
+    @for(previewFile of previewFiles; track previewFile){
+    <img class="post-image-preview" src="{{ previewFile }}" />
+    <div
+      class="images-preview-delete"
+      (click)="filterSelectedImage(previewFile)"
+    >
+      X
+    </div>
+    }
+  </div>
+  }
+</form>

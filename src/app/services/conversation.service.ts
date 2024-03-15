@@ -1,17 +1,11 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, Subject, tap } from 'rxjs';
-import { LoginModel } from '../models/LoginModel';
-
-export interface IUserPart {
-  id: string;
-  first_name: string;
-  last_name: string;
-}
+import { IUser } from './user.service';
 
 export interface IParticipant {
   id: string;
-  user: IUserPart;
+  user: IUser;
 }
 
 export interface IMessagePartUser {

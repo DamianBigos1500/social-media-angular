@@ -1,6 +1,6 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, tap } from 'rxjs';
 import { LoginModel } from '../models/LoginModel';
 import { IUser } from './user.service';
 
@@ -27,15 +27,23 @@ export interface IPost {
   providedIn: 'root',
 })
 export class PostService {
+  private refetchSubject = new BehaviorSubject(null);
+
   private http = inject(HttpClient);
   private apiUrl = 'http://127.0.0.1:8000/api/';
+
+  get refetch() {
+    return this.refetchSubject.asObservable();
+  }
 
   getPosts(): Observable<IPost[]> {
     return this.http.get<IPost[]>(`${this.apiUrl}posts/`);
   }
 
   createPost(formData: FormData) {
-    return this.http.post(`${this.apiUrl}posts/`, formData);
+    return this.http
+      .post(`${this.apiUrl}posts/`, formData)
+      .pipe(tap(() => this.refetchSubject.next(null)));
   }
 
   showPostById(pid: string): Observable<IPost> {
@@ -47,7 +55,9 @@ export class PostService {
   }
 
   deletePost(pid: string): Observable<IPost> {
-    return this.http.delete<IPost>(`${this.apiUrl}posts/${pid}`);
+    return this.http
+      .delete<IPost>(`${this.apiUrl}posts/${pid}`)
+      .pipe(tap(() => this.refetchSubject.next(null)));
   }
 
   // COMMENTS

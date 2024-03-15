@@ -3,15 +3,17 @@
   background: transparent;
 }
 
-.dropdown-toggle {
+
+.dropdown-toggle, .dropdown-toggle > * {
   background: transparent;
 }
 
-.dropdown-menu {
+.dropdown-box {
   position: absolute;
   background-color: var(--color-white);
   border-radius: var(--medium-border-radius);
   right: 0px;
   margin: 0.2rem;
   box-shadow: var(--shadow-medium);
+  z-index: 20;
 }

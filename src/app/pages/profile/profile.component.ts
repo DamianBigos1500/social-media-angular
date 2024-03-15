@@ -97,10 +97,14 @@ export class ProfileComponent implements OnInit {
         .showUser(this.id as string)
         .subscribe((userData: IUser) => {
           this.userData = userData;
-          this.profileUrl = null;
-          this.file = null;
+          this.closeProfileUpload();
         });
     });
+  }
+
+  closeProfileUpload() {
+    this.profileUrl = null;
+    this.file = null;
   }
 
   sendFriendRequest(friendId: string) {

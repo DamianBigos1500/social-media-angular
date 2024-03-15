@@ -1,6 +1,6 @@
 <div class="post">
   <div class="post-header">
-    <div class="post-creator">
+    <a [routerLink]="['/profile', post.creator.id]" class="post-creator">
       <img
         class="post-creator-photo"
         src="{{ IMAGE_SRC + post.creator.profile_image }}"
@@ -12,7 +12,7 @@
         </h3>
         <small class="post-created-at">{{ post.created_at | dateAgo }}</small>
       </div>
-    </div>
+    </a>
 
     <app-dropdown>
       <div class="options-button" dropdown-toggle>
@@ -104,7 +104,10 @@
           </div>
 
           <div class="dropdown-menu" content>
-            <button (click)="deleteComment(comment.id)" class="dropdown-menu-item">
+            <button
+              (click)="deleteComment(comment.id)"
+              class="dropdown-menu-item"
+            >
               <span> Delete </span>
             </button>
             <button class="dropdown-menu-item">
@@ -131,14 +134,14 @@
   <form
     [formGroup]="commentForm"
     (ngSubmit)="submitCommentForm()"
-    class="conversation-form"
+    class="comment-form"
   >
     <input
-      class="message"
+      class="comment-input"
       formControlName="comment"
       id="comment"
       placeholder="Type your comment..."
     />
-    <button type="submit">Submit</button>
+    <button class="comment-submit" type="submit">Submit</button>
   </form>
 </div>

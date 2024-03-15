@@ -1,4 +1,5 @@
 <div class="conversations-container">
+  <!-- CONVERSATION LIST -->
   <div class="conversations-list">
     @for (conversation of conversations; track conversation.id) {
     <a
@@ -9,46 +10,84 @@
       class="conversation-tile"
     >
       @if (!conversation.is_group) {
-      <div>{{ getConversationTitle(conversation) }}</div>
+      <img
+        class="conversation-image"
+        src="{{ IMAGE_SRC + conversation.participants[0].user.profile_image }}"
+      />
+      <div class="conversation-tile-info">
+        <h3>{{ getConversationTitle(conversation) }}</h3>
+        <div>{{ conversation.last_message.content }}</div>
+      </div>
       }
-      <div>{{ conversation.last_message.content }}</div>
     </a>
     }
   </div>
 
+  <!-- SELECTED CONVERSATION -->
   <div class="active-conversation">
     @if(!conversationId) {
     <div class="">Click any conversation to load data</div>
     } @if (selectedConversation) {
-    <h3 class="conversation-title">
-      {{ getConversationTitle(selectedConversation) }}
-    </h3>
+    <div class="selected-conversation-header">
+      <img
+        class="selected-conversation-image"
+        src="{{
+          IMAGE_SRC + selectedConversation.participants[0].user.profile_image
+        }}"
+      />
+      <h3 class="conversation-title">
+        {{ getConversationTitle(selectedConversation) }}
+      </h3>
+    </div>
 
-    <div class="conversation-messages">
-
+    <div class="conversation-messages" #chatComponent>
       @for (message of selectedConversation.messages; track message.id) {
       <div
-        class="message"
+        class="message-container"
         [ngClass]="{ 'my-message': message.participant.user_id == user.id }"
       >
-        {{ message.content }}
+        <div class="message">
+          {{ message.content }}
+        </div>
+        @if (message.participant.user_id == user.id) {
+        <app-dropdown>
+          <div class="options-button" dropdown-toggle>
+            <i class="uil uil-ellipsis-h"></i>
+          </div>
+
+          <div class="dropdown-menu" content>
+            <button
+              (click)="deleteMessage(message.id)"
+              class="dropdown-menu-item"
+            >
+              <span> Delete </span>
+            </button>
+          </div>
+        </app-dropdown>
+        }
       </div>
+
       }
     </div>
 
-    }
+    } @if (conversationId) {
+
     <form
       [formGroup]="newMessageForm"
       (ngSubmit)="submitMessageForm()"
       class="conversation-form"
     >
       <input
-        class="message"
+        class="message-input"
         formControlName="message"
         id="message"
         placeholder="Type your message..."
       />
-      <button type="submit">send</button>
+      <button class="message-submit" type="submit">
+        <span> send </span>
+        <i class="uil uil-message"></i>
+      </button>
     </form>
+    }
   </div>
 </div>

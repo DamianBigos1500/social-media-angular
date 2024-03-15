@@ -16,6 +16,19 @@
     background: var(--color-light);
     border-radius: var(--border-radius);
     padding: 1rem;
+    display: flex;
+    gap: 0.6rem;
+
+    & > h3 {
+      font-weight: 400;
+    }
+  }
+
+  .conversation-image {
+    width: 5rem;
+    height: 5rem;
+    border-radius: 0.6rem;
+    object-fit: cover;
   }
 }
 
@@ -24,11 +37,19 @@
   flex-direction: column;
   height: calc(100vh - var(--navbar-height));
 
-  .conversation-title {
+  .selected-conversation-header {
     flex-wrap: nowrap;
     align-items: center;
     padding: 0.7rem;
     background: var(--color-gray);
+    display: flex;
+    gap: 0.6rem;
+  }
+
+  .selected-conversation-image {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 1rem;
   }
 
   .conversation-messages {
@@ -38,6 +59,24 @@
     padding: 1rem;
     flex-direction: column;
     overflow-y: scroll;
+
+    .message-container {
+      display: flex;
+      gap: var(--medium-padding);
+      align-items: center;
+
+      .options-button {
+        opacity: 0;
+        visibility: hidden;
+        transition: all 100ms ease-in;
+      }
+      &:hover {
+        .options-button {
+          opacity: 1;
+          visibility: visible;
+        }
+      }
+    }
 
     .message {
       padding: 0.4rem 1rem;
@@ -49,16 +88,34 @@
 
     .my-message {
       margin-left: auto;
-      background: var(--color-primary);
+      flex-direction: row-reverse;
+
+      .message {
+        background: var(--color-primary);
+      }
     }
   }
 
   .conversation-form {
+    display: flex;
     background: var(--color-gray);
-    padding: 1rem 0.4rem;
+    padding: 0.4rem;
+    gap: var(--medium-padding);
 
-    input {
-      height: 2rem;
+    .message-input {
+      border-radius: var(--medium-padding);
+      width: 100%;
+      padding: var(--medium-padding);
+    }
+
+    .message-submit {
+      width: 5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--medium-padding);
+      border-radius: var(--medium-padding);
+      cursor: pointer;
     }
   }
 }
