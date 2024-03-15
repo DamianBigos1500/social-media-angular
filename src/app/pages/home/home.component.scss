@@ -34,34 +34,13 @@
   padding: 0 1rem;
 }
 
-.posts {
-}
-
-.newpost {
+.create-post-container {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
 }
 
 .create-post {
-  form {
-    textarea {
-      padding: 0.6rem;
-      width: 100%;
-      resize: none;
-      background: var(--color-light);
-      border-radius: var(--card-border-radius);
-      height: 6rem;
-    }
-    .actions {
-      margin-top: 0.6rem;
-
-      .icons .send-post {
-        font-size: var(--text-size-small);
-      }
-    }
-  }
-
   .post-images-preview {
     display: flex;
     flex-wrap: wrap;
@@ -70,7 +49,6 @@
     overflow-x: scroll;
     max-width: max-content;
     width: 100%;
-
   }
 
   .post-image-preview {
@@ -96,15 +74,8 @@
   grid-template-columns: 4fr 6fr;
 }
 
-.posts-container {
-  display: flex;
-  width: 100%;
-  flex-direction: column;
-  gap: 1rem;
-}
-
 .profile-info {
-  width: 60%;
+  width: 100%;
   height: 20rem;
 
   .head {
@@ -116,72 +87,6 @@
   }
 
   .profile-stats {
-  }
-}
-
-.post {
-  .head {
-    display: flex;
-    justify-content: space-between;
-
-    .user {
-      display: flex;
-      gap: 0.6rem;
-
-      .info small {
-        color: var(--color-gray);
-      }
-    }
-  }
-
-  .post-body {
-    margin-top: 0.6rem;
-  }
-
-  & .photos {
-    margin-top: 0.6rem;
-    border-radius: var(--card-border-radius);
-    overflow: hidden;
-
-    img:first-child {
-      object-fit: cover;
-    }
-  }
-
-  & .action-buttons {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 2rem;
-    font-size: 1.4rem;
-    margin: 0.2rem 0.2rem;
-
-    & .interaction-buttons {
-      display: flex;
-      gap: 1rem;
-    }
-  }
-
-  & .liked-by {
-    display: flex;
-
-    & span {
-      width: 1.4rem;
-      height: 1.4rem;
-      display: block;
-      border-radius: 50%;
-      overflow: hidden;
-      border: 2px solid var(--color-white);
-      margin-left: -0.6rem;
-    }
-
-    & span:first-child {
-      margin: 0;
-    }
-
-    & p {
-      margin-left: 0.5rem;
-    }
   }
 }
 
@@ -222,17 +127,7 @@
   }
 }
 
-.recomended-friends {
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-  font-size: var(--font-medium);
-}
 
-.recomended-friend-card {
-  display: flex;
-  gap: 0.6rem;
-}
 
 @media only screen and (max-width: 1200px) {
   .profile {

@@ -1,5 +1,11 @@
 import { AuthService } from './../../services/auth.service';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import {
   ConversationService,
   IConversation,
@@ -14,21 +20,32 @@ import {
 } from '@angular/forms';
 import { mergeMap, tap } from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { IMAGE_SRC } from '../../data/constants';
+import { DropdownComponent } from '../../components/UI/dropdown/dropdown.component';
 
 @Component({
   selector: 'app-conversation',
   standalone: true,
-  imports: [RouterLink, FormsModule, ReactiveFormsModule, CommonModule],
   templateUrl: './conversation.component.html',
   styleUrl: './conversation.component.scss',
+  imports: [
+    RouterLink,
+    FormsModule,
+    ReactiveFormsModule,
+    CommonModule,
+    DropdownComponent,
+  ],
 })
+export class ConversationComponent implements OnInit {
+  IMAGE_SRC: string = IMAGE_SRC;
 
-export class ConversationComponent implements OnInit, OnDestroy {
   private ws: any;
   public user: any;
   public conversations: IConversation[] | [] = [];
   public conversationId: string | null = null;
   public selectedConversation: IConversation | null = null;
+
+  @ViewChild('chatComponent') private chatComponentContainer?: ElementRef;
 
   constructor(
     private conversationService: ConversationService,
@@ -36,12 +53,7 @@ export class ConversationComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private route: ActivatedRoute
   ) {
-    route.params.subscribe((params) => {
-      this.conversationId = params['id'];
-      if (this.conversationId) {
-        this.showConversation(this.conversationId);
-      }
-    });
+   
   }
 
   newMessageForm = this.formBuilder.group({
@@ -49,20 +61,22 @@ export class ConversationComponent implements OnInit, OnDestroy {
   });
 
   ngOnInit(): void {
-    this.ws = new WebSocket(`ws://localhost:8000/ws/${1}`);
-    this.ws.onmessage = (event: any) => {
-      this.finalizeSendMessage();
-    };
-    
-    this.getAllConversations();
     this.authService.getUser$().subscribe((user) => {
       this.user = user;
-    });
-  }
 
-  ngOnDestroy(): void {
-    // this.ws.destroy();
-    // console.log('destr')
+      this.ws = new WebSocket(`ws://localhost:8000/ws/${1}`);
+      this.ws.onmessage = (event: any) => {
+        this.finalizeSendMessage();
+      };
+      this.getAllConversations();
+
+      this.route.params.subscribe((params) => {
+        this.conversationId = params['id'];
+        if (this.conversationId) {
+          this.showConversation(this.conversationId);
+        }
+      });
+    });
   }
 
   getAllConversations() {
@@ -77,7 +91,7 @@ export class ConversationComponent implements OnInit, OnDestroy {
     this.conversationService.showConversation(conversationId).subscribe({
       next: (selectedConversation) => {
         this.selectedConversation = selectedConversation;
-        console.log(selectedConversation, this.user)
+        this.scrollToBottom();
       },
     });
   }
@@ -106,7 +120,10 @@ export class ConversationComponent implements OnInit, OnDestroy {
             })
           );
 
-    sendMessage$.pipe(tap()).subscribe();
+    sendMessage$.subscribe(() => {
+      this.scrollToBottom();
+      this.newMessageForm.reset();
+    });
   }
 
   finalizeSendMessage() {
@@ -122,11 +139,16 @@ export class ConversationComponent implements OnInit, OnDestroy {
         (participant: IParticipant) =>
           participant.user.id == conversation.profile_id
       );
-      return (
-        conversation.id +
-        ` ${username?.user.first_name} ${username?.user.last_name}`
-      );
+      return `${username?.user.first_name} ${username?.user.last_name}`;
     }
   }
 
+  deleteMessage(messageId: string) {
+    console.log(messageId);
+  }
+
+  scrollToBottom() {
+    this.chatComponentContainer!.nativeElement.scrollTop =
+      this.chatComponentContainer?.nativeElement.scrollHeight ;
+  }
 }

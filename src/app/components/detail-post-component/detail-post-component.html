@@ -3,14 +3,22 @@
 } @else {
 <div class="post-details">
   <div class="post-details-selected-image">
-    <div class="btn-details close-details" (click)="closeDetails()">X</div>
-    <div class="btn-details close-sidebar" (click)="closeSidebar()">cl sb</div>
-    @if(post.attachments.length > 0){
+    <div class="btn-details close-details" (click)="closeDetails()">
+      <i class="uil uil-multiply"></i>
+    </div>
+    <div class="btn-details close-sidebar" (click)="closeSidebar()">
+      @if (isSidebarOpen) {
+      <i class="uil uil-arrow-right"></i>
+      } @else {
+      <i class="uil uil-arrow-left"></i>
+      }
+    </div>
+    @if(post.attachments.length > 1){
     <div class="btn-details change-image left-arrow" (click)="leftImage()">
-      Left
+      <i class="uil uil-angle-left-b"></i>
     </div>
     <div class="btn-details change-image right-arrow" (click)="rightImage()">
-      Right
+      <i class="uil uil-angle-right-b"></i>
     </div>
     }
     <div class="image-container">
@@ -20,7 +28,7 @@
 
   <div
     class="post-details-sidebar"
-    [ngClass]="{ 'sidebar-closed': isSidebarOpen }"
+    [ngClass]="{ 'sidebar-closed': !isSidebarOpen }"
   >
     <div class="post-header">
       <div class="post-creator">

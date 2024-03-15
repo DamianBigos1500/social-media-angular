@@ -1,0 +1,11 @@
+.recommended-friends {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  font-size: var(--font-medium);
+}
+
+.recommended-friend-card {
+  display: flex;
+  gap: 0.6rem;
+}

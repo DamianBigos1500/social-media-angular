@@ -10,45 +10,11 @@
 
     <div class="social-content">
       <div class="posts">
-        <div class="newpost">
+        <div class="create-post-container">
           <div class="card-white create-post">
-            <form [formGroup]="newPostForm" (ngSubmit)="onSubmit()">
-              <textarea
-                formControlName="content"
-                placeholder="What's in your mind?"
-              ></textarea>
-
-              <div class="actions">
-                <div class="icons">
-                  <input
-                    type="file"
-                    name="files"
-                    multiple="true"
-                    class="file-upload"
-                    (change)="handlePostImage($event)"
-                  />
-                </div>
-
-                @if (previewFiles.length >0) {
-                <div class="post-images-preview">
-                  @for(previewFile of previewFiles; track previewFile){
-                  <img class="post-image-preview" src="{{ previewFile }}" />
-                  <div
-                    class="images-preview-delete"
-                    (click)="filterSelectedImage(previewFile)"
-                  >
-                    X
-                  </div>
-                  }
-                </div>
-                }
-
-                <button type="submit" class="btn btn-primary send-post">
-                  Send
-                </button>
-              </div>
-            </form>
+            <app-post-create-form></app-post-create-form>
           </div>
+
           <div class="card-white trends">
             <h4 class="title">Groups for you</h4>
             <div></div>
@@ -58,14 +24,7 @@
 
         <div class="posts-bottom">
           <div class="card-white profile-info"></div>
-
-          <div class="posts-container">
-            @for (post of posts; track post.id; let idx = $index, e = $even) {
-            <app-post-card [post]="post" />
-            }@empty {
-            <li>There are no items.</li>
-            }
-          </div>
+          <app-post-list></app-post-list>
         </div>
       </div>
 
@@ -78,24 +37,8 @@
           <span>r</span>
         </div>
 
-        <div class="card-white recomended-friends">
-          @for (rec_user of recomended_users; track rec_user.id) {
-          <a
-            [routerLink]="['/profile', rec_user.id]"
-            class="recomended-friend-card"
-          >
-            <div class="profile-photo">
-              <img src="{{ IMAGE_SRC }}{{ rec_user.profile_image }}" />
-            </div>
-
-            <div>
-              <div>{{ rec_user.first_name }} {{ rec_user.last_name }}</div>
-              <div>
-                {{ rec_user.email }}
-              </div>
-            </div>
-          </a>
-          }
+        <div class="card-white">
+          <app-user-friends></app-user-friends>
         </div>
       </div>
     </div>

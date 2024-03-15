@@ -190,7 +190,7 @@ img {
   aspect-ratio: 1 / 1;
   cursor: pointer;
   border-radius: 50%;
-
+  background: var(--color-light);
   transition: all 0.2s ease-in-out;
   
   &:hover {
@@ -199,5 +199,26 @@ img {
 
   i {
     font-size: 1.2rem;
+  }
+}
+
+
+// dropdown menu
+
+.dropdown-menu {
+  width: 10rem;
+  display: flex;
+  flex-direction: column;
+  padding: 0.6rem;
+}
+
+.dropdown-menu-item {
+  border-radius: 0.6rem;
+  text-align: start;
+  padding: 0.4rem 0.6rem;
+  background: var(--color-white);
+
+  &:hover {
+    background: var(--color-light);
   }
 }

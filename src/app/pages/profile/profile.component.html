@@ -43,7 +43,9 @@
               <button class="btn btn-submit" (click)="uploadNewImage()">
                 Send new Photo
               </button>
-              <button class="btn btn-danger">Cancel</button>
+              <button (click)="closeProfileUpload()" class="btn btn-danger">
+                Cancel
+              </button>
               } @if (!isMyProfile) {
               <a
                 [routerLink]="['/conversation', userData?.id]"

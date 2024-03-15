@@ -1,16 +1,20 @@
 <div class="sidebar">
-  <a routerLink="/profile/123123" class="sidebar-item active">
+  <a routerLink="/" class="sidebar-item active">
     <span>
       <i class="uil uil-home"></i>
     </span>
     <h3>Home</h3>
   </a>
-  <a routerLink="/conversation/1" class="sidebar-item">
+
+  <a routerLink="/conversations" class="sidebar-item" id="messages-notifications">
     <span>
-      <i class="uil uil-compass"></i>
+      <i class="uil uil-envelope-alt">
+        <small class="notification-count">6</small>
+      </i>
     </span>
-    <h3>Explore</h3>
+    <h3>Messages</h3>
   </a>
+  
   <a href="#" class="sidebar-item">
     <span>
       <i class="uil uil-bell"> </i>
@@ -45,14 +49,7 @@
       </div>
     </div>
   </a>
-  <a href="#" class="sidebar-item" id="messages-notifications">
-    <span>
-      <i class="uil uil-envelope-alt">
-        <small class="notification-count">6</small>
-      </i>
-    </span>
-    <h3>Messages</h3>
-  </a>
+ 
   <a href="#" class="sidebar-item">
     <span>
       <i class="uil uil-bookmark"></i>
@@ -67,9 +64,9 @@
   </a>
   <a href="#" class="sidebar-item">
     <span>
-      <i class="uil uil-palette"></i>
+      <i class="uil uil-comment-alt-lines"></i>
     </span>
-    <h3>Analytics</h3>
+    <h3>Comments</h3>
   </a>
   <a href="#" class="sidebar-item">
     <span>

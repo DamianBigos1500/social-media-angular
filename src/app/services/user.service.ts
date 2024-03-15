@@ -38,7 +38,7 @@ export class UserService {
   }
 
   showUser(userId: string): Observable<IUserData> {
-    return this.http.get<IUserData>(`${this.apiUrl}users/${userId}`);
+    return this.http.get<IUserData>(`${this.apiUrl}users/profile/${userId}`);
   }
 
   getFriendStatus(friendId: string): Observable<any> {

@@ -1,0 +1,16 @@
+<div class="recommended-friends">
+  @for (rec_user of recommended_users | async; track rec_user.id) {
+  <a [routerLink]="['/profile', rec_user.id]" class="recommended-friend-card">
+    <div class="profile-photo">
+      <img src="{{ IMAGE_SRC }}{{ rec_user.profile_image }}" />
+    </div>
+
+    <div>
+      <div>{{ rec_user.first_name }} {{ rec_user.last_name }}</div>
+      <div>
+        {{ rec_user.email }}
+      </div>
+    </div>
+  </a>
+  }
+</div>
