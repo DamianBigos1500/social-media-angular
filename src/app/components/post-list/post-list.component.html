@@ -1,0 +1,9 @@
+<div class="posts-list">
+  @for (post of posts ; track post.id; let idx = $index, e = $even) {
+  <div #lastPost>
+    <app-post-card [post]="post" />
+  </div>
+  }@empty {
+  <li>There are no items.</li>
+  }
+</div>

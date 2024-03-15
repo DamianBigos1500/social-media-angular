@@ -78,9 +78,9 @@
     <p>Liked by <b>Ernest Achiever</b> and <b>2,232 others</b></p>
   </div>
 
-  @if (post.comments.length > 0){
+  @if (post.comments_length > 0){
   <div class="post-comments">
-    @for (comment of post.comments; track comment.id) {
+    @for (comment of postComments| async; track comment.id) {
     <div class="post-comment">
       <img
         class="comment-user-photo"
@@ -121,9 +121,9 @@
   </div>
   @if (!isCommentsToggle && post.comments_length > 2) {
 
-  <button (click)="loadMoreComments()" class="all-comments text-muted">
+  <!-- <button (click)="loadMoreComments()" class="all-comments text-muted">
     View all {{ post.comments_length }} comments
-  </button>
+  </button> -->
   } @else if(isCommentsToggle){
   <button (click)="toggleComments()" class="all-comments text-muted">
     Show less comments

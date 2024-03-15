@@ -10,6 +10,7 @@ export interface IAttachment {
 }
 export interface IComment {
   id: string;
+  post_id: string;
   content: string;
   user: IUser;
 }
@@ -18,7 +19,7 @@ export interface IPost {
   content: string;
   creator: IUser;
   attachments: IAttachment[];
-  comments: IComment[];
+  // comments: IComment[];
   created_at: Date;
   comments_length: number;
 }
@@ -27,13 +28,17 @@ export interface IPost {
   providedIn: 'root',
 })
 export class PostService {
-  private refetchSubject = new BehaviorSubject(null);
+  private refetchPostsSubject = new BehaviorSubject(null);
+  private refetchCommentsSubject = new BehaviorSubject(null);
 
   private http = inject(HttpClient);
   private apiUrl = 'http://127.0.0.1:8000/api/';
 
-  get refetch() {
-    return this.refetchSubject.asObservable();
+  get refetchPosts() {
+    return this.refetchPostsSubject.asObservable();
+  }
+  get refetchComments() {
+    return this.refetchCommentsSubject.asObservable();
   }
 
   getPosts(): Observable<IPost[]> {
@@ -43,7 +48,7 @@ export class PostService {
   createPost(formData: FormData) {
     return this.http
       .post(`${this.apiUrl}posts/`, formData)
-      .pipe(tap(() => this.refetchSubject.next(null)));
+      .pipe(tap(() => this.refetchPostsSubject.next(null)));
   }
 
   showPostById(pid: string): Observable<IPost> {
@@ -57,26 +62,7 @@ export class PostService {
   deletePost(pid: string): Observable<IPost> {
     return this.http
       .delete<IPost>(`${this.apiUrl}posts/${pid}`)
-      .pipe(tap(() => this.refetchSubject.next(null)));
-  }
-
-  // COMMENTS
-  getPostComments(pid: string) {
-    return this.http.get<IComment[]>(`${this.apiUrl}posts/comments/${pid}/`);
-  }
-
-  createPostComment(
-    pid: string,
-    data: { post_id: number; content: string }
-  ): Observable<IComment> {
-    return this.http.post<IComment>(
-      `${this.apiUrl}posts/comment/${pid}/`,
-      data
-    );
-  }
-
-  deletePostComment(cid: string) {
-    return this.http.delete(`${this.apiUrl}posts/comment/${cid}/`);
+      .pipe(tap(() => this.refetchPostsSubject.next(null)));
   }
 
   // BOOKMARKS
