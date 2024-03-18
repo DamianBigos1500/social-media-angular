@@ -5,9 +5,12 @@
       <img src="{{ IMAGE_SRC }}{{ rec_user.profile_image }}" />
     </div>
 
-    <div>
-      <div>{{ rec_user.first_name }} {{ rec_user.last_name }}</div>
-      <div>
+    <div class="friend-info">
+      <div class="friend-fullname">
+        <span>{{ rec_user.first_name }}</span>{{' '}}
+        <span>{{ rec_user.last_name }}</span>
+      </div>
+      <div class="friend-email">
         {{ rec_user.email }}
       </div>
     </div>

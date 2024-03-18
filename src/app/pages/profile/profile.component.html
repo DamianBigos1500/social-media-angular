@@ -1,121 +1,121 @@
 @if(!isLoading){
+<div class="profile">
+  <div class="image-cover">
+    @if (isMyProfile) {
+    <input
+      class="upload-cover-input"
+      id="upload-cover-image"
+      type="file"
+      (change)="handleProfileImage($event, 'cover')"
+    />
+    <label for="upload-cover-image" class="upload-cover-label">
+      <i class="uil uil-camera-plus"></i>
+    </label>
+    }
 
-<div class="container">
-  <app-sidebar></app-sidebar>
+    <img
+      [src]="
+        coverUrl !== null
+          ? coverUrl
+          : IMAGE_SRC + userData?.profile?.cover_image
+      "
+    />
+  </div>
 
-  <div class="profile">
-    <div class="image-cover">
-      <img src="{{ IMAGE_SRC }}{{ userData?.profile?.cover_image }}" />
-    </div>
-
-    <div class="social-content">
-      <div class="posts">
-        <div class="newpost">
-          <div class="content user-data">
-            <div class="user-data-left">
-              <div class="user-image">
-                <img
-                  [src]="
-                    profileUrl !== null
-                      ? profileUrl
-                      : IMAGE_SRC + userData?.profile_image
-                  "
-                />
-                @if (isMyProfile) {
-                <input
-                  class="upload-profile-input"
-                  id="upload-profile-image"
-                  type="file"
-                  (change)="handleProfileImage($event)"
-                />
-                <label for="upload-profile-image" class="upload-profile-label">
-                  <i class="uil uil-camera-plus"></i>
-                </label>
-                }
-              </div>
-              <div class="user-fullname">
-                {{ userData?.first_name }} {{ userData?.last_name }}
-              </div>
+  <div class="social-content">
+    <div class="posts">
+      <div class="newpost">
+        <div class="card-white user-data">
+          <div class="user-data-left">
+            <div class="user-image">
+              <img
+                [src]="
+                  profileUrl !== null
+                    ? profileUrl
+                    : IMAGE_SRC + userData?.profile_image
+                "
+              />
+              @if (isMyProfile) {
+              <input
+                class="upload-profile-input"
+                id="upload-profile-image"
+                type="file"
+                (change)="handleProfileImage($event, 'profile')"
+              />
+              <label for="upload-profile-image" class="upload-profile-label">
+                <i class="uil uil-camera-plus"></i>
+              </label>
+              }
             </div>
-
-            <div class="user-data-right">
-              @if (file) {
-              <button class="btn btn-submit" (click)="uploadNewImage()">
-                Send new Photo
-              </button>
-              <button (click)="closeProfileUpload()" class="btn btn-danger">
-                Cancel
-              </button>
-              } @if (!isMyProfile) {
-              <a
-                [routerLink]="['/conversation', userData?.id]"
-                class="btn btn-primary"
-                >send message</a
-              >
-              @if (!this.friendStatus) {
-              <button
-                class="btn btn-outline"
-                (click)="sendFriendRequest(userData!.id)"
-              >
-                add friend
-              </button>
-              }@else if (this.friendStatus?.status == 0) {
-              <button
-                class="btn btn-outline"
-                (click)="deleteFriendRequest(userData!.id)"
-              >
-                delete friend request
-              </button>
-              }@else if (this.friendStatus?.status == 1) {
-              <div>Friend accepted</div>
-              } @else {
-              <div></div>
-              } }
+            <div class="user-fullname">
+              {{ userData?.first_name }} {{ userData?.last_name }}
             </div>
           </div>
-        </div>
 
-        <div class="posts-bottom">
-          <div class="content profile-info"></div>
-
-          <div class="posts-container">
-            @for (post of posts; track post.id; let idx = $index, e = $even) {
-            <app-post-card [post]="post" />
-            }@empty {
-            <li>There are no items.</li>
-            }
+          <div class="user-data-right">
+            @if (profileUrl || coverUrl) {
+            <button class="btn btn-submit" (click)="uploadNewImage()">
+              Send new Photo
+            </button>
+            <button (click)="closeProfileUpload()" class="btn btn-danger">
+              Cancel
+            </button>
+            } @if (!isMyProfile) {
+            <a
+              [routerLink]="['/conversation', userData?.id]"
+              class="btn btn-primary"
+              >send message</a
+            >
+            @if (!friendStatus) {
+            <button
+              class="btn btn-outline"
+              (click)="sendFriendRequest(userData!.id)"
+            >
+              Add friend
+            </button>
+            }@else if (friendStatus?.status == 0 && friendStatus?.user_id ==
+            authUser?.id) {
+            <button
+              class="btn btn-outline"
+              (click)="deleteFriendRequest(userData!.id)"
+            >
+              Delete friend request
+            </button>
+            }@else if(friendStatus?.status == 0 && friendStatus?.user_id !=
+            authUser?.id){
+            <div>Accept friend</div>
+            }@else if (friendStatus?.status == 1) {
+            <button
+              class="btn btn-outline"
+              (click)="deleteFriendRequest(userData!.id)"
+            >
+              Friend accepted
+            </button>
+            } @else {
+            <div></div>
+            } }
           </div>
         </div>
       </div>
 
-      <div class="friends">
-        <div class="search-friends">
-          <span class="icon">
-            <i class="uil uil-search"></i>
-          </span>
-          <input placeholder="Search chats" />
-          <span>r</span>
-        </div>
+      <div class="posts-bottom">
+        <div class=" profile-info"></div>
+        <app-post-list [posts]="posts"></app-post-list>
+      </div>
+    </div>
 
-        <div class="content recomended-friends">
-          @for (friend of friends; track friend.id) {
-          <a
-            [routerLink]="['/profile', friend.id]"
-            class="recomended-friend-card"
-          >
-            <div class="profile-photo">
-              <img src="{{ IMAGE_SRC }}{{ friend.profile_image }}" />
-            </div>
-            <div>
-              <div>{{ friend.first_name }} {{ friend.last_name }}</div>
+    <div class="friends">
+      <div class="card-white search-friends">
+        Friends list
+        <!-- <span class="icon">
+          <i class="uil uil-search"></i>
+        </span>
+        <input placeholder="Search chats" />
+        <span>r</span> -->
+      </div>
 
-              <div>
-                {{ friend.email }}
-              </div>
-            </div>
-          </a>
-          }
-        </div>
+      <div class="card-white recomended-friends">
+        <app-user-friends></app-user-friends>
       </div>
     </div>
   </div>

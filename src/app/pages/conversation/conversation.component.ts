@@ -1,4 +1,4 @@
-import { AuthService } from './../../services/auth.service';
+import { AuthService, IAuthUser } from './../../services/auth.service';
 import {
   Component,
   ElementRef,
@@ -18,8 +18,8 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { mergeMap, tap } from 'rxjs';
-import { CommonModule } from '@angular/common';
+import { Observable, mergeMap, switchMap, tap } from 'rxjs';
+import { AsyncPipe, CommonModule } from '@angular/common';
 import { IMAGE_SRC } from '../../data/constants';
 import { DropdownComponent } from '../../components/UI/dropdown/dropdown.component';
 
@@ -34,14 +34,15 @@ import { DropdownComponent } from '../../components/UI/dropdown/dropdown.compone
     ReactiveFormsModule,
     CommonModule,
     DropdownComponent,
+    AsyncPipe,
   ],
 })
 export class ConversationComponent implements OnInit {
   IMAGE_SRC: string = IMAGE_SRC;
 
   private ws: any;
-  public user: any;
-  public conversations: IConversation[] | [] = [];
+  public authUser?: IAuthUser;
+  public conversations?: Observable<IConversation[]>;
   public conversationId: string | null = null;
   public selectedConversation: IConversation | null = null;
 
@@ -52,23 +53,27 @@ export class ConversationComponent implements OnInit {
     private authService: AuthService,
     private formBuilder: FormBuilder,
     private route: ActivatedRoute
-  ) {
-   
-  }
+  ) {}
 
   newMessageForm = this.formBuilder.group({
     message: ['', Validators.required],
   });
 
   ngOnInit(): void {
-    this.authService.getUser$().subscribe((user) => {
-      this.user = user;
+    this.authService.getAuthUser().subscribe((authUser) => {
+      this.authUser = authUser as IAuthUser;
 
       this.ws = new WebSocket(`ws://localhost:8000/ws/${1}`);
       this.ws.onmessage = (event: any) => {
         this.finalizeSendMessage();
+        this.conversations = this.conversationService.refetchConversation.pipe(
+          switchMap(() => this.conversationService.getConversations())
+        );
       };
-      this.getAllConversations();
+      // this.getAllConversations();
+      this.conversations = this.conversationService.refetchConversation.pipe(
+        switchMap(() => this.conversationService.getConversations())
+      );
 
       this.route.params.subscribe((params) => {
         this.conversationId = params['id'];
@@ -79,13 +84,6 @@ export class ConversationComponent implements OnInit {
     });
   }
 
-  getAllConversations() {
-    this.conversationService.getConversations().subscribe({
-      next: (conversations) => {
-        this.conversations = conversations;
-      },
-    });
-  }
 
   showConversation(conversationId: string) {
     this.conversationService.showConversation(conversationId).subscribe({
@@ -109,7 +107,7 @@ export class ConversationComponent implements OnInit {
           this.conversationId
         )
       : this.conversationService
-          .storeConversation(this.conversationId as string)
+          .createConversation(this.conversationId as string)
           .pipe(
             mergeMap((selConv) => {
               this.selectedConversation = selConv;
@@ -127,7 +125,7 @@ export class ConversationComponent implements OnInit {
   }
 
   finalizeSendMessage() {
-    this.getAllConversations();
+    // this.getAllConversations();
     this.showConversation(this.conversationId as string);
   }
 
@@ -149,6 +147,6 @@ export class ConversationComponent implements OnInit {
 
   scrollToBottom() {
     this.chatComponentContainer!.nativeElement.scrollTop =
-      this.chatComponentContainer?.nativeElement.scrollHeight ;
+      this.chatComponentContainer?.nativeElement.scrollHeight;
   }
 }

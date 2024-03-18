@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
+import { Component, Input, OnInit } from '@angular/core';
 import { IMAGE_SRC } from '../../data/constants';
 import { IComment, IPost, PostService } from '../../services/post.service';
 import { DateAgoPipe } from '../../pipes/DateAgo/date-ago.pipe';
@@ -10,6 +11,10 @@ import {
   Validators,
 } from '@angular/forms';
 import { DropdownComponent } from '../UI/dropdown/dropdown.component';
+import { Observable, switchMap } from 'rxjs';
+import { CommentService } from '../../services/comment.service';
+import { BookmarkService } from '../../services/bookmark.service';
+import { NewPostService } from '../../services/newpost.service';
 
 @Component({
   selector: 'app-post-card',
@@ -24,37 +29,52 @@ import { DropdownComponent } from '../UI/dropdown/dropdown.component';
     DropdownComponent,
   ],
 })
-export class PostCardComponent {
+export class PostCardComponent implements OnInit {
   IMAGE_SRC: string = IMAGE_SRC;
-  public isCommentsToggle = false;
 
   @Input() post!: IPost;
+  public postComments: IComment[] = [];
+  public isBookmarked: boolean | null = null;
+
+  public isCommentsHidden: boolean = true;
 
   constructor(
-    private postService: PostService,
-    private formBuilder: FormBuilder
+    private commentService: CommentService,
+    private postService: NewPostService,
+    private bookmarkService: BookmarkService,
+    private formBuilder: FormBuilder,
+    private toastr: ToastrService
   ) {}
+
+  ngOnInit(): void {
+    this.commentService.refetchComments
+      .pipe(
+        switchMap((d: any) => {
+          if (this.post.id != d && d != null)
+            return new Observable<IComment[]>();
+          else return this.commentService.getPostComments(this.post.id, this.isCommentsHidden);
+        })
+      )
+      .subscribe((postComments) => (this.postComments = postComments));
+
+    this.bookmarkService
+      .checkIsBookmarked(this.post.id)
+      .subscribe((isBookmarked) => (this.isBookmarked = isBookmarked));
+  }
 
   commentForm = this.formBuilder.group({
     comment: ['', Validators.required],
   });
 
   deletePost() {
-    this.postService.deletePost(this.post.id).subscribe();
-  }
-
-  loadMoreComments() {
-    this.postService
-      .getPostComments(this.post.id)
-      .subscribe((comments: any) => {
-        this.isCommentsToggle = !this.isCommentsToggle;
-        this.post.comments = comments;
-      });
+    this.postService.deletePost(this.post.id);
   }
 
   toggleComments() {
-    this.isCommentsToggle = !this.isCommentsToggle;
-    this.post.comments.splice(2);
+    this.isCommentsHidden = !this.isCommentsHidden;
+    this.commentService
+      .getPostComments(this.post.id, this.isCommentsHidden)
+      .subscribe((postComments) => (this.postComments = postComments));
   }
 
   submitCommentForm() {
@@ -63,30 +83,33 @@ export class PostCardComponent {
       return;
     }
 
-    this.postService
+    this.commentService
       .createPostComment(this.post.id, {
         post_id: Number(this.post.id),
         content: String(this.commentForm.value.comment),
       })
-      .subscribe((comment: IComment) => {
-        this.post.comments.unshift(comment);
+      .subscribe(() => {
         this.post.comments_length += 1;
-
-        if (this.post.comments_length > 2) {
-          this.post.comments.pop();
-        }
       });
   }
 
   deleteComment(commentId: string) {
-    this.postService.deletePostComment(commentId).subscribe((comment) => {
-      this.postService
-        .getPostComments(this.post.id)
-        .subscribe((comments: IComment[]) => {
-          this.post.comments_length -= 1;
-          comments.splice(2);
-          this.post.comments = comments;
-        });
+    this.commentService.deletePostComment(commentId).subscribe(() => {
+      this.post.comments_length -= 1;
+    });
+  }
+
+  addToBookmarks() {
+    this.bookmarkService.addBookmarkedPost(this.post.id).subscribe(() => {
+      this.isBookmarked = true;
+      this.toastr.success('Post added to bookmarks', 'Success');
+    });
+  }
+
+  removeFormBookmarks() {
+    this.bookmarkService.removeBookmarkedPost(this.post.id).subscribe(() => {
+      this.isBookmarked = false;
+      this.toastr.success('Post removed from bookmarks', 'Success');
     });
   }
 }

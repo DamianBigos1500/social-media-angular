@@ -1,45 +1,70 @@
-<div class="container">
-  <app-sidebar></app-sidebar>
+<div class="profile">
+  <div class="image-cover">
+    <img src="{{ IMAGE_SRC }}{{ authUser?.profile?.cover_image }}" />
+  </div>
 
-  <div class="profile">
-    <div class="image-cover">
-      <img
-        src="https://www.wallpaperflare.com/static/366/315/585/landscape-gray-mountain-wallpaper.jpg"
-      />
-    </div>
+  <div class="social-content">
+    <div class="posts">
+      <div class="create-post-container">
+        <div class="card-white create-post">
+          <app-post-create-form></app-post-create-form>
+        </div>
 
-    <div class="social-content">
-      <div class="posts">
-        <div class="create-post-container">
-          <div class="card-white create-post">
-            <app-post-create-form></app-post-create-form>
-          </div>
-
-          <div class="card-white trends">
+        <!-- <div class="card-white trends">
             <h4 class="title">Groups for you</h4>
             <div></div>
             <span class="groups-link" type="button">show more</span>
-          </div>
-        </div>
-
-        <div class="posts-bottom">
-          <div class="card-white profile-info"></div>
-          <app-post-list></app-post-list>
-        </div>
+          </div> -->
       </div>
 
-      <div class="friends">
-        <div class="search-friends">
-          <span class="icon">
-            <i class="uil uil-search"></i>
-          </span>
-          <input placeholder="Search chats" />
-          <span>r</span>
+      <div class="posts-bottom">
+        <div class=" profile-info">
+          <!-- <div class="profile-head">
+            <img
+              class="profile-image"
+              [src]="IMAGE_SRC + authUser?.profile_image"
+            />
+            <div class="profile-data">
+              <app-dropdown>
+                <div class="options-button profile-options" dropdown-toggle>
+                  <i class="uil uil-ellipsis-h"></i>
+                </div>
+
+                <div class="dropdown-menu" content>
+                  <button class="dropdown-menu-item">
+                    <span> Report </span>
+                  </button>
+                </div>
+              </app-dropdown>
+
+              <h3 class="profile-name">
+                {{ authUser?.first_name }} {{ authUser?.last_name }}
+              </h3>
+            </div>
+          </div>
+
+          <div class="profile-stats">
+            <div>posts</div>
+            <div>friends</div>
+          </div> -->
         </div>
 
-        <div class="card-white">
-          <app-user-friends></app-user-friends>
-        </div>
+        <app-post-list [posts]="posts"></app-post-list>
+      </div>
+    </div>
+
+    <div class="friends">
+      <div class="card-white search-friends">
+        Reccomended Friends:
+        <!-- <span class="icon">
+          <i class="uil uil-search"></i>
+        </span>
+        <input placeholder="Search chats" />
+        <span>r</span> -->
+      </div>
+
+      <div class="card-white">
+        <app-user-friends></app-user-friends>
       </div>
     </div>
   </div>

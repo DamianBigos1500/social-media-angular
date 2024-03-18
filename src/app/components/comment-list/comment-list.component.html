@@ -1,0 +1,25 @@
+<div class="comments-list">
+  @for (comment of comments ; track comment.id; let idx = $index, e = $even) {
+  @if (comment.post_id) {
+  <a
+    [routerLink]="['/post']"
+    [queryParams]="{ pid: comment.post_id }"
+    class="card-white comment-tile"
+  >
+    <div>
+      You've commented
+      <b>
+        {{
+          comment.post?.creator?.first_name +
+            " " +
+            comment.post?.creator?.first_name
+        }}
+      </b>
+      post
+    </div>
+    <div>Comment: {{ comment.content }}</div>
+  </a>
+  } }@empty {
+  <li>You don't comment any post.</li>
+  }
+</div>

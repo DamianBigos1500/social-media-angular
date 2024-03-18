@@ -58,6 +58,13 @@ export class UserService {
     );
   }
 
+  updateCoverImage(formData: FormData): Observable<any> {
+    return this.http.post<any>(
+      `${this.apiUrl}users/update-cover-image/`,
+      formData
+    );
+  }
+
   deleteFriendRequest(friendId: string): Observable<any> {
     return this.http.delete<any>(`${this.apiUrl}friends/${friendId}/`);
   }

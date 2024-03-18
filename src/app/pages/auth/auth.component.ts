@@ -1,3 +1,4 @@
+import { ThemeService } from './../../services/theme.service';
 import { Component } from '@angular/core';
 import {
   FormBuilder,
@@ -19,7 +20,8 @@ export class AuthComponent {
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private themeService: ThemeService
   ) {}
 
   loginForm: FormGroup = this.formBuilder.group({
@@ -28,11 +30,9 @@ export class AuthComponent {
   });
 
   onSubmit() {
-    console.log(this.loginForm.value);
     this.authService.login(this.loginForm.value).subscribe(() => {
-      this.authService.getUser().subscribe(() => {
-        this.router.navigate(['/']);
-      });
+      this.authService.fetchUser();
+      this.router.navigate(['/']);
     });
   }
 }

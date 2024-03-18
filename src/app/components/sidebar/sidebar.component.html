@@ -1,12 +1,17 @@
 <div class="sidebar">
-  <a routerLink="/" class="sidebar-item active">
+  <a routerLink="/" class="sidebar-item" routerLinkActive="active-link">
     <span>
       <i class="uil uil-home"></i>
     </span>
     <h3>Home</h3>
   </a>
 
-  <a routerLink="/conversations" class="sidebar-item" id="messages-notifications">
+  <a
+    routerLink="/conversations"
+    class="sidebar-item"
+    routerLinkActive="active-link"
+    id="messages-notifications"
+  >
     <span>
       <i class="uil uil-envelope-alt">
         <small class="notification-count">6</small>
@@ -14,8 +19,8 @@
     </span>
     <h3>Messages</h3>
   </a>
-  
-  <a href="#" class="sidebar-item">
+
+  <a routerLink="#" class="sidebar-item" routerLinkActive="active-link">
     <span>
       <i class="uil uil-bell"> </i>
       <small class="notification-count">9+</small>
@@ -49,26 +54,33 @@
       </div>
     </div>
   </a>
- 
-  <a href="#" class="sidebar-item">
+
+  <a
+    routerLink="/bookmarks"
+    class="sidebar-item"
+    routerLinkActive="active-link"
+  >
     <span>
       <i class="uil uil-bookmark"></i>
     </span>
     <h3>Bookmarks</h3>
   </a>
-  <a href="#" class="sidebar-item">
+
+  <a routerLink="#" class="sidebar-item" routerLinkActive="active-link">
     <span>
       <i class="uil uil-chart-line"></i>
     </span>
     <h3>Analytics</h3>
   </a>
-  <a href="#" class="sidebar-item">
+
+  <a routerLink="/comments" class="sidebar-item" routerLinkActive="active-link">
     <span>
       <i class="uil uil-comment-alt-lines"></i>
     </span>
     <h3>Comments</h3>
   </a>
-  <a href="#" class="sidebar-item">
+
+  <a routerLink="#" class="sidebar-item" routerLinkActive="active-link">
     <span>
       <i class="uil uil-settings"></i>
     </span>

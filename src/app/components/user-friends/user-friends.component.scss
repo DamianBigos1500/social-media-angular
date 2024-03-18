@@ -9,3 +9,18 @@
   display: flex;
   gap: 0.6rem;
 }
+
+@media only screen and (max-width: 900px) {
+  .friend-info {
+    margin: 0 auto;
+  }
+
+  .friend-fullname {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .friend-email {
+    display: none;
+  }
+}

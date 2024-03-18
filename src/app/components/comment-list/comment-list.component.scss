@@ -1,0 +1,11 @@
+.comments-list {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 11rem;
+}
+
+.comment-tile {
+  text-align: start;
+}
