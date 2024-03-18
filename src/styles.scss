@@ -148,14 +148,28 @@ img {
 // form css
 
 .form {
+
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  
+
   .form-group {
     display: flex;
     flex-direction: column;
 
-    label {
+    input,
+    textarea {
+      width: 100%;
+      color: var(--color-black);
+      background: var(--color-light);
+      border-radius: var(--medium-padding);
+      padding: var(--medium-padding);
     }
-    input {
-    }
+  }
+  button {
+    background: var(--color-light);
+    color: var(--color-black);
   }
 }
 

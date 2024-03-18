@@ -29,20 +29,17 @@ import { ThemeService } from './services/theme.service';
   styleUrl: './app.component.scss',
 })
 export class AppComponent implements OnInit {
-  title = 'social-media-angular';
-  loading: WritableSignal<boolean> = signal(true);
+  title = 'ConnectEdge';
+  isLoading = true;
 
   constructor(
-    @Inject(PLATFORM_ID) private platformId: Object,
     public authService: AuthService,
-    // private themeService: ThemeService,
   ) {}
 
   ngOnInit(): void {
-    if (isPlatformBrowser(this.platformId)) {
-      this.authService.fetchUser()
-    }
-
+    this.authService.fetchUser();
+    this.authService.getAuthUser().subscribe((user) => {
+      this.isLoading = false;
+    });
   }
-
 }

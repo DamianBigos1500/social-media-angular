@@ -1,11 +1,11 @@
 <div class="container" id="container">
   <h2 class="logo-container">
-    <a  routerLink="/"> ConnectEdge </a>
+    <a routerLink="/"> ConnectEdge </a>
   </h2>
 
   <div class="login-form-container">
     <form class="form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-      <div>Login</div>
+      <h3>Login</h3>
 
       <div class="form-group">
         <label for="email">Email:</label>
@@ -21,5 +21,14 @@
         <button type="submit" class="btn btn-primary send-post">Login</button>
       </div>
     </form>
+  </div>
+
+  <div class="login-form-container">
+    <h4>demo:</h4>
+    <div>login:</div>
+    <div>w&#64;w.com</div>
+    <div>w&#64;dw.com</div>
+
+    <div>password: 12345678</div>
   </div>
 </div>
