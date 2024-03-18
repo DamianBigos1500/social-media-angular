@@ -1,6 +1,6 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, Subject, tap } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, tap } from 'rxjs';
 import { IUser } from './user.service';
 
 export interface IParticipant {
@@ -39,20 +39,20 @@ export interface IConversation {
   providedIn: 'root',
 })
 export class ConversationService {
-  private conversation = new Subject();
+  private refetchConversationSubject = new BehaviorSubject(null);
 
   private http = inject(HttpClient);
   private apiUrl = 'http://127.0.0.1:8000/api/';
 
-  get refetch() {
-    return this.conversation.asObservable();
+  get refetchConversation() {
+    return this.refetchConversationSubject.asObservable();
   }
 
   getConversations(): Observable<IConversation[]> {
     return this.http.get<IConversation[]>(`${this.apiUrl}conversation/`);
   }
 
-  storeConversation(profileId: string): Observable<IConversation> {
+  createConversation(profileId: string): Observable<IConversation> {
     return this.http.post<IConversation>(`${this.apiUrl}conversation/`, {
       profile_id: profileId,
     });
@@ -65,12 +65,11 @@ export class ConversationService {
   }
 
   sendMessage(newMessage: any, cid: string | null) {
-    return this.http.post<IConversation[]>(
-      `${this.apiUrl}conversation/messages/`,
-      {
+    return this.http
+      .post<IConversation[]>(`${this.apiUrl}conversation/messages/`, {
         content: newMessage.value.message,
         cid: cid,
-      }
-    );
+      })
+      .pipe(tap(() => this.refetchConversationSubject.next(null)));
   }
 }

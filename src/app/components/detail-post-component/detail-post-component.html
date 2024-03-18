@@ -1,7 +1,12 @@
 @if(!post) {
 <p>Loading</p>
 } @else {
-<div class="post-details">
+<div
+  class="post-details"
+  [ngClass]="{
+  'post-details-no-img': !image_id
+}"
+>
   <div class="post-details-selected-image">
     <div class="btn-details close-details" (click)="closeDetails()">
       <i class="uil uil-multiply"></i>
@@ -31,17 +36,30 @@
     [ngClass]="{ 'sidebar-closed': !isSidebarOpen }"
   >
     <div class="post-header">
-      <div class="post-creator">
-        <img
-          class="post-creator-photo"
-          src="{{ IMAGE_SRC + post.creator.profile_image }}"
-          alt=""
-        />
-        <div class="post-creator-info">
-          <h3 class="creator-fullname">
-            {{ post.creator.first_name + " " + post.creator.first_name }}
-          </h3>
-          <small class="post-created-at">{{ post.created_at | dateAgo }}</small>
+      <div class="left-header">
+        @if (!image_id) {
+        <div
+          class="btn-details close-details-no-image"
+          (click)="closeDetails()"
+        >
+          <i class="uil uil-multiply"></i>
+        </div>
+        }
+
+        <div class="post-creator">
+          <img
+            class="post-creator-photo"
+            src="{{ IMAGE_SRC + post.creator.profile_image }}"
+            alt=""
+          />
+          <div class="post-creator-info">
+            <h3 class="creator-fullname">
+              {{ post.creator.first_name + " " + post.creator.first_name }}
+            </h3>
+            <small class="post-created-at"
+              >{{ post.created_at | dateAgo }}</small
+            >
+          </div>
         </div>
       </div>
 
@@ -50,13 +68,72 @@
           <i class="uil uil-ellipsis-h"></i>
         </div>
 
-        <div content>
-          <div>Option 1</div>
-          <div>Option 2</div>
-          <div>Option 3</div>
+        <div class="dropdown-menu" content>
+          <button class="dropdown-menu-item">
+            <span> Report </span>
+          </button>
         </div>
       </app-dropdown>
     </div>
+
+    <!-- post content -->
+    <div class="post-content">
+      <div>{{post.content}}</div>
+    </div>
+
+    <!-- comments -->
+    <div class="post-comments">
+      @for (comment of postComments | async; track comment.id) {
+      <div class="post-comment">
+        <img
+          class="comment-user-photo"
+          src="{{ IMAGE_SRC + comment.user.profile_image }}"
+          alt=""
+        />
+
+        <div class="comment-content">
+          <div class="comment-user-fullname">
+            {{ comment.user.first_name }} {{ comment.user.first_name }}
+          </div>
+          <p class="comment-content-body">{{ comment.content }}</p>
+        </div>
+
+        <div class="comment-options">
+          <app-dropdown>
+            <div class="options-button" dropdown-toggle>
+              <i class="uil uil-ellipsis-h"></i>
+            </div>
+
+            <div class="dropdown-menu" content>
+              <button
+                (click)="deleteComment(comment.id)"
+                class="dropdown-menu-item"
+              >
+                <span> Delete </span>
+              </button>
+              <button class="dropdown-menu-item">
+                <span> Report </span>
+              </button>
+            </div>
+          </app-dropdown>
+        </div>
+      </div>
+      }
+    </div>
+
+    <form
+      [formGroup]="commentForm"
+      (ngSubmit)="submitCommentForm()"
+      class="comment-form"
+    >
+      <input
+        class="comment-input"
+        formControlName="comment"
+        id="comment"
+        placeholder="Type your comment..."
+      />
+      <button class="comment-submit" type="submit">Submit</button>
+    </form>
   </div>
 </div>
 }

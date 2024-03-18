@@ -55,36 +55,45 @@
       <span><i class="uil uil-share-alt"></i></span>
     </div>
     <div class="bookmarks">
-      <span><i class="uil uil-bookmark-full"></i></span>
+      @if (isBookmarked === false) {
+      <span (click)="addToBookmarks()">
+        <i class="uil uil-bookmark-full"></i>
+      </span>
+      } @else if (isBookmarked === true) {
+      <span (click)="removeFormBookmarks()">
+        <i style="color: rgb(133, 2, 2)" class="uil uil-bookmark-full"></i>
+      </span>
+      }
     </div>
   </div>
 
-  <div class="liked-by">
+  <!-- <div class="liked-by">
     <span>
-      <!-- <img
+      <img
         src="/assets/images/279123994_524159142568242_2553083085503793696_n.jpg"
-      /> -->
+      />
     </span>
     <span>
-      <!-- <img
+      <img
         src="/assets/images/279123994_524159142568242_2553083085503793696_n.jpg"
-      /> -->
+      />
     </span>
     <span>
-      <!-- <img
+      <img
         src="/assets/images/279123994_524159142568242_2553083085503793696_n.jpg"
-      /> -->
+      />
     </span>
     <p>Liked by <b>Ernest Achiever</b> and <b>2,232 others</b></p>
-  </div>
+  </div> -->
 
   @if (post.comments_length > 0){
+  <!-- if comments_length gt 0 -->
   <div class="post-comments">
-    @for (comment of postComments| async; track comment.id) {
+    @for (comment of postComments; track comment.id) {
     <div class="post-comment">
       <img
         class="comment-user-photo"
-        src="{{ IMAGE_SRC + post.creator.profile_image }}"
+        src="{{ IMAGE_SRC + comment.user.profile_image }}"
         alt=""
       />
 
@@ -119,18 +128,22 @@
     </div>
     }
   </div>
-  @if (!isCommentsToggle && post.comments_length > 2) {
 
-  <!-- <button (click)="loadMoreComments()" class="all-comments text-muted">
+  @if ( post.comments_length > 2 && isCommentsHidden) {
+  <button (click)="toggleComments()" class="all-comments text-muted">
     View all {{ post.comments_length }} comments
-  </button> -->
-  } @else if(isCommentsToggle){
+  </button>
+  } @else if(post.comments_length > 2 && !isCommentsHidden){
   <button (click)="toggleComments()" class="all-comments text-muted">
     Show less comments
   </button>
-  } } @else {
+  }
+
+  <!-- if comments_length eq 0 -->
+  } @else {
   <div class="all-comments text-muted">No comments yet</div>
   }
+
   <form
     [formGroup]="commentForm"
     (ngSubmit)="submitCommentForm()"

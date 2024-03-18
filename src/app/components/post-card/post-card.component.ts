@@ -1,3 +1,4 @@
+import { ToastrService } from 'ngx-toastr';
 import { Component, Input, OnInit } from '@angular/core';
 import { IMAGE_SRC } from '../../data/constants';
 import { IComment, IPost, PostService } from '../../services/post.service';
@@ -11,8 +12,9 @@ import {
 } from '@angular/forms';
 import { DropdownComponent } from '../UI/dropdown/dropdown.component';
 import { Observable, switchMap } from 'rxjs';
-import { AsyncPipe } from '@angular/common';
 import { CommentService } from '../../services/comment.service';
+import { BookmarkService } from '../../services/bookmark.service';
+import { NewPostService } from '../../services/newpost.service';
 
 @Component({
   selector: 'app-post-card',
@@ -25,30 +27,39 @@ import { CommentService } from '../../services/comment.service';
     FormsModule,
     ReactiveFormsModule,
     DropdownComponent,
-    AsyncPipe,
   ],
 })
 export class PostCardComponent implements OnInit {
   IMAGE_SRC: string = IMAGE_SRC;
 
   @Input() post!: IPost;
-  public postComments?: Observable<IComment[] | []>;
+  public postComments: IComment[] = [];
+  public isBookmarked: boolean | null = null;
 
-  public isCommentsToggle = false;
+  public isCommentsHidden: boolean = true;
 
   constructor(
     private commentService: CommentService,
-    private postService: PostService,
-    private formBuilder: FormBuilder
+    private postService: NewPostService,
+    private bookmarkService: BookmarkService,
+    private formBuilder: FormBuilder,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
-    this.postComments = this.commentService.refetchComments.pipe(
-      switchMap((d: any) => {
-        if (this.post.id != d && d != null) return new Observable<IComment[]>();
-        else return this.commentService.getPostComments(this.post.id);
-      })
-    );
+    this.commentService.refetchComments
+      .pipe(
+        switchMap((d: any) => {
+          if (this.post.id != d && d != null)
+            return new Observable<IComment[]>();
+          else return this.commentService.getPostComments(this.post.id, this.isCommentsHidden);
+        })
+      )
+      .subscribe((postComments) => (this.postComments = postComments));
+
+    this.bookmarkService
+      .checkIsBookmarked(this.post.id)
+      .subscribe((isBookmarked) => (this.isBookmarked = isBookmarked));
   }
 
   commentForm = this.formBuilder.group({
@@ -56,12 +67,14 @@ export class PostCardComponent implements OnInit {
   });
 
   deletePost() {
-    this.postService.deletePost(this.post.id).subscribe();
+    this.postService.deletePost(this.post.id);
   }
 
   toggleComments() {
-    this.isCommentsToggle = !this.isCommentsToggle;
-    // this.post.comments.splice(2);
+    this.isCommentsHidden = !this.isCommentsHidden;
+    this.commentService
+      .getPostComments(this.post.id, this.isCommentsHidden)
+      .subscribe((postComments) => (this.postComments = postComments));
   }
 
   submitCommentForm() {
@@ -83,6 +96,20 @@ export class PostCardComponent implements OnInit {
   deleteComment(commentId: string) {
     this.commentService.deletePostComment(commentId).subscribe(() => {
       this.post.comments_length -= 1;
+    });
+  }
+
+  addToBookmarks() {
+    this.bookmarkService.addBookmarkedPost(this.post.id).subscribe(() => {
+      this.isBookmarked = true;
+      this.toastr.success('Post added to bookmarks', 'Success');
+    });
+  }
+
+  removeFormBookmarks() {
+    this.bookmarkService.removeBookmarkedPost(this.post.id).subscribe(() => {
+      this.isBookmarked = false;
+      this.toastr.success('Post removed from bookmarks', 'Success');
     });
   }
 }

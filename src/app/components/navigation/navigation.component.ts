@@ -10,6 +10,7 @@ import { ModalService } from '../../services/modal.service';
 import { AuthModalComponent } from '../auth-modal/auth-modal.component';
 import { IMAGE_SRC } from '../../data/constants';
 import { DropdownComponent } from '../UI/dropdown/dropdown.component';
+import { ThemeService } from '../../services/theme.service';
 
 @Component({
   selector: 'app-navigation',
@@ -20,21 +21,32 @@ import { DropdownComponent } from '../UI/dropdown/dropdown.component';
   styleUrl: './navigation.component.scss',
 })
 export class NavigationComponent {
-  user: IAuthUser | null = null;
   IMAGE_SRC = IMAGE_SRC;
+
+  authUser: IAuthUser | null = null;
+  isDarkMode: boolean;
+
   constructor(
     private authService: AuthService,
+    private themeService: ThemeService,
     private router: Router
-  ) {}
+  ) {
+    this.isDarkMode = this.themeService.isDarkMode();
+  }
 
   ngOnInit() {
-    this.authService.getUser$().subscribe((user) => {
-      this.user = user;
+    this.authService.getAuthUser().subscribe((authUser) => {
+      this.authUser = authUser;
     });
   }
 
   logout() {
     this.authService.logout();
     this.router.navigate(['/auth']);
+  }
+
+  toggleTheme() {
+    this.isDarkMode = !this.isDarkMode;
+    this.themeService.setDarkMode(this.isDarkMode);
   }
 }

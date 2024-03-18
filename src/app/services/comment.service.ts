@@ -1,27 +1,13 @@
-import { Injectable, computed, inject, signal } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, Subject, tap } from 'rxjs';
-import { LoginModel } from '../models/LoginModel';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { IUser } from './user.service';
 
-export interface IAttachment {
-  id: string;
-  path: string;
-}
 export interface IComment {
   id: string;
   post_id: string;
   content: string;
   user: IUser;
-}
-export interface IPost {
-  id: string;
-  content: string;
-  creator: IUser;
-  attachments: IAttachment[];
-  // comments: IComment[];
-  created_at: Date;
-  comments_length: number;
 }
 
 @Injectable({
@@ -38,8 +24,11 @@ export class CommentService {
   }
 
   // COMMENTS
-  getPostComments(pid: string): Observable<IComment[]> {
-    return this.http.get<IComment[]>(`${this.apiUrl}posts/comments/${pid}/`);
+  getPostComments(
+    pid: string,
+    hidden?: boolean 
+  ): Observable<IComment[]> {
+    return this.http.get<IComment[]>(`${this.apiUrl}posts/comments/${pid}/?hide=${hidden || false}`);
   }
 
   createPostComment(
@@ -49,7 +38,9 @@ export class CommentService {
     return this.http
       .post<IComment>(`${this.apiUrl}posts/comment/${pid}/`, data)
       .pipe(
-        tap((comment: IComment) => this.refetchCommentsSubject.next(comment.post_id))
+        tap((comment: IComment) =>
+          this.refetchCommentsSubject.next(comment.post_id)
+        )
       );
   }
 
@@ -57,7 +48,13 @@ export class CommentService {
     return this.http
       .delete<IComment>(`${this.apiUrl}posts/comment/${cid}/`)
       .pipe(
-        tap((comment: IComment) => this.refetchCommentsSubject.next(comment.post_id))
+        tap((comment: IComment) =>
+          this.refetchCommentsSubject.next(comment.post_id)
+        )
       );
+  }
+
+  getUserComments(): Observable<IComment[]> {
+    return this.http.get<IComment[]>(`${this.apiUrl}posts/user/comments/`);
   }
 }

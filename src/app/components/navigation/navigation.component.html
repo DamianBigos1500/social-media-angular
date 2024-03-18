@@ -1,7 +1,8 @@
 <nav>
   <div class="container">
     <h2>
-      <a routerLink="/"> ConnectEdge </a>
+      <a class="desktop-logo" routerLink="/"> ConnectEdge </a>
+      <a class="mobile-logo" routerLink="/"> CE </a>
     </h2>
 
     <div class="search-bar">
@@ -12,18 +13,31 @@
       />
     </div>
 
-    @if (user) {
-    <div class="create">
-      <div>{{ user.email }}</div>
+    <div class="user-menu">
+      @if (isDarkMode) {
+      <span (click)="toggleTheme()">
+        <i class="uil uil-sun"></i>
+      </span>
+      } @else {
+      <span (click)="toggleTheme()">
+        <i class="uil uil-moon"></i>
+      </span>
+      }
+
+      <!-- dropdown -->
+      @if (authUser) {
       <app-dropdown>
         <div class="options-button" dropdown-toggle>
           <div class="profile-photo">
-            <img src="{{ IMAGE_SRC + user.profile_image }}" />
+            <img src="{{ IMAGE_SRC + authUser.profile_image }}" />
           </div>
         </div>
 
         <div class="nav-dropdown-menu" content>
-          <a class="nav-dropdown-menu-item">
+          <a
+            [routerLink]="'/profile/' + authUser.id"
+            class="nav-dropdown-menu-item"
+          >
             <span> Show Profile </span>
           </a>
           <button class="nav-dropdown-menu-item" (click)="logout()">
@@ -31,9 +45,9 @@
           </button>
         </div>
       </app-dropdown>
-    </div>
 
-    } 
+      }
+    </div>
 
     <!-- <ng-template #modalTemplate>
       <button (click)="closeModal()">x</button>

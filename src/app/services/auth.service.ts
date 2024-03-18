@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable, map, tap } from 'rxjs';
 import { LoginModel } from '../models/LoginModel';
 import { TokenService } from './token.service';
 import { Router } from '@angular/router';
+import { IProfile } from './user.service';
 
 export interface IAuthUser {
   id: string;
@@ -11,16 +12,17 @@ export interface IAuthUser {
   first_name: string;
   last_name: string;
   profile_image: string;
+  profile: IProfile;
 }
-
-export interface IProfile {}
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  user$: BehaviorSubject<IAuthUser | null> =
+  private authUser: IAuthUser | null = null;
+  private authUserSubject: BehaviorSubject<IAuthUser | null> =
     new BehaviorSubject<IAuthUser | null>(null);
+
   isLoggedIn$ = new BehaviorSubject<boolean>(false);
 
   private router = inject(Router);
@@ -29,30 +31,23 @@ export class AuthService {
 
   private apiUrl = 'http://localhost:8000/api/';
 
-  canActivate(): Observable<boolean> {
-    return this.user$.pipe(
-      map((currentUser: any) => {
-        if (!currentUser) {
-          this.router.navigateByUrl('/auth');
-          return false;
-        }
-        return true;
-      })
-    );
+  constructor() {
+    this.fetchUser();
   }
 
-  getUser$(): Observable<IAuthUser | null> {
-    return this.user$.asObservable();
+  canActivate() {
+    this.authUser;
   }
 
-  getUser(): Observable<IAuthUser> {
-    return this.http.get(`${this.apiUrl}user/`).pipe(
-      tap((response: any) => {
-        if (response) {
-          this.user$.next(response);
-        }
-      })
-    );
+  getAuthUser(): Observable<IAuthUser | null> {
+    return this.authUserSubject.asObservable();
+  }
+
+  fetchUser() {
+    this.http.get<IAuthUser>(`${this.apiUrl}user/`).subscribe((authUser) => {
+      this.authUser = authUser;
+      this.authUserSubject.next(authUser);
+    });
   }
 
   login({ email, password }: LoginModel) {
@@ -74,6 +69,6 @@ export class AuthService {
   }
 
   logout() {
-    this.user$.next(null);
+    this.authUserSubject.next(null);
   }
 }

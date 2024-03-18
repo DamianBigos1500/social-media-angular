@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { PostService } from '../../services/post.service';
-import { UserService } from '../../services/user.service';
-import { AuthService } from '../../services/auth.service';
+import { NewPostService } from '../../services/newpost.service';
 
 @Component({
   selector: 'app-post-create-form',
@@ -17,7 +15,7 @@ export class PostCreateFormComponent {
 
   constructor(
     private formBuilder: FormBuilder,
-    private postService: PostService
+    private postService: NewPostService,
   ) {}
 
   newPostForm = this.formBuilder.group<{ content: string }>({
@@ -51,7 +49,9 @@ export class PostCreateFormComponent {
   }
 
   onSubmit() {
-    const formData = new FormData();
+    
+    const formData = new FormData();  
+
     // add new post form
     if (this.newPostForm.value.content) {
       Object.entries(this.newPostForm.value).forEach(([key, value]: any[]) => {
@@ -66,7 +66,7 @@ export class PostCreateFormComponent {
       }
     }
 
-    this.postService.createPost(formData).subscribe();
+    this.postService.createPost(formData)
 
     // reset forms
     this.selectedFiles = [];

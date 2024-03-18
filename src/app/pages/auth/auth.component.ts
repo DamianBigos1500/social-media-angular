@@ -28,11 +28,9 @@ export class AuthComponent {
   });
 
   onSubmit() {
-    console.log(this.loginForm.value);
     this.authService.login(this.loginForm.value).subscribe(() => {
-      this.authService.getUser().subscribe(() => {
-        this.router.navigate(['/']);
-      });
+      this.authService.fetchUser();
+      this.router.navigate(['/']);
     });
   }
 }

@@ -1,23 +1,28 @@
-.container {
-  width: 100%;
-  margin: 0 auto;
-  height: 100%;
-  display: flex;
-  overflow: hidden;
-}
-
 // PROFILE
 
 .profile {
   width: 100%;
   height: 100%;
   overflow-y: scroll;
-  margin-left: 8rem;
 }
 
 .image-cover {
   height: 17rem;
   overflow: hidden;
+  position: relative;
+
+  & .upload-cover-input {
+    display: none;
+  }
+
+  & .upload-cover-label {
+    position: absolute;
+    z-index: 1;
+    cursor: pointer;
+    i {
+      font-size: 1.6rem;
+    }
+  }
 
   & img {
     height: 100%;
@@ -27,6 +32,7 @@
 }
 
 .social-content {
+  position: relative;
   display: grid;
   grid-template-columns: auto 20vw;
   gap: 1rem;
@@ -43,7 +49,6 @@
 }
 
 .user-data {
-  height: 14rem;
   color: var(--color-dark);
   display: flex;
   justify-content: space-between;
@@ -77,7 +82,7 @@
       );
       display: flex;
       align-items: end;
-      padding:1rem ;
+      padding: 1rem;
       justify-content: center;
       cursor: pointer;
 
@@ -108,7 +113,7 @@
   display: grid;
   gap: 1rem;
   width: 100%;
-  grid-template-columns: 4fr 6fr;
+  grid-template-columns: 2fr 6fr;
 }
 
 .posts-container {
@@ -120,88 +125,7 @@
 
 .profile-info {
   width: 60%;
-  height: 20rem;
-
-  .head {
-    .profile-image {
-    }
-
-    .profile-info {
-    }
-  }
-
-  .profile-stats {
-  }
-}
-
-.post {
-  .head {
-    display: flex;
-    justify-content: space-between;
-
-    .user {
-      display: flex;
-      gap: 0.6rem;
-
-      .info small {
-        color: var(--color-gray);
-      }
-    }
-  }
-
-  .post-body {
-    margin-top: 0.6rem;
-  }
-
-  & .photos {
-    margin-top: 0.6rem;
-    border-radius: var(--card-border-radius);
-    overflow: hidden;
-  }
-
-  & .action-buttons {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 2rem;
-    font-size: 1.4rem;
-    margin: 0.2rem 0.2rem;
-
-    & .interaction-buttons {
-      display: flex;
-      gap: 1rem;
-    }
-  }
-
-  & .liked-by {
-    display: flex;
-
-    & span {
-      width: 1.4rem;
-      height: 1.4rem;
-      display: block;
-      border-radius: 50%;
-      overflow: hidden;
-      border: 2px solid var(--color-white);
-      margin-left: -0.6rem;
-    }
-
-    & span:first-child {
-      margin: 0;
-    }
-
-    & p {
-      margin-left: 0.5rem;
-    }
-  }
-}
-
-.content {
-  width: 100%;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-  padding: 0.6rem;
-  border-radius: var(--card-border-radius);
-  background: var(--color-white);
+  // height: 20rem;
 }
 
 .friends {
@@ -210,52 +134,20 @@
   gap: 1rem;
 }
 
-.search-friends {
-  height: 3.5rem;
-  border-radius: var(--border-radius);
-  background: var(--color-white);
-  border: var(--color-primary) 2px solid;
-  overflow: hidden;
-  position: relative;
-
-  & .icon {
-    position: absolute;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    padding: 0.4rem;
-
-    i {
-      font-size: 1.6rem;
-    }
+@media only screen and (max-width: 1100px) {
+  .posts-bottom {
+    flex-direction: column;
   }
 
-  & input {
-    height: 100%;
+  .profile-info {
     width: 100%;
-    padding: 0 1rem 0 2.6rem;
-
-    &::placeholder {
-      color: var(--color-gray);
-    }
   }
-}
 
-.recomended-friends {
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-  font-size: var(--font-medium);
-}
+  .social-content {
+  }
 
-.recomended-friend-card {
-  display: flex;
-  gap: 0.6rem;
-}
-
-@media only screen and (max-width: 1200px) {
-  .profile {
-    margin-left: 5rem;
+  .posts-bottom {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -269,10 +161,34 @@
   }
 
   .social-content {
-    grid-template-columns: auto 30vw;
+    grid-template-columns: 1fr none;
   }
 
   .posts-bottom {
     grid-template-columns: 1fr;
+  }
+}
+
+@media only screen and (max-width: 900px) {
+  .user-data-right {
+    flex-direction: column;
+    align-items: flex-end !important;
+  }
+}
+
+@media only screen and (max-width: 800px) {
+  .user-data {
+    gap: 2rem;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .friends {
+    display: none;
+  }
+  .social-content {
+    grid-template-columns: auto;
   }
 }

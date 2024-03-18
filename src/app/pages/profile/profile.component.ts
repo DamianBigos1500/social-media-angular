@@ -1,26 +1,31 @@
 import { IMAGE_SRC } from './../../data/constants';
 import { PostService, IPost } from './../../services/post.service';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { SidebarComponent } from '../../components/sidebar/sidebar.component';
 import { IUser, UserService } from '../../services/user.service';
 import { AuthService, IAuthUser } from '../../services/auth.service';
 import { PostCardComponent } from '../../components/post-card/post-card.component';
 import { forkJoin } from 'rxjs';
+import { PostListComponent } from '../../components/post-list/post-list.component';
+import { UserFriendsComponent } from '../../components/user-friends/user-friends.component';
+import { NewPostService } from '../../services/newpost.service';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
+  templateUrl: './profile.component.html',
+  styleUrl: './profile.component.scss',
   imports: [
     RouterLink,
     FormsModule,
     ReactiveFormsModule,
     SidebarComponent,
     PostCardComponent,
+    PostListComponent,
+    UserFriendsComponent,
   ],
-  templateUrl: './profile.component.html',
-  styleUrl: './profile.component.scss',
 })
 export class ProfileComponent implements OnInit {
   IMAGE_SRC: string = IMAGE_SRC;
@@ -36,7 +41,7 @@ export class ProfileComponent implements OnInit {
   public isLoading: boolean = true;
 
   constructor(
-    private postService: PostService,
+    private postService: NewPostService,
     private userService: UserService,
     private authService: AuthService,
     private route: ActivatedRoute,
@@ -44,67 +49,82 @@ export class ProfileComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.authService.getUser().subscribe((user: IAuthUser | null) => {
-      this.authUser = user;
-      if (!user) {
-        this.router.navigate(['/auth']);
-      }
-      // get route id and fetch rest of data
-      this.route.paramMap.subscribe((params) => {
+    this.route.paramMap.subscribe((params) => {
+      this.authService.getAuthUser().subscribe((user: IAuthUser | null) => {
+        this.authUser = user;
+        // get route id and fetch rest of data
         this.id = String(params.get('id'));
+        this.postService.fetchProfilePosts(this.id);
+        this.isMyProfile = this.authUser?.id == this.id;
 
-        forkJoin({
-          user: this.userService.showUser(this.id as string),
-          friendStatus: this.userService.getFriendStatus(this.id as string),
-          friends: this.userService.getUsers(),
-          posts: this.postService.getPosts(),
-        }).subscribe((data) => {
-          // set data
-          this.userData = data.user;
-          this.friendStatus = data.friendStatus;
-          this.friends = data.friends;
-          this.posts = data.posts;
+        this.postService.getPosts().subscribe((posts) => (this.posts = posts));
+      });
 
-          // check is this my profile or not
-          this.isMyProfile = this.authUser?.id == this.id;
+      forkJoin({
+        user: this.userService.showUser(this.id as string),
+        friendStatus: this.userService.getFriendStatus(this.id as string),
+        friends: this.userService.getUsers(),
+      }).subscribe((data) => {
+        // set data
+        this.userData = data.user;
+        this.friendStatus = data.friendStatus;
+        this.friends = data.friends;
 
-          this.isLoading = false;
-        });
+        // check is this my profile or not
+        this.isLoading = false;
       });
     });
   }
 
-  file: any = null;
-  profileUrl?: string | ArrayBuffer | null = null;
+  private profileFile: any = null;
+  private coverFile: any = null;
 
-  handleProfileImage(event: any) {
-    this.file = event?.target.files[0];
+  profileUrl?: string | ArrayBuffer | null = null;
+  coverUrl?: string | ArrayBuffer | null = null;
+
+  handleProfileImage(event: any, type: string) {
+    if (type == 'profile') {
+      this.profileFile = event?.target.files[0];
+    } else {
+      this.coverFile = event?.target.files[0];
+    }
 
     const reader = new FileReader();
     reader.readAsDataURL(event.target.files[0]);
     reader.onload = (event) => {
-      this.profileUrl = event.target?.result;
+      if (type == 'profile') {
+        this.profileUrl = event.target?.result;
+      } else {
+        this.coverUrl = event.target?.result;
+      }
     };
   }
 
   uploadNewImage() {
     const formData = new FormData();
-    formData.append('file', this.file);
+    formData.append('profile_file', this.profileFile);
+    formData.append('cover_file', this.coverFile);
 
-    this.userService.updateProfileImage(formData).subscribe(() => {
-      this.authService.getUser().subscribe();
-      this.userService
-        .showUser(this.id as string)
-        .subscribe((userData: IUser) => {
-          this.userData = userData;
-          this.closeProfileUpload();
-        });
-    });
+    if (this.profileFile) {
+      this.userService.updateProfileImage(formData).subscribe(() => {
+        this.authService.fetchUser();
+        this.closeProfileUpload();
+      });
+    }
+    if (this.coverFile) {
+      this.userService.updateCoverImage(formData).subscribe(() => {
+        this.authService.fetchUser();
+        console.log(this.authUser);
+        this.closeProfileUpload();
+      });
+    }
   }
 
   closeProfileUpload() {
+    this.coverUrl = null;
+    this.coverFile = null;
     this.profileUrl = null;
-    this.file = null;
+    this.profileFile = null;
   }
 
   sendFriendRequest(friendId: string) {

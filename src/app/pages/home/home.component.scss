@@ -1,18 +1,9 @@
-.container {
-  width: 100%;
-  margin: 0 auto;
-  height: 100%;
-  display: flex;
-  overflow: hidden;
-}
-
 // PROFILE
 
 .profile {
   width: 100%;
   height: 100%;
   overflow-y: scroll;
-  margin-left: 8rem;
 }
 
 .image-cover {
@@ -35,27 +26,9 @@
 }
 
 .create-post-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  // display: grid;
+  // grid-template-columns: 1fr 1fr;
   gap: 1rem;
-}
-
-.create-post {
-  .post-images-preview {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.6rem;
-    height: 10rem;
-    overflow-x: scroll;
-    max-width: max-content;
-    width: 100%;
-  }
-
-  .post-image-preview {
-    height: 10rem;
-    width: auto;
-    border-radius: var(--card-border-radius);
-  }
 }
 
 .trends {
@@ -71,18 +44,31 @@
   display: grid;
   gap: 1rem;
   width: 100%;
-  grid-template-columns: 4fr 6fr;
+  grid-template-columns: 2fr 6fr;
 }
 
 .profile-info {
   width: 100%;
-  height: 20rem;
+  // height: 20rem;
+  padding: var(--medium-padding);
 
-  .head {
+  .profile-head {
+    display: flex;
+    gap: var(--medium-padding);
+
     .profile-image {
+      width: 10rem;
+      height: 10rem;
+      object-fit: cover;
+      border-radius: 50%;
     }
 
-    .profile-info {
+    .profile-options {
+      margin-left: auto;
+    }
+
+    .profile-name {
+      margin-top: var(--medium-padding);
     }
   }
 
@@ -96,43 +82,37 @@
   gap: 1rem;
 }
 
+// .search-friends {
+//   height: 3.5rem;
+//   border-radius: var(--border-radius);
+//   background: var(--color-white);
+//   border: var(--color-primary) 2px solid;
+//   overflow: hidden;
+//   position: relative;
+
+//   & .icon {
+//     position: absolute;
+//     height: 100%;
+//     display: flex;
+//     align-items: center;
+//     padding: 0.4rem;
+
+//     i {
+//       font-size: 1.6rem;
+//     }
+//   }
+
+//   & input {
+//     height: 100%;
+//     width: 100%;
+//     padding: 0 1rem 0 2.6rem;
+
+//     &::placeholder {
+//       color: var(--color-gray);
+//     }
+//   }
+// }
 .search-friends {
-  height: 3.5rem;
-  border-radius: var(--border-radius);
-  background: var(--color-white);
-  border: var(--color-primary) 2px solid;
-  overflow: hidden;
-  position: relative;
-
-  & .icon {
-    position: absolute;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    padding: 0.4rem;
-
-    i {
-      font-size: 1.6rem;
-    }
-  }
-
-  & input {
-    height: 100%;
-    width: 100%;
-    padding: 0 1rem 0 2.6rem;
-
-    &::placeholder {
-      color: var(--color-gray);
-    }
-  }
-}
-
-
-
-@media only screen and (max-width: 1200px) {
-  .profile {
-    margin-left: 5rem;
-  }
 }
 
 @media only screen and (max-width: 1100px) {
@@ -145,10 +125,18 @@
   }
 
   .social-content {
-    grid-template-columns: auto 14rem;
   }
 
   .posts-bottom {
     grid-template-columns: 1fr;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .friends {
+    display: none;
+  }
+  .social-content {
+    grid-template-columns: auto;
   }
 }
