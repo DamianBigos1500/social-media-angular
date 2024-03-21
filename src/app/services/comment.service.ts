@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { IUser } from './user.service';
+import { API_URL } from '../data/constants';
 
 export interface IComment {
   id: string;
@@ -17,7 +18,7 @@ export class CommentService {
   private refetchCommentsSubject = new BehaviorSubject<string | null>(null);
 
   private http = inject(HttpClient);
-  private apiUrl = 'http://127.0.0.1:8000/api/';
+  private apiUrl = API_URL;
 
   get refetchComments() {
     return this.refetchCommentsSubject.asObservable();

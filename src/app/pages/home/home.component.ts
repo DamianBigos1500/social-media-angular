@@ -1,18 +1,15 @@
 import { IMAGE_SRC } from './../../data/constants';
-import { PostService, IPost } from './../../services/post.service';
 import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { SidebarComponent } from '../../components/sidebar/sidebar.component';
-import { IUser, UserService } from '../../services/user.service';
 import { AuthService, IAuthUser } from '../../services/auth.service';
 import { PostCardComponent } from '../../components/post-card/post-card.component';
 import { AsyncPipe, KeyValuePipe } from '@angular/common';
 import { PostListComponent } from '../../components/post-list/post-list.component';
 import { PostCreateFormComponent } from '../../components/post-create-form/post-create-form.component';
 import { UserFriendsComponent } from '../../components/user-friends/user-friends.component';
-import { Observable, Observer, switchMap } from 'rxjs';
 import { DropdownComponent } from '../../components/UI/dropdown/dropdown.component';
-import { NewPostService } from '../../services/newpost.service';
+import { IPost, PostService } from '../../services/post.service';
 
 @Component({
   selector: 'app-home',
@@ -39,7 +36,7 @@ export class HomeComponent implements OnInit {
 
   constructor(
     // private postService: PostService,
-    private postService: NewPostService,
+    private postService: PostService,
     private authService: AuthService
   ) {}
 
@@ -51,7 +48,7 @@ export class HomeComponent implements OnInit {
       .subscribe((authUser) => (this.authUser = authUser));
 
     this.postService.fetchHomePosts();
-    this.postService.getPosts().subscribe((posts) => (this.posts = posts));
+    this.postService.getPosts().subscribe((posts: IPost[]) => (this.posts = posts));
   }
 
 }

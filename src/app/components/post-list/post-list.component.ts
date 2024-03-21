@@ -1,5 +1,4 @@
-import { NewPostService } from './../../services/newpost.service';
-import { PostService } from './../../services/post.service';
+import { IPost, PostService } from '../../services/post.service';
 import {
   AfterViewInit,
   Component,
@@ -11,7 +10,6 @@ import {
   QueryList,
   ViewChildren,
 } from '@angular/core';
-import { IPost } from '../../services/post.service';
 import { PostCardComponent } from '../post-card/post-card.component';
 import { AsyncPipe } from '@angular/common';
 
@@ -30,7 +28,7 @@ export class PostListComponent implements OnInit, AfterViewInit {
   private observer?: IntersectionObserver;
 
   constructor(
-    private postService: NewPostService,
+    private postService: PostService,
   ) {}
 
   ngOnInit(): void {

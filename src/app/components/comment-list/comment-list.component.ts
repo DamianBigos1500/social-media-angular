@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { IComment } from '../../services/post.service';
 import { Router, RouterLink } from '@angular/router';
+import { IComment } from '../../services/post.service';
 
 @Component({
   selector: 'app-comment-list',
