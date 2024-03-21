@@ -1,7 +1,6 @@
 import { ToastrService } from 'ngx-toastr';
 import { Component, Input, OnInit } from '@angular/core';
 import { IMAGE_SRC } from '../../data/constants';
-import { IComment, IPost, PostService } from '../../services/post.service';
 import { DateAgoPipe } from '../../pipes/DateAgo/date-ago.pipe';
 import { RouterLink } from '@angular/router';
 import {
@@ -12,9 +11,9 @@ import {
 } from '@angular/forms';
 import { DropdownComponent } from '../UI/dropdown/dropdown.component';
 import { Observable, switchMap } from 'rxjs';
-import { CommentService } from '../../services/comment.service';
+import { CommentService, IComment } from '../../services/comment.service';
 import { BookmarkService } from '../../services/bookmark.service';
-import { NewPostService } from '../../services/newpost.service';
+import { IPost, PostService } from '../../services/post.service';
 
 @Component({
   selector: 'app-post-card',
@@ -40,7 +39,7 @@ export class PostCardComponent implements OnInit {
 
   constructor(
     private commentService: CommentService,
-    private postService: NewPostService,
+    private postService: PostService,
     private bookmarkService: BookmarkService,
     private formBuilder: FormBuilder,
     private toastr: ToastrService

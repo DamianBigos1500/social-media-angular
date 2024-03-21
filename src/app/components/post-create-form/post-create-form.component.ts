@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NewPostService } from '../../services/newpost.service';
+import { PostService } from '../../services/post.service';
 
 @Component({
   selector: 'app-post-create-form',
@@ -15,7 +15,7 @@ export class PostCreateFormComponent {
 
   constructor(
     private formBuilder: FormBuilder,
-    private postService: NewPostService,
+    private postService: PostService,
   ) {}
 
   newPostForm = this.formBuilder.group<{ content: string }>({

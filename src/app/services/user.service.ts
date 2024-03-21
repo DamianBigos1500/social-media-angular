@@ -2,6 +2,7 @@ import { Injectable, computed, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, finalize } from 'rxjs';
 import { LoginModel } from '../models/LoginModel';
+import { API_URL } from '../data/constants';
 
 export interface IUser {
   id: string;
@@ -31,7 +32,7 @@ export interface IUserData {
 })
 export class UserService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://127.0.0.1:8000/api/';
+  private apiUrl = API_URL;
 
   getUsers(): Observable<IUser[]> {
     return this.http.get<IUser[]>(`${this.apiUrl}users/`);

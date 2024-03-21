@@ -1,8 +1,9 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, map, tap } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { IUser } from './user.service';
 import { ToastrService } from 'ngx-toastr';
+import { API_URL } from '../data/constants';
 
 export interface IAttachment {
   id: string;
@@ -29,40 +30,90 @@ export interface IPost {
   providedIn: 'root',
 })
 export class PostService {
-  private refetchPostsSubject = new BehaviorSubject(null);
+  private posts: IPost[] = [];
+  private postsSubject = new BehaviorSubject<IPost[]>([]);
+
+  private fetchUrl: string = '';
+  private fetchMore: boolean = false;
+  private page: number = 1;
 
   toastr = inject(ToastrService);
-  private http = inject(HttpClient);
-  private apiUrl = 'http://127.0.0.1:8000/api/';
+  private apiUrl = API_URL;
 
-  get refetchPosts() {
-    return this.refetchPostsSubject.asObservable();
+  constructor(private http: HttpClient) {}
+
+  private resetPage() {
+    this.postsSubject.next([]);
+    this.page = 1;
   }
 
-  getPosts(page: number = 1): Observable<IPost[]> {
-    return this.http.get<IPost[]>(`${this.apiUrl}posts/?page=${page}`);
+  private fetchPosts(url: string) {
+    this.fetchUrl = url;
+
+    this.http.get<IPost[]>(url).subscribe((posts: IPost[]) => {
+      this.posts = posts;
+      this.postsSubject.next([...this.posts]);
+    });
+  }
+
+  public fetchHomePosts() {
+    this.fetchMore = true;
+    this.resetPage();
+    this.fetchPosts(`${this.apiUrl}posts/`);
+  }
+
+  public fetchProfilePosts(pid: string) {
+    this.fetchMore = false;
+    this.resetPage();
+    this.fetchPosts(`${this.apiUrl}posts/profile/${pid}`);
+  }
+
+  public fetchBookmarkedPosts() {
+    this.fetchMore = false;
+    this.resetPage();
+    this.fetchPosts(`${this.apiUrl}posts/bookmarks/all`);
+  }
+
+  // REFETCHING
+  public fetchMorePosts() {
+    if (!this.fetchMore) return;
+    this.http
+      .get<IPost[]>(`${this.fetchUrl}?page=${this.page + 1}`)
+      .subscribe((posts: IPost[]) => {
+        if (posts.length > 0) {
+          this.page += 1;
+        }
+        this.posts.push(...posts);
+        this.postsSubject.next([...this.posts]);
+      });
+  }
+
+  getPosts(): Observable<IPost[]> {
+    return this.postsSubject.asObservable();
   }
 
   createPost(formData: FormData) {
-    return this.http
-      .post(`${this.apiUrl}posts/`, formData)
-      .pipe(tap(() => this.refetchPostsSubject.next(null)))
-      .pipe(
-        map(() => this.toastr.success('Post created succcesfully!', 'Success!'))
-      )
+    this.http
+      .post<IPost>(`${this.apiUrl}posts/`, formData)
+      .subscribe((post: IPost) => {
+        this.posts.unshift(post);
+        console.log(post);
+        this.postsSubject.next([...this.posts]);
+        this.toastr.success('Post created succcesfully!', 'Success!');
+      });
   }
 
   showPostById(pid: string): Observable<IPost> {
     return this.http.get<IPost>(`${this.apiUrl}posts/${pid}`);
   }
 
-  getProfilePosts(pid: string): Observable<IPost[]> {
-    return this.http.get<IPost[]>(`${this.apiUrl}posts/profile/${pid}`);
-  }
-
-  deletePost(pid: string): Observable<IPost> {
-    return this.http
+  deletePost(pid: string) {
+    this.http
       .delete<IPost>(`${this.apiUrl}posts/${pid}`)
-      .pipe(tap(() => this.refetchPostsSubject.next(null)));
+      .subscribe((post: IPost) => {
+        this.posts = this.posts.filter((post) => post.id !== pid);
+        this.postsSubject.next([...this.posts]);
+        this.toastr.success('Post deleted succcesfully!', 'Success!');
+      });
   }
 }

@@ -1,9 +1,4 @@
-import {
-  IAttachment,
-  IComment,
-  IPost,
-  PostService,
-} from './../../services/post.service';
+
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IMAGE_SRC } from '../../data/constants';
@@ -11,7 +6,7 @@ import { DateAgoPipe } from '../../pipes/DateAgo/date-ago.pipe';
 import { Observable, map, switchMap } from 'rxjs';
 import { CommonModule, Location } from '@angular/common';
 import { DropdownComponent } from '../UI/dropdown/dropdown.component';
-import { CommentService } from '../../services/comment.service';
+import { CommentService, IComment } from '../../services/comment.service';
 import {
   FormBuilder,
   FormsModule,
@@ -19,6 +14,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { ThemeService } from '../../services/theme.service';
+import { IAttachment, IPost, PostService } from '../../services/post.service';
 
 @Component({
   selector: 'app-detail-post-component',

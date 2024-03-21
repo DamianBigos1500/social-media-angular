@@ -5,6 +5,7 @@ import { LoginModel } from '../models/LoginModel';
 import { TokenService } from './token.service';
 import { Router } from '@angular/router';
 import { IProfile } from './user.service';
+import { API_URL } from '../data/constants';
 
 export interface IAuthUser {
   id: string;
@@ -29,7 +30,7 @@ export class AuthService {
   private tokenService = inject(TokenService);
   private http = inject(HttpClient);
 
-  private apiUrl = 'http://localhost:8000/api/';
+  private apiUrl = API_URL;
 
   constructor() {
     this.fetchUser();
@@ -56,7 +57,7 @@ export class AuthService {
     formData.append('password', password);
 
     return this.http
-      .post(`http://127.0.0.1:8000/api/token/`, formData, {
+      .post(`${this.apiUrl}token/`, formData, {
         withCredentials: true,
       })
       .pipe(

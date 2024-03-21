@@ -1,5 +1,4 @@
 import { IMAGE_SRC } from './../../data/constants';
-import { PostService, IPost } from './../../services/post.service';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -10,7 +9,7 @@ import { PostCardComponent } from '../../components/post-card/post-card.componen
 import { forkJoin } from 'rxjs';
 import { PostListComponent } from '../../components/post-list/post-list.component';
 import { UserFriendsComponent } from '../../components/user-friends/user-friends.component';
-import { NewPostService } from '../../services/newpost.service';
+import { IPost, PostService } from '../../services/post.service';
 
 @Component({
   selector: 'app-profile',
@@ -41,7 +40,7 @@ export class ProfileComponent implements OnInit {
   public isLoading: boolean = true;
 
   constructor(
-    private postService: NewPostService,
+    private postService: PostService,
     private userService: UserService,
     private authService: AuthService,
     private route: ActivatedRoute,
@@ -57,7 +56,7 @@ export class ProfileComponent implements OnInit {
         this.postService.fetchProfilePosts(this.id);
         this.isMyProfile = this.authUser?.id == this.id;
 
-        this.postService.getPosts().subscribe((posts) => (this.posts = posts));
+        this.postService.getPosts().subscribe((posts: IPost[]) => (this.posts = posts));
       });
 
       forkJoin({

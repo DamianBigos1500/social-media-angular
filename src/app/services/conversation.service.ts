@@ -2,6 +2,7 @@ import { Injectable, computed, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, Subject, tap } from 'rxjs';
 import { IUser } from './user.service';
+import { API_URL } from '../data/constants';
 
 export interface IParticipant {
   id: string;
@@ -42,7 +43,7 @@ export class ConversationService {
   private refetchConversationSubject = new BehaviorSubject(null);
 
   private http = inject(HttpClient);
-  private apiUrl = 'http://127.0.0.1:8000/api/';
+  private apiUrl = API_URL;
 
   get refetchConversation() {
     return this.refetchConversationSubject.asObservable();

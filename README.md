@@ -1,18 +1,18 @@
 ## General info
 This project is frontend of social media app, which I create to learn angular with rxjs.
 With standard post functionalities, I've also created conversation between users  .
-You can preview this page here: (https://github.com/angular/angular-cli).
-I've also wrote backend api in FastAPI for this application
+You can preview this page here: (http://fastapi.daravix.smarthost.pl/).
+I've also wrote backend api in FastAPI for this application (https://github.com/DamianBigos1500/social-media-fast-api)
 
 
 ### Functionalities work on website
 - login
+- realtime conversation between users
 - create/delete new post
 - create/ delete comments
 - edit profile images
 - add/remove bookmarks
 - check post details page 
-- conversation between users
 - add remove friend
 
 ## Functionality I want to add in future
